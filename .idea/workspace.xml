@@ -80,7 +80,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="" />
+    <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/include/ESDF_Map.h" afterPath="$PROJECT_DIR$/include/ESDF_Map.h" />
+      <change beforePath="$PROJECT_DIR$/src/ESDF_Map.cpp" afterPath="$PROJECT_DIR$/src/ESDF_Map.cpp" />
+      <change beforePath="$PROJECT_DIR$/test/test_ESDF_Map.cpp" afterPath="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
+      <change beforePath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" afterPath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -93,17 +99,40 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1320">
+              <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#827#850#0" expanded="true" />
+                <element signature="e#1858#1895#0" expanded="true" />
+                <element signature="e#2599#2664#0" expanded="true" />
+                <element signature="e#2731#2839#0" expanded="true" />
+                <element signature="e#3301#3346#0" expanded="true" />
+                <element signature="e#3421#3617#0" expanded="true" />
+                <element signature="e#5025#5058#0" expanded="true" />
+                <element signature="e#5641#5743#0" expanded="true" />
+                <element signature="e#9557#9634#0" expanded="true" />
+                <element signature="e#10434#10615#0" expanded="true" />
+                <element signature="e#10707#10766#0" expanded="true" />
+                <element signature="e#11901#11921#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ESDF_Map.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
-              <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state relative-caret-position="943">
+              <caret line="342" column="22" lean-forward="false" selection-start-line="342" selection-start-column="9" selection-end-line="342" selection-end-column="22" />
               <folding>
                 <element signature="e#101#123#0" expanded="true" />
-                <element signature="e#412#431#0" expanded="false" />
-                <element signature="e#7357#10196#0" expanded="true" />
-                <element signature="e#11556#11629#0" expanded="true" />
-                <element signature="e#12589#13640#0" expanded="true" />
+                <element signature="e#505#524#0" expanded="false" />
+                <element signature="e#9058#13324#0" expanded="true" />
+                <element signature="e#14661#14778#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,48 +141,17 @@
       <file leaf-file-name="ESDF_Map.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="570">
+              <caret line="503" column="15" lean-forward="false" selection-start-line="503" selection-start-column="15" selection-end-line="503" selection-end-column="15" />
               <folding>
                 <element signature="e#40#56#0" expanded="true" />
+                <element signature="e#823#1075#0" expanded="false" />
+                <element signature="e#1723#2255#0" expanded="false" />
+                <element signature="e#2257#2521#0" expanded="false" />
+                <element signature="e#13812#14161#0" expanded="false" />
+                <element signature="e#17477#17784#0" expanded="true" />
+                <element signature="e#18944#19249#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="40" column="28" lean-forward="false" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#1484#1521#0" expanded="true" />
-                <element signature="e#2252#2360#0" expanded="true" />
-                <element signature="e#2856#3052#0" expanded="true" />
-                <element signature="e#4169#4202#0" expanded="true" />
-                <element signature="e#8771#8843#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Header.h" pinned="false" current-in-tab="false">
-        <entry file="file:///opt/ros/kinetic/include/std_msgs/Header.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="43" column="6" lean-forward="false" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Marker.h" pinned="false" current-in-tab="false">
-        <entry file="file:///opt/ros/kinetic/include/visualization_msgs/Marker.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3402">
-              <caret line="126" column="26" lean-forward="false" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -161,8 +159,8 @@
       <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="16" column="15" lean-forward="false" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+            <state relative-caret-position="579">
+              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -171,8 +169,8 @@
       <file leaf-file-name="timing.cc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/timing.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4320">
-              <caret line="160" column="32" lean-forward="false" selection-start-line="160" selection-start-column="32" selection-end-line="160" selection-end-column="32" />
+            <state relative-caret-position="2187">
+              <caret line="81" column="7" lean-forward="false" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
               <folding>
                 <element signature="e#747#767#0" expanded="true" />
               </folding>
@@ -193,60 +191,40 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logging.h" pinned="false" current-in-tab="false">
-        <entry file="file:///usr/include/glog/logging.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Memory.h" pinned="false" current-in-tab="false">
-        <entry file="file:///usr/include/eigen3/Eigen/src/Core/util/Memory.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22221">
-              <caret line="823" column="4" lean-forward="false" selection-start-line="823" selection-start-column="4" selection-end-line="823" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>check</find>
-      <find>c!!</find>
-      <find>omp parallel</find>
-      <find>setocc</find>
-      <find>reserveSize</find>
-      <find>AlignedVector</find>
-      <find>rime</find>
-      <find>raycasting</find>
-      <find>cout &lt;&lt;</find>
-      <find>q_tmp</find>
-      <find>voxBuffer</find>
-      <find>voxBuffer543</find>
+      <find>special4undefined</find>
+      <find>dis_markers</find>
+      <find>getSliceMarker</find>
+      <find>255 *</find>
+      <find>todo</find>
+      <find>esdf_map</find>
+      <find>newsize</find>
+      <find>newSize</find>
+      <find>tot</find>
       <find>block</find>
-      <find>hashTable</find>
-      <find>findAndInsert</find>
-      <find>= 8</find>
-      <find>&quot;</find>
-      <find>blank</find>
-      <find>blankfunc</find>
-      <find>vox2idx</find>
-      <find>t1 = ros::Time::now();</find>
-      <find>GetHz</find>
-      <find>BLANKFUNC</find>
-      <find>Expanding</find>
-      <find>raycastProcess</find>
-      <find>failed to open any image stream</find>
-      <find>Fatal Error !!</find>
-      <find>transformQueue</find>
-      <find>s_pos</find>
-      <find>q</find>
+      <find>update</find>
+      <find>voxBuffer</find>
+      <find>updateOccupancy</find>
+      <find>public</find>
+      <find>return false</find>
+      <find>updateoccu</find>
+      <find>exist</find>
+      <find>cout</find>
+      <find>Different</find>
+      <find>0.5</find>
+      <find>updateESDF</find>
+      <find>tmp1</find>
+      <find>occupancyBuffer</find>
+      <find>createColorPointcloudFromLayer</find>
+      <find>visualize</find>
+      <find>visuliza</find>
+      <find>visulization</find>
+      <find>inserint</find>
+      <find>xMin</find>
+      <find>check</find>
     </findStrings>
     <replaceStrings>
       <replace>ESDF_Map</replace>
@@ -258,6 +236,9 @@
       <replace>&lt; dirNum</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -268,8 +249,8 @@
         <option value="$USER_HOME$/catkin_ws_dev/src/voxblox/voxblox_ros/src/tsdf_server_node.cc" />
         <option value="$PROJECT_DIR$/include/timing.h" />
         <option value="$PROJECT_DIR$/src/timing.cc" />
-        <option value="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/src/ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/include/ESDF_Map.h" />
         <option value="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
@@ -284,11 +265,12 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1599" />
-    <option name="y" value="-11" />
-    <option name="width" value="1082" />
-    <option name="height" value="1932" />
+    <option name="x" value="1600" />
+    <option name="y" value="-4" />
+    <option name="width" value="1080" />
+    <option name="height" value="1924" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <flattenPackages />
@@ -307,7 +289,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Projects/InfiniTAM/InfiniTAM" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../InfiniTAM" />
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
@@ -627,33 +609,42 @@
       <workItem from="1548341819518" duration="15183000" />
       <workItem from="1548950262853" duration="72000" />
       <workItem from="1548950371285" duration="5061000" />
+      <workItem from="1549861214743" duration="30221000" />
+      <workItem from="1550051143426" duration="22580000" />
+      <workItem from="1550157441578" duration="5929000" />
+      <workItem from="1550236525166" duration="3155000" />
+      <workItem from="1550390019623" duration="19451000" />
+      <workItem from="1550589618006" duration="9177000" />
+      <workItem from="1550675404792" duration="19125000" />
+      <workItem from="1550907980497" duration="45000" />
+      <workItem from="1550908056243" duration="27769000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="313286000" />
+    <option name="totallyTimeSpent" value="450738000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1599" y="-11" width="1082" height="1932" extended-state="6" />
+    <frame x="1600" y="-4" width="1080" height="1924" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24976349" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327212" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3247336" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13468014" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32888147" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17554682" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2754591" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27520892" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -665,52 +656,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2997">
-          <caret line="111" column="118" lean-forward="false" selection-start-line="111" selection-start-column="118" selection-end-line="111" selection-end-column="118" />
-          <folding>
-            <element signature="e#101#123#0" expanded="true" />
-            <element signature="e#412#431#0" expanded="false" />
-            <element signature="e#7357#10196#0" expanded="true" />
-            <element signature="e#11556#11629#0" expanded="true" />
-            <element signature="e#12589#13640#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding>
-            <element signature="e#40#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/raycast.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/raycast.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -731,25 +681,18 @@
           <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="67" selection-end-column="44" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1484#1521#0" expanded="true" />
-            <element signature="e#2252#2360#0" expanded="true" />
-            <element signature="e#2856#3052#0" expanded="true" />
-            <element signature="e#4169#4202#0" expanded="true" />
-            <element signature="e#8771#8843#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2997">
-          <caret line="111" column="118" lean-forward="false" selection-start-line="111" selection-start-column="118" selection-end-line="111" selection-end-column="118" />
-          <folding>
-            <element signature="e#101#123#0" expanded="true" />
-            <element signature="e#412#431#0" expanded="false" />
-            <element signature="e#7357#10196#0" expanded="true" />
-            <element signature="e#11556#11629#0" expanded="true" />
-            <element signature="e#12589#13640#0" expanded="true" />
+            <element signature="e#827#850#0" expanded="true" />
+            <element signature="e#1858#1895#0" expanded="true" />
+            <element signature="e#2599#2664#0" expanded="true" />
+            <element signature="e#2731#2839#0" expanded="true" />
+            <element signature="e#3301#3346#0" expanded="true" />
+            <element signature="e#3421#3617#0" expanded="true" />
+            <element signature="e#5025#5058#0" expanded="true" />
+            <element signature="e#5641#5743#0" expanded="true" />
+            <element signature="e#9557#9634#0" expanded="true" />
+            <element signature="e#10434#10615#0" expanded="true" />
+            <element signature="e#10707#10766#0" expanded="true" />
+            <element signature="e#11901#11921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -760,6 +703,12 @@
           <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
           <folding>
             <element signature="e#40#56#0" expanded="true" />
+            <element signature="e#823#1075#0" expanded="false" />
+            <element signature="e#1723#2255#0" expanded="false" />
+            <element signature="e#2257#2521#0" expanded="false" />
+            <element signature="e#13812#14161#0" expanded="false" />
+            <element signature="e#17477#17784#0" expanded="true" />
+            <element signature="e#18944#19249#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -801,11 +750,18 @@
           <caret line="50" column="39" lean-forward="true" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1484#1521#0" expanded="true" />
-            <element signature="e#2252#2360#0" expanded="true" />
-            <element signature="e#2856#3052#0" expanded="true" />
-            <element signature="e#4169#4202#0" expanded="true" />
-            <element signature="e#8771#8843#0" expanded="true" />
+            <element signature="e#827#850#0" expanded="true" />
+            <element signature="e#1858#1895#0" expanded="true" />
+            <element signature="e#2599#2664#0" expanded="true" />
+            <element signature="e#2731#2839#0" expanded="true" />
+            <element signature="e#3301#3346#0" expanded="true" />
+            <element signature="e#3421#3617#0" expanded="true" />
+            <element signature="e#5025#5058#0" expanded="true" />
+            <element signature="e#5641#5743#0" expanded="true" />
+            <element signature="e#9557#9634#0" expanded="true" />
+            <element signature="e#10434#10615#0" expanded="true" />
+            <element signature="e#10707#10766#0" expanded="true" />
+            <element signature="e#11901#11921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -816,13 +772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="499">
           <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="213" column="10" lean-forward="false" selection-start-line="213" selection-start-column="10" selection-end-line="213" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -957,7 +906,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22221">
           <caret line="823" column="4" lean-forward="false" selection-start-line="823" selection-start-column="4" selection-end-line="823" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -965,7 +913,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -987,16 +934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-333">
-          <caret line="56" column="60" lean-forward="true" selection-start-line="56" selection-start-column="60" selection-end-line="56" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/include/c++/5/functional">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="385">
@@ -1011,21 +948,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/timing.cc">
+    <entry file="file:///opt/ros/kinetic/include/std_msgs/Header.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4320">
-          <caret line="160" column="32" lean-forward="false" selection-start-line="160" selection-start-column="32" selection-end-line="160" selection-end-column="32" />
-          <folding>
-            <element signature="e#747#767#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" column="15" lean-forward="false" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
-          <folding />
+        <state relative-caret-position="459">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1033,53 +959,129 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3402">
           <caret line="126" column="26" lean-forward="false" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/std_msgs/ColorRGBA.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="62" column="54" lean-forward="false" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/timing.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2187">
+          <caret line="81" column="7" lean-forward="false" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
+          <folding>
+            <element signature="e#747#767#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/pcl-1.7/pcl/point_cloud.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="409" column="67" lean-forward="true" selection-start-line="409" selection-start-column="67" selection-end-line="409" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file:///opt/ros/kinetic/include/std_msgs/Header.h">
+    <entry file="file:///opt/ros/kinetic/include/pcl_conversions/pcl_conversions.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="43" column="6" lean-forward="false" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
+        <state relative-caret-position="246">
+          <caret line="546" column="7" lean-forward="false" selection-start-line="546" selection-start-column="7" selection-end-line="546" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="672" column="6" lean-forward="false" selection-start-line="672" selection-start-column="6" selection-end-line="672" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-69">
+          <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="45" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="579">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/sensor_msgs/PointCloud.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="46" column="15" lean-forward="false" selection-start-line="46" selection-start-column="15" selection-end-line="46" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/geometry_msgs/Point32.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="57" column="57" lean-forward="false" selection-start-line="57" selection-start-column="57" selection-end-line="57" selection-end-column="57" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="943">
+          <caret line="342" column="22" lean-forward="false" selection-start-line="342" selection-start-column="9" selection-end-line="342" selection-end-column="22" />
           <folding>
             <element signature="e#101#123#0" expanded="true" />
-            <element signature="e#412#431#0" expanded="false" />
-            <element signature="e#7357#10196#0" expanded="true" />
-            <element signature="e#11556#11629#0" expanded="true" />
-            <element signature="e#12589#13640#0" expanded="true" />
+            <element signature="e#505#524#0" expanded="false" />
+            <element signature="e#9058#13324#0" expanded="true" />
+            <element signature="e#14661#14778#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="570">
+          <caret line="503" column="15" lean-forward="false" selection-start-line="503" selection-start-column="15" selection-end-line="503" selection-end-column="15" />
           <folding>
             <element signature="e#40#56#0" expanded="true" />
+            <element signature="e#823#1075#0" expanded="false" />
+            <element signature="e#1723#2255#0" expanded="false" />
+            <element signature="e#2257#2521#0" expanded="false" />
+            <element signature="e#13812#14161#0" expanded="false" />
+            <element signature="e#17477#17784#0" expanded="true" />
+            <element signature="e#18944#19249#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="40" column="28" lean-forward="false" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
+        <state relative-caret-position="1320">
+          <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1484#1521#0" expanded="true" />
-            <element signature="e#2252#2360#0" expanded="true" />
-            <element signature="e#2856#3052#0" expanded="true" />
-            <element signature="e#4169#4202#0" expanded="true" />
-            <element signature="e#8771#8843#0" expanded="true" />
+            <element signature="e#827#850#0" expanded="true" />
+            <element signature="e#1858#1895#0" expanded="true" />
+            <element signature="e#2599#2664#0" expanded="true" />
+            <element signature="e#2731#2839#0" expanded="true" />
+            <element signature="e#3301#3346#0" expanded="true" />
+            <element signature="e#3421#3617#0" expanded="true" />
+            <element signature="e#5025#5058#0" expanded="true" />
+            <element signature="e#5641#5743#0" expanded="true" />
+            <element signature="e#9557#9634#0" expanded="true" />
+            <element signature="e#10434#10615#0" expanded="true" />
+            <element signature="e#10707#10766#0" expanded="true" />
+            <element signature="e#11901#11921#0" expanded="true" />
           </folding>
         </state>
       </provider>

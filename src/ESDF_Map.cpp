@@ -4,12 +4,14 @@
 
 #include <mutex>
 #include "ESDF_Map.h"
+#include <math.h>
 
+#define logit(x) (log((x) / (1 - (x))))
 using std::cout;
 using std::endl;
 
 bool ESDF_Map::exist(int idx) {
-    return occupancyBuffer[idx] > 0.5;
+    return occupancyBuffer[idx] > logit(0.7);
 }
 
 bool ESDF_Map::posInMap(Eigen::Vector3d pos) {
@@ -97,26 +99,30 @@ double ESDF_Map::dist(Eigen::Vector3i a, Eigen::Vector3i b) {
 #ifdef HASH_TABLE
 
 ESDF_Map::ESDF_Map(Eigen::Vector3d origin, double resolution, int reserveSize_)
-        : origin(origin), resolution(resolution), reserveSize(reserveSize_ + 1) {
-    inf = 100000;
-    undefined = -100000;
+        : origin(origin), resolution(resolution) {
+    inf = 10000;
+    undefined = -10000;
     special4undefined = 0;
-    blockBit = 4;
+#ifdef BLOCK
+    blockBit = 3;
     block = (1 << blockBit);
 
     blockSize = block * block * block;
+    if (blockSize > reserveSize_) reserveSize_ = blockSize;
+#endif
     count = 1; // 0 is used for special use
-
+    reserveSize = reserveSize_ + 1;
     occupancyBuffer.resize(reserveSize);
     distanceBuffer.resize(reserveSize);
+//    distanceBufferNegative.resize(reserveSize);
     closestObstacle.resize(reserveSize);
     voxBuffer.resize(reserveSize);
     tmp1.resize(reserveSize);
     tmp2.resize(reserveSize);
 
-
     std::fill(distanceBuffer.begin(), distanceBuffer.end(), (double) undefined);
-    std::fill(occupancyBuffer.begin(), occupancyBuffer.end(), 0.5);
+//    std::fill(distanceBufferNegative.begin(), distanceBufferNegative.end(), (double) undefined);
+    std::fill(occupancyBuffer.begin(), occupancyBuffer.end(), 0);
     std::fill(closestObstacle.begin(), closestObstacle.end(), Eigen::Vector3i(undefined, undefined, undefined));
     std::fill(voxBuffer.begin(), voxBuffer.end(), Eigen::Vector3i(undefined, undefined, undefined));
     std::fill(tmp1.begin(), tmp1.end(), 0);
@@ -148,13 +154,18 @@ ESDF_Map::ESDF_Map(Eigen::Vector3d origin, double resolution, Eigen::Vector3d ma
 
     cout << grid_total_size << endl;
     occupancyBuffer.resize(grid_total_size);
+
     distanceBuffer.resize(grid_total_size);
+//    distanceBufferNegative.resize(grid_total_size);
+
     closestObstacle.resize(grid_total_size);
     tmp1.resize(grid_total_size);
     tmp2.resize(grid_total_size);
 
     std::fill(distanceBuffer.begin(), distanceBuffer.end(), (double) undefined);
-    std::fill(occupancyBuffer.begin(), occupancyBuffer.end(), 0.5);
+//    std::fill(distanceBufferNegative.begin(), distanceBufferNegative.end(), (double) undefined);
+
+    std::fill(occupancyBuffer.begin(), occupancyBuffer.end(), 0);
     std::fill(closestObstacle.begin(), closestObstacle.end(), Eigen::Vector3i(undefined, undefined, undefined));
     std::fill(tmp1.begin(), tmp1.end(), 0);
     std::fill(tmp2.begin(), tmp2.end(), 0);
@@ -190,8 +201,8 @@ void ESDF_Map::insertIntoList(int link, int idx) {
     }
 }
 
-void ESDF_Map::updateESDF() {
-    updateOccupancy();
+void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
+//    updateOccupancy();
     cout << "Insert Delete\t" << insertQueue.size() << '\t' << deleteQueue.size() << endl;
     while (!insertQueue.empty()) {
         QueueElement xx = insertQueue.front();
@@ -286,30 +297,38 @@ void ESDF_Map::updateESDF() {
                     updateQueue.push(QueueElement{xx.point, distanceBuffer[idx]});
                     continue;
                 }
+                double dist_tmp = dist(xx.point, observationPoint);
                 for (int i = 0; i < dirNum; i++) {
                     Eigen::Vector3i newPos = xx.point + dir[i];
                     if (voxInMap(newPos)) {
                         int newPosId = vox2idx(newPos);
-                        double tmp = dist(newPos, closestObstacle[idx]);
 
-                        if (distanceBuffer[newPosId] < 0) {
-                            int sum = 0;
-                            for (int j = 0; j < dirNum; j++) {
-                                Eigen::Vector3i newPos2 = newPos + dir[j];
-                                if (voxInMap(newPos2)) {
-                                    sum += (distanceBuffer[vox2idx(newPos2)] >= 0);
-                                }
-                            }
-                            if (sum >= 3) {
-                                distanceBuffer[newPosId] = inf;
-                                insertIntoList(special4undefined, newPosId);
-                            }
-//                            distanceBuffer[newPosId] += 0.4;
-//                            if (distanceBuffer[newPosId] >= 0){
-//                                distanceBuffer[newPosId] = inf;
-//                                insertIntoList(grid_total_size, newPosId);
+//                        if (observationPoint(0) != 10000 && distanceBuffer[newPosId] < 0 && dist(newPos, observationPoint) < dist_tmp) {
+//                            distanceBuffer[newPosId] = inf;
+//                            insertIntoList(special4undefined, newPosId);
+//                        }
+
+//                        if (observationPoint(0) != 10000 && distanceBuffer[newPosId] < 0 &&
+//                            dist(newPos, observationPoint) < dist_tmp) {
+//                            int sum = 0;
+//                            for (int j = 0; j < dirNum; j++) {
+//                                Eigen::Vector3i newPos2 = newPos + dir[j];
+//                                if (voxInMap(newPos2)) {
+//                                    sum += (distanceBuffer[vox2idx(newPos2)] >= 0);
+//                                }
 //                            }
-                        }
+//                            if (sum >= 2) {
+//                                distanceBuffer[newPosId] = inf;
+//                                insertIntoList(special4undefined, newPosId);
+//                            }
+////                            distanceBuffer[newPosId] += 0.4;
+////                            if (distanceBuffer[newPosId] >= 0){
+////                                distanceBuffer[newPosId] = inf;
+////                                insertIntoList(grid_total_size, newPosId);
+////                            }
+//                        }
+
+                        double tmp = dist(newPos, closestObstacle[idx]);
                         if (distanceBuffer[newPosId] > tmp) {
                             distanceBuffer[newPosId] = tmp;
                             deleteFromList(vox2idx(closestObstacle[newPosId]), newPosId);
@@ -324,7 +343,7 @@ void ESDF_Map::updateESDF() {
             }
         }
         cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << endl;
-
+//        break;
         if (head[special4undefined] == undefined) break;
         std::queue<int> q_tmp;
 
@@ -368,49 +387,62 @@ int ESDF_Map::setOccupancy(Eigen::Vector3d pos, int occ) {
     return setOccupancy(vox, occ);
 }
 
-omp_lock_t writelock;
+#ifndef HASH_TABLE
+//omp_lock_t writelock;
 std::mutex mtx;
+#endif
+
 int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
     int idx = vox2idx(vox);
     tmp2[idx]++;
     tmp1[idx] += occ;
     if (tmp2[idx] == 1) {
 //        omp_set_lock(&writelock);
+#ifndef HASH_TABLE
         mtx.lock();
+#endif
         updateQueue.push(QueueElement{vox, 0.0});
+#ifndef HASH_TABLE
         mtx.unlock();
+#endif
 //        omp_unset_lock(&writelock);
     }
 
     return vox2idx(vox, 2);
 }
 
-double zip(double d, int occ) {
-//    return occ;
-    if (occ == 1) {
-        if (d >= 0.7)
-            return d;
-        else
-            return 0.5 + 0.2 * (d - 0.3) / (0.7 - 0.3);
-    } else {
-        if (d <= 0.3)
-            return d;
-        else
-            return 0.5 - 0.2 * (0.7 - d) / (0.7 - 0.3);
-    }
-}
+//double zip(double d, int occ) {
+////    return occ;
+//    if (occ == 1) {
+//        if (d >= 0.7)
+//            return d;
+//        else
+//            return 0.5 + 0.2 * (d - 0.3) / (0.7 - 0.3);
+//    } else {
+//        if (d <= 0.3)
+//            return d;
+//        else
+//            return 0.5 - 0.2 * (0.7 - d) / (0.7 - 0.3);
+//    }
+//}
+//
+//double unzip(double d) {
+////    return d;
+//    if (d >= 0.7 || d <= 0.3)
+//        return d;
+//    else if (d > 0.5)
+//        return (d - 0.5) / 0.2 * (0.7 - 0.3) + 0.3;
+//    else return 0.7 - (0.5 - d) / 0.2 * (0.7 - 0.3);
+//}
 
-double unzip(double d) {
-//    return d;
-    if (d >= 0.7 || d <= 0.3)
-        return d;
-    else if (d > 0.5)
-        return (d - 0.5) / 0.2 * (0.7 - 0.3) + 0.3;
-    else return 0.7 - (0.5 - d) / 0.2 * (0.7 - 0.3);
-}
 
+bool ESDF_Map::updateOccupancy() {
+    double prob_hit_log_ = logit(0.65f);
+    double prob_miss_log_ = logit(0.4f);
+    double clamp_min_log_ = logit(0.12f);
+    double clamp_max_log_ = logit(0.97f);
+    double min_occupancy_log_ = logit(0.7f);
 
-void ESDF_Map::updateOccupancy() {
     cout << updateQueue.size() << endl;
     double influence = 0.2;
     while (!updateQueue.empty()) {
@@ -418,19 +450,31 @@ void ESDF_Map::updateOccupancy() {
         updateQueue.pop();
         int idx = vox2idx(xx.point);
         int occupy = exist(idx);
-        double tmp = unzip(occupancyBuffer[idx]) * (1 - influence) + (double) tmp1[idx] / tmp2[idx] * influence;
-        occupancyBuffer[idx] = zip(tmp, occupy == 1 && tmp > 0.3 || occupy == 0 && tmp >= 0.7);
+//        double tmp = unzip(occupancyBuffer[idx]) * (1 - influence) + (double) tmp1[idx] / tmp2[idx] * influence;
+//        occupancyBuffer[idx] = zip(tmp, occupy == 1 && tmp > 0.3 || occupy == 0 && tmp >= 0.7);
+        int log_odds_update = tmp1[idx] * prob_hit_log_ + (tmp2[idx] - tmp1[idx]) * prob_miss_log_;
+
         tmp1[idx] = tmp2[idx] = 0;
         if (distanceBuffer[idx] < 0) {
             distanceBuffer[idx] = inf;
             insertIntoList(special4undefined, idx);
         }
+        if ((log_odds_update >= 0 &&
+             occupancyBuffer[idx] >= clamp_max_log_) ||
+            (log_odds_update <= 0 &&
+             occupancyBuffer[idx] <= clamp_min_log_)) {
+            continue;
+        }
+        occupancyBuffer[idx] = std::min(
+                std::max(occupancyBuffer[idx] + log_odds_update, clamp_min_log_),
+                clamp_max_log_);
         if (exist(idx) && !occupy) {
             insertQueue.push(QueueElement{xx.point, 0.0});
         } else if (!exist(idx) && occupy) {
             deleteQueue.push(QueueElement{xx.point, inf});
         }
     }
+    return insertQueue.size() > 0 || deleteQueue.size() > 0;
 }
 
 int ESDF_Map::getOccupancy(Eigen::Vector3d pos) {
@@ -457,6 +501,38 @@ double ESDF_Map::getDistance(Eigen::Vector3d pos) {
 }
 
 // region VISUALIZATION
+void ESDF_Map::getPointCloud(sensor_msgs::PointCloud &m) {
+    m.header.frame_id = "world";
+#ifdef HASH_TABLE
+    for (int i = 1; i < count; i++) {
+        if (!exist(vox2idx(voxBuffer[i]))) continue;
+
+        Eigen::Vector3d pos;
+        vox2pos(Eigen::Vector3i(voxBuffer[i]), pos);
+
+        geometry_msgs::Point32 p;
+        p.x = pos(0);
+        p.y = pos(1);
+        p.z = pos(2);
+        m.points.push_back(p);
+    }
+#else
+    for (int x = 0; x < grid_size(0); ++x)
+        for (int y = 0; y < grid_size(1); ++y)
+            for (int z = 0; z < grid_size(2); ++z) {
+                if (!exist(vox2idx(Eigen::Vector3i(x, y, z)))) continue;
+
+                Eigen::Vector3d pos;
+                vox2pos(Eigen::Vector3i(x, y, z), pos);
+
+                geometry_msgs::Point32 p;
+                p.x = pos(0);
+                p.y = pos(1);
+                p.z = pos(2);
+                m.points.push_back(p);
+            }
+#endif
+}
 
 void ESDF_Map::getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color) {
     m.header.frame_id = "world";
@@ -480,7 +556,7 @@ void ESDF_Map::getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::
     // iterate the map
 
 #ifdef HASH_TABLE
-    for (int i = 0; i < count; i++) {
+    for (int i = 1; i < count; i++) {
         if (!exist(vox2idx(voxBuffer[i]))) continue;
 
         Eigen::Vector3d pos;
@@ -512,6 +588,71 @@ void ESDF_Map::getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::
 
 visualization_msgs::Marker m[51];
 
+//struct Color {
+//    uint8_t r, g, b, a;
+//};
+//
+inline std_msgs::ColorRGBA rainbowColorMap(double h) {
+    std_msgs::ColorRGBA color;
+    color.a = 1;
+    // blend over HSV-values (more colors)
+
+    double s = 1.0;
+    double v = 1.0;
+
+    h -= floor(h);
+    h *= 6;
+    int i;
+    double m, n, f;
+
+    i = floor(h);
+    f = h - i;
+    if (!(i & 1)) f = 1 - f;  // if i is even
+    m = v * (1 - s);
+    n = v * (1 - s * f);
+
+    switch (i) {
+        case 6:
+        case 0:
+            color.r = v;
+            color.g = n;
+            color.b = m;
+            break;
+        case 1:
+            color.r = n;
+            color.g = v;
+            color.b = m;
+            break;
+        case 2:
+            color.r = m;
+            color.g = v;
+            color.b = n;
+            break;
+        case 3:
+            color.r = m;
+            color.g = n;
+            color.b = v;
+            break;
+        case 4:
+            color.r = n;
+            color.g = m;
+            color.b = v;
+            break;
+        case 5:
+            color.r = v;
+            color.g = m;
+            color.b = n;
+            break;
+        default:
+            color.r = 1;
+            color.g = 0.5;
+            color.b = 0.5;
+            break;
+    }
+
+    return color;
+}
+
 
 void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color) {
 //    cout << 10000 << endl;
@@ -521,7 +662,7 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
 //        cout << *x << endl;
 //        exit(-1);
 //    }
-    cout << max_dist << endl;
+//    cout << "max_dist:\t" << max_dist << endl;
     max_dist = 5;
     // get marker in several distance level
 //    int totalLevel = max_dist / resolution;
@@ -609,7 +750,7 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
                     tot0 += level < 0;
                     tot1 += level >= totalLevel;
                     if (level < 0) {
-                        continue;
+//                        continue;
                         int check = 5;
                         for (int i = 0; i < dirNum; i++) {
                             Eigen::Vector3i newPos = Eigen::Vector3i(x, y, z) + dir[i];
@@ -634,7 +775,8 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
                 p.z = pos(2);
                 m[level].points.push_back(p);
             }
-    cout << ">=0 " << tot0 << ' ' << (double) (grid_total_size - tot0) / grid_total_size * 100 << "%" << endl;
+    cout << ">=0 " << grid_total_size - tot0 << ' ' << (double) (grid_total_size - tot0) / grid_total_size * 100 << "%"
+         << endl;
     cout << "25 " << tot1 << ' ' << (double) tot1 / grid_total_size * 100 << "%" << endl;
     cout << (double) tot1 / (grid_total_size - tot0) * 100 << "%" << endl;
     for (int i = 0; i < 5; ++i) {
@@ -649,6 +791,69 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
 
     for (int i = 0; i < 51; ++i)
         markers.push_back(m[i]);
+}
+
+void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color) {
+    double max_dist = *std::max_element(distanceBuffer.begin(), distanceBuffer.end());
+    m.header.frame_id = "world";
+    m.id = id;
+    m.type = visualization_msgs::Marker::POINTS;
+    m.action = visualization_msgs::Marker::MODIFY;
+    m.scale.x = resolution / 5;
+    m.scale.y = resolution / 5;
+    m.scale.z = resolution / 5;
+    m.pose.orientation.w = 1;
+    m.pose.orientation.x = 0;
+    m.pose.orientation.y = 0;
+    m.pose.orientation.z = 0;
+
+//    m.color.r = color(0);
+//    m.color.g = color(1);
+//    m.color.b = color(2);
+//    m.color.a = 1;
+//    m.points.clear();
+
+    // iterate the map
+    std_msgs::ColorRGBA c;
+#ifdef HASH_TABLE
+    for (int i = 1; i < count; i++) {
+        if (voxBuffer[i].z() != slice || distanceBuffer[vox2idx(voxBuffer[i])] < 0) continue;
+
+        Eigen::Vector3d pos;
+        vox2pos(Eigen::Vector3i(voxBuffer[i]), pos);
+
+        geometry_msgs::Point p;
+        p.x = pos(0);
+        p.y = pos(1);
+        p.z = pos(2);
+
+        c = rainbowColorMap(distanceBuffer[vox2idx(voxBuffer[i])] / max_dist);
+        m.points.push_back(p);
+        m.colors.push_back(c);
+    }
+#else
+
+    cout << "max_dist " << max_dist << endl;
+    for (int x = 0; x < grid_size(0); ++x)
+        for (int y = 0; y < grid_size(1); ++y) {
+            int z = grid_size(2) / 2;
+            Eigen::Vector3i vox = Eigen::Vector3i(x, y, z);
+            if (distanceBuffer[vox2idx(vox)] < 0) continue;
+
+            Eigen::Vector3d pos;
+            vox2pos(vox, pos);
+
+            geometry_msgs::Point p;
+            p.x = pos(0);
+            p.y = pos(1);
+            p.z = pos(2);
+
+            c = rainbowColorMap(distanceBuffer[vox2idx(vox)] / max_dist);
+            m.points.push_back(p);
+            m.colors.push_back(c);
+        }
+    cout << "POINT_SIZE: " << m.points.size() << endl;
+#endif
 }
 
 

@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include "ESDF_Map.h"
-#include <vector>-4444
+#include <vector>
 #include <iostream>
 #include <Eigen/Eigen>
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     origin << -5.0, -5.0, 0.0;
     map_size << 10.0, 10.0, 5.0;
     double resolution = 0.2;
-    ESDF_Map esdf_map = ESDF_Map(origin, resolution, map_size);
+    ESDF_Map esdf_map = ESDF_Map(origin, resolution);
 
     // set occupancy for some positions
     Eigen::Vector3d pos;
