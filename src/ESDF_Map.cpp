@@ -6,6 +6,7 @@
 #include "ESDF_Map.h"
 #include <math.h>
 #include <time.h>
+
 #define logit(x) (log((x) / (1 - (x))))
 using std::cout;
 using std::endl;

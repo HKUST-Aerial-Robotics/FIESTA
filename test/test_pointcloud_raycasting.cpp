@@ -183,28 +183,30 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
     //if (cnt == 1500) std::thread(save).join();
     // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
 
-    Eigen::Vector3d _position;
-    Eigen::Quaterniond _orientation;
     ros::Time _poseTime, _imageTime;
+    double timeDelay = 3e-3;
     while (!imageQueue.empty()) {
         bool newPos = false;
         _imageTime = imageQueue.front()->header.stamp;
-        while (transformQueue.size() > 1 && std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(1e-3)) {
+//        std::cout << std::get<0>(transformQueue.front()) << endl;
+        while (transformQueue.size() > 1 && std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
             _poseTime = std::get<0>(transformQueue.front());
-            _position = std::get<1>(transformQueue.front());
-            _orientation = std::get<2>(transformQueue.front());
+            s_pos = std::get<1>(transformQueue.front());
+            s_q = std::get<2>(transformQueue.front());
             transformQueue.pop();
             newPos = true;
         }
-        if (transformQueue.empty() || std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(1e-3)) {
+//        std::cout << std::get<0>(transformQueue.front()) << endl;
+        if (transformQueue.empty() || std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
             break;
         }
         if (!newPos) {
             imageQueue.pop();
             continue;
         }
+        cout << _poseTime << '\t' << _imageTime << endl;
 #ifndef PROBABILISTIC
-        s_pc = pointcloud_map;
+        s_pc = imageQueue.front();
         newMsg = true;
 
         return;
@@ -213,12 +215,10 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
         T.block<3, 1>(0, 3) = s_pos;
         T(3, 0) = T(3, 1) = T(3, 2) = 0;
         T(3, 3) = 1;
-//    cout << R << endl;
         T = T * T_D_B * T_B_C;
         origin = Eigen::Vector3d(T(0, 3), T(1, 3), T(2, 3)) / T(3, 3);
 
-
-        pcl::fromROSMsg(*pointcloud_map, cloud);
+        pcl::fromROSMsg(*imageQueue.front(), cloud);
 
         if ((int) cloud.points.size() == 0)
             return;
@@ -265,8 +265,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //    if (tot%10 == 0) {
 
 //    }
-        t3 = ros::Time::now();
-        cout << (t2 - t1).toSec() << "s\t" << (t3 - t2).toSec() << "s\t" << (t3 - t1).toSec() << 's' << endl;
+        cout << (t2 - t1).toSec() << "s" << endl;
 
 //    if (!esdf_map->check()) {
 //        cout << "Fatal Error !!" << endl;
@@ -289,7 +288,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 #ifdef PROBABILISTIC
 
 void transformCallback(const geometry_msgs::TransformStamped::ConstPtr &msg) {
-    cout << "TRANSFORM: " << msg->header.stamp << endl;
+//    cout << "TRANSFORM: " << msg->header.stamp << endl;
     pos = Eigen::Vector3d(msg->transform.translation.x,
                           msg->transform.translation.y,
                           msg->transform.translation.z);
@@ -362,7 +361,7 @@ void updateESDFEvent(const ros::TimerEvent & /*event*/) {
 //        if (!esdf_map->checkWithGT()){
 //            exit(0);
 //        }
-        if (esdf_cnt % 1 == 0) {
+        if (esdf_cnt % 10 == 0) {
             visulization(esdf_map);
         }
     }
@@ -389,7 +388,7 @@ int main(int argc, char **argv) {
 //    lCornor << -11.0, -11.0, -7.0;
 //    rCornor << 11.0, 11.0, 7.0;
     map_size = rCornor - lCornor;
-    resolution = 0.10;
+    resolution = 0.05;
 #ifdef HASH_TABLE
     esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, 100);
 #ifdef SIGNED_NEEDED
@@ -422,30 +421,30 @@ int main(int argc, char **argv) {
 //            -0.180038, 0.196415, 0.96385, 0.0430765,
 //            0.0, 0.0, 0.0, 1.0;
 //#else
-////    ros::Subscriber subpoints = node.subscribe("/dense_stereo/pointcloud", 1000, pointcloudCallBack);
-////    ros::Subscriber sub = node.subscribe("/vicon/firefly_sbx/firefly_sbx", 1000, transformCallback);
-////    T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
-////            0.999557249008, 0.0149672133247, 0.025715529948, -0.064676986768,
-////            -0.0257744366974, 0.00375618835797, 0.999660727178, 0.00981073058949,
-////            0.0, 0.0, 0.0, 1.0;
-////    T_D_B << 0.33638, -0.01749, 0.94156, 0.06901,
-////            -0.02078, -0.99972, -0.01114, -0.02781,
-////            0.94150, -0.01582, -0.33665, -0.12395,
-////            0.0, 0.0, 0.0, 1.0;
-////    T_D_B = T_D_B.inverse();
-//
-//
-//    ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
-//    ros::Subscriber sub = node.subscribe("kinect/vrpn_client/estimated_transform", 1000, transformCallback);
-//    T_B_C << 1, 0, 0, 0,
-//            0, 1, 0, 0,
-//            0, 0, 1, 0,
-//            0, 0, 0, 1;
-//    T_D_B << 1, 0, 0, 0,
-//            0, 1, 0, 0,
-//            0, 0, 1, 0,
-//            0, 0, 0, 1;
-//#endif
+    //    ros::Subscriber subpoints = node.subscribe("/dense_stereo/pointcloud", 1000, pointcloudCallBack);
+    //    ros::Subscriber sub = node.subscribe("/vicon/firefly_sbx/firefly_sbx", 1000, transformCallback);
+    //    T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
+    //            0.999557249008, 0.0149672133247, 0.025715529948, -0.064676986768,
+    //            -0.0257744366974, 0.00375618835797, 0.999660727178, 0.00981073058949,
+    //            0.0, 0.0, 0.0, 1.0;
+    //    T_D_B << 0.33638, -0.01749, 0.94156, 0.06901,
+    //            -0.02078, -0.99972, -0.01114, -0.02781,
+    //            0.94150, -0.01582, -0.33665, -0.12395,
+    //            0.0, 0.0, 0.0, 1.0;
+    //    T_D_B = T_D_B.inverse();
+
+
+        ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
+        ros::Subscriber sub = node.subscribe("kinect/vrpn_client/estimated_transform", 1000, transformCallback);
+        T_B_C << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+        T_D_B << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+#endif
     ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
     ros::Subscriber sub = node.subscribe("/kinect/vrpn_client/estimated_transform", 1000, transformCallback);
     T_B_C << 1, 0, 0, 0,
