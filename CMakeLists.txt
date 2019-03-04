@@ -56,7 +56,6 @@ add_executable(test_pointcloud_raycasting
         src/ESDF_Map.cpp
         include/timing.h
         src/timing.cc
-
         test/raycast.h
         test/raycast.cpp
         test/test_pointcloud_raycasting.cpp

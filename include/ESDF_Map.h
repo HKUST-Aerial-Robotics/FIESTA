@@ -14,15 +14,22 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <algorithm>
 #include <sensor_msgs/PointCloud.h>
-//#define HASH_TABLE
+
+#define PROBABILISTIC
+#define HASH_TABLE
 #define BLOCK
 #define BITWISE
+//#define DEBUG
 
 class ESDF_Map {
 private:
     struct QueueElement {
         Eigen::Vector3i point;
         double distance;
+
+        bool operator<(const QueueElement &ele) const {
+            return distance > ele.distance;
+        }
     };
 
 // region DIRECTION
@@ -167,7 +174,7 @@ private:
 
         std::fill(distanceBuffer.begin() + oldSize, distanceBuffer.end(), (double) undefined);
 //    std::fill(distanceBufferNegative.begin(), distanceBufferNegative.end(), (double) undefined);
-        std::fill(occupancyBuffer.begin() + oldSize, occupancyBuffer.end(), 0.5);
+        std::fill(occupancyBuffer.begin() + oldSize, occupancyBuffer.end(), 0);
         std::fill(closestObstacle.begin() + oldSize, closestObstacle.end(),
                   Eigen::Vector3i(undefined, undefined, undefined));
         std::fill(voxBuffer.begin() + oldSize, voxBuffer.end(), Eigen::Vector3i(undefined, undefined, undefined));
@@ -231,7 +238,7 @@ private:
         auto tmp = hashTable.find(hashKey);
 
         if (tmp == hashTable.end()) {
-    //            if (count < reserveSize)
+            //            if (count < reserveSize)
             hashTable.insert(std::make_pair(hashKey, count));
             voxBuffer[count] = hashKey;
             return count++;
@@ -251,7 +258,11 @@ private:
 
 #endif
 // data are saved in vector
+#ifdef PROBABILISTIC
     std::vector<double> occupancyBuffer;  // 0 is free, 1 is occupied
+#else
+    std::vector<int> occupancyBuffer;  // 0 is free, 1 is occupied
+#endif
     std::vector<double> distanceBuffer;
 //    std::vector<double> distanceBufferNegative;
 
@@ -266,6 +277,8 @@ private:
     std::queue<QueueElement> insertQueue;
     std::queue<QueueElement> deleteQueue;
     std::queue<QueueElement> updateQueue;
+
+    std::queue<QueueElement> updateQueue2;
 // map property
     Eigen::Vector3d origin;
     int special4undefined;
@@ -275,9 +288,10 @@ private:
     Eigen::Vector3i grid_size;             // map range in index
     int grid_size_yz;
 #endif
-
+    int totalTime = 0;
     int inf, undefined;
     double resolution;
+    Eigen::Vector3i max_vec, min_vec;
 
     bool exist(int idx);
 
@@ -297,7 +311,6 @@ private:
     double dist(Eigen::Vector3i a, Eigen::Vector3i b);
 
     void deleteFromList(int link, int idx);
-
     void insertIntoList(int link, int idx);
 
 
@@ -325,7 +338,7 @@ public:
 
     bool updateOccupancy();
 
-    void updateESDF(Eigen::Vector3i observationPoint = Eigen::Vector3i(10000, 10000, 10000));
+    void updateESDF();
 
 // occupancy management
     int setOccupancy(Eigen::Vector3d pos, int occ = 1);
@@ -343,20 +356,64 @@ public:
     void getPointCloud(sensor_msgs::PointCloud &m);
 
 
-
     void getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color);
 
     void getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color);
 
     void getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color);
-
+    bool checkUpdate();
     int pos2idx(Eigen::Vector3d pos) {
         Eigen::Vector3i vox;
         pos2vox(pos, vox);
         return vox2idx(vox);
     }
 
+    double getDistance(Eigen::Vector3i vox);
+
+
+
+#ifndef PROBABILISTIC
+    void setAway(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
+        setAway(min_vec, max_vec);
+    }
+    void setUpdateRange(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
+        min_pos(0) = std::max(min_pos(0), min_range(0));
+        min_pos(1) = std::max(min_pos(1), min_range(1));
+        min_pos(2) = std::max(min_pos(2), min_range(2));
+
+        max_pos(0) = std::min(max_pos(0), max_range(0));
+        max_pos(1) = std::min(max_pos(1), max_range(1));
+        max_pos(2) = std::min(max_pos(2), max_range(2));
+
+        pos2vox(min_pos, min_vec);
+        pos2vox(
+                max_pos - Eigen::Vector3d(resolution / 2, resolution / 2, resolution / 2),
+                max_vec);
+    }
+
+    void setAway(){
+        setAway(min_vec, max_vec);
+    }
+    void setAway(Eigen::Vector3i left, Eigen::Vector3i right) {
+        for (int i = left(0); i <= right(0); i++)
+            for (int j = left(1); j <= right(1); j++)
+                for (int k = left(2); k <= right(2); k++)
+                    occupancyBuffer[vox2idx(Eigen::Vector3i(i, j, k))] |= 2;
+    }
+    void setBack(){
+        setBack(min_vec, max_vec);
+    }
+    void setBack(Eigen::Vector3i left, Eigen::Vector3i right) {
+        for (int i = left(0); i <= right(0); i++)
+            for (int j = left(1); j <= right(1); j++)
+                for (int k = left(2); k <= right(2); k++)
+                    if (occupancyBuffer[vox2idx(Eigen::Vector3i(i, j, k))] >= 2)
+                        setOccupancy(Eigen::Vector3i(i, j, k), 0);
+    }
+#endif
+
 #ifdef DEBUG
+
 // only for test, check whether consistent
     bool check() {
 #ifdef HASH_TABLE
@@ -408,6 +465,7 @@ public:
 // only for test, check whether consistent
     bool checkWithGT() {
 #ifdef HASH_TABLE
+        Eigen::Vector3i ma = Eigen::Vector3i(0, 0, 0), mi = Eigen::Vector3i(0, 0, 0);
 //        ESDF_Map *esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, 10000000);
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
         cloud->width = 0;
@@ -423,17 +481,25 @@ public:
                 cloud->points[tot].y = voxBuffer[ii](1);
                 cloud->points[tot].z = voxBuffer[ii](2);
                 tot++;
+                if (voxBuffer[ii](0) > ma(0)) ma(0) = voxBuffer[ii](0);
+                if (voxBuffer[ii](1) > ma(1)) ma(1) = voxBuffer[ii](1);
+                if (voxBuffer[ii](2) > ma(2)) ma(2) = voxBuffer[ii](2);
+                if (voxBuffer[ii](0) < mi(0)) mi(0) = voxBuffer[ii](0);
+                if (voxBuffer[ii](1) < mi(1)) mi(1) = voxBuffer[ii](1);
+                if (voxBuffer[ii](2) < mi(2)) mi(2) = voxBuffer[ii](2);
+
             }
+        std::cout << ma(0) << ' ' << ma(1) << ' ' << ma(2) << ' ' << mi(0) << ' ' << mi(1) << ' ' << mi(2) << std::endl;
         pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
         kdtree.setInputCloud(cloud);
         std::vector<int> pointIdxNKNSearch(1);
         std::vector<float> pointNKNSquaredDistance(1);
-        int cnt1 = 0, cnt2 = 0;
+        int cnt1 = 0, cnt2 = 0, cnt3 = 0;
         double ems1 = 0, ems2 = 0, max1 = 0, max2 = 0;
-        int a[30];
-        std::fill(a, a + 30, 0);
+        int a[32];
+        std::fill(a, a + 32, 0);
         for (int ii = 1; ii < count; ii++) {
-            if (distanceBuffer[ii] >= 0) {
+            if (distanceBuffer[ii] >= 0 && distanceBuffer[ii] < inf) {
                 kdtree.nearestKSearch(pcl::PointXYZ(voxBuffer[ii](0), voxBuffer[ii](1), voxBuffer[ii](2)), 1,
                                       pointIdxNKNSearch, pointNKNSquaredDistance);
                 double tmp = sqrt(pointNKNSquaredDistance[0]) * resolution;
@@ -451,6 +517,9 @@ public:
                     cnt1++;
                     a[(int) (error / 0.1)]++;
                 }
+                if (error < -1e-3) {
+                    cnt3++;
+                }
                 ems1 += distanceBuffer[ii] - tmp;
                 ems2 += (distanceBuffer[ii] - tmp) * (distanceBuffer[ii] - tmp);
                 cnt2++;
@@ -464,36 +533,87 @@ public:
         std::cout << ems1 << " / " << cnt2 << " = " << ems1 / cnt2 << std::endl;
         std::cout << ems2 << " / " << cnt1 << " = " << ems2 / cnt1 << std::endl;
         std::cout << ems2 << " / " << cnt2 << " = " << ems2 / cnt2 << std::endl;
-        std::cout << "max = " << max1 << std::endl;
-        for (int i = 0; i < 30; i++) {
+        std::cout << "max = " << max1 << "\tcnt3 = " << cnt3 << std::endl;
+        for (int i = 0; i < 32; i++) {
             std::cout << " [ " << i * 0.1 << ", " << i * 0.1 + 0.1 << " ]\t" << a[i] << std::endl;
         }
 
 #else
-
+        //        ESDF_Map *esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, 10000000);
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+        cloud->width = 0;
+        cloud->height = 1;
+        for (int x = 0; x < grid_size(0); ++x)
+            for (int y = 0; y < grid_size(1); ++y)
+                for (int z = 0; z < grid_size(2); ++z)
+            if (exist(vox2idx(Eigen::Vector3i(x,y,z))))
+                cloud->width++;
+        cloud->points.resize(cloud->width * cloud->height);
+        int tot = 0;
+        for (int x = 0; x < grid_size(0); ++x)
+            for (int y = 0; y < grid_size(1); ++y)
+                for (int z = 0; z < grid_size(2); ++z)
+            if (exist(vox2idx(Eigen::Vector3i(x,y,z)))) {
+                cloud->points[tot].x = x;
+                cloud->points[tot].y = y;
+                cloud->points[tot].z = z;
+                tot++;
+            }
+        pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
+        kdtree.setInputCloud(cloud);
+        std::vector<int> pointIdxNKNSearch(1);
+        std::vector<float> pointNKNSquaredDistance(1);
+        int cnt1 = 0, cnt2 = 0, cnt3 = 0;
+        double ems1 = 0, ems2 = 0, max1 = 0, max2 = 0;
+        int a[32];
+        std::fill(a, a + 32, 0);
         for (int x = 0; x < grid_size(0); ++x)
             for (int y = 0; y < grid_size(1); ++y)
                 for (int z = 0; z < grid_size(2); ++z) {
-                    int vox = vox2idx(Eigen::Vector3i(x, y, z));
-                    if (prev[vox] != undefined && next[prev[vox]] != vox ||
-                        next[vox] != undefined && prev[next[vox]] != vox) {
-                        std::cout << x << ' ' << y << ' ' << z << ' ' << vox << std::endl;
-                        std::cout << prev[vox] << ' ' << next[prev[vox]] << ' ' << next[vox] << ' ' << prev[next[vox]]
-                                  << std::endl;
-                        std::cout << vox2idx(closestObstacle[next[prev[vox]]]) << ' ' << vox2idx(closestObstacle[vox])
-                                  << std::endl;
-                        std::cout << vox2idx(closestObstacle[prev[vox]]) << ' ' << vox2idx(closestObstacle[next[vox]])
-                                  << std::endl;
-
-                        return false;
-                    }
-                    if (prev[vox] == undefined && distanceBuffer[vox] >= 0
-                        && head[vox2idx(closestObstacle[vox])] != vox)
-                        return false;
+            int ii = vox2idx(Eigen::Vector3i(x,y,z));
+            if (distanceBuffer[ii] >= 0 && distanceBuffer[ii] < inf) {
+                kdtree.nearestKSearch(pcl::PointXYZ(x, y, z), 1,
+                                      pointIdxNKNSearch, pointNKNSquaredDistance);
+                double tmp = sqrt(pointNKNSquaredDistance[0]) * resolution;
+//                if (fabs(distanceBuffer[ii] - tmp) > 1e-3) {
+//                    std::cout << voxBuffer[ii](0) << '\t' << voxBuffer[ii](1) << '\t' << voxBuffer[ii](2) << '\n';
+//                    std::cout << cloud->points[pointIdxNKNSearch[0]].x << '\t'
+//                              << cloud->points[pointIdxNKNSearch[0]].y << '\t'
+//                              << cloud->points[pointIdxNKNSearch[0]].z << '\n';
+//
+//                    std::cout << distanceBuffer[ii] << '\t' << tmp << '\n';
+//
+//                    return false;
+                double error = distanceBuffer[ii] - tmp;
+                if (error > 1e-3) {
+                    cnt1++;
+                    a[(int) (error / 0.1)]++;
                 }
+                if (error < -1e-3) {
+                    cnt3++;
+                }
+                ems1 += distanceBuffer[ii] - tmp;
+                ems2 += (distanceBuffer[ii] - tmp) * (distanceBuffer[ii] - tmp);
+                cnt2++;
+                max1 = std::max(distanceBuffer[ii] - tmp, max1);
+//                }
+            }
+        }
+
+        std::cout << grid_total_size << std::endl;
+        std::cout << ems1 << " / " << cnt1 << " = " << ems1 / cnt1 << std::endl;
+        std::cout << ems1 << " / " << cnt2 << " = " << ems1 / cnt2 << std::endl;
+        std::cout << ems2 << " / " << cnt1 << " = " << ems2 / cnt1 << std::endl;
+        std::cout << ems2 << " / " << cnt2 << " = " << ems2 / cnt2 << std::endl;
+        std::cout << "max = " << max1 << "\tcnt3 = " << cnt3 << std::endl;
+        for (int i = 0; i < 32; i++) {
+            std::cout << " [ " << i * 0.1 << ", " << i * 0.1 + 0.1 << " ]\t" << a[i] << std::endl;
+        }
+
 #endif
         return true;
     }
+
 #endif
 };
 

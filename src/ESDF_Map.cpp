@@ -5,13 +5,17 @@
 #include <mutex>
 #include "ESDF_Map.h"
 #include <math.h>
-
+#include <time.h>
 #define logit(x) (log((x) / (1 - (x))))
 using std::cout;
 using std::endl;
 
 bool ESDF_Map::exist(int idx) {
+#ifdef PROBABILISTIC
     return occupancyBuffer[idx] > logit(0.7);
+#else
+    return occupancyBuffer[idx] == 1;
+#endif
 }
 
 bool ESDF_Map::posInMap(Eigen::Vector3d pos) {
@@ -20,14 +24,14 @@ bool ESDF_Map::posInMap(Eigen::Vector3d pos) {
     return true;
 #else
     if (pos(0) < min_range(0) || pos(1) < min_range(1) || pos(2) < min_range(2)) {
-        cout << pos(0) << ' ' << pos(1) << ' ' << pos(2) << endl;
-        cout << "less than min range!" << endl;
+//        cout << pos(0) << ' ' << pos(1) << ' ' << pos(2) << endl;
+//        cout << "less than min range!" << endl;
         return false;
     }
 
     if (pos(0) > max_range(0) || pos(1) > max_range(1) || pos(2) > max_range(2)) {
-        cout << pos(0) << ' ' << pos(1) << ' ' << pos(2) << endl;
-        cout << "larger than max range!" << endl;
+//        cout << pos(0) << ' ' << pos(1) << ' ' << pos(2) << endl;
+//        cout << "larger than max range!" << endl;
         return false;
     }
     return true;
@@ -38,10 +42,15 @@ bool ESDF_Map::voxInMap(Eigen::Vector3i vox) {
 #ifdef HASH_TABLE
     return true;
 #else
+#ifdef PROBABILISTIC
     return (vox(0) >= 0 && vox(0) < grid_size(0)
             && vox(1) >= 0 && vox(1) < grid_size(1)
-            && vox(2) >= 0 && vox(2) < grid_size(2));
-
+           && vox(2) >= 0 && vox(2) < grid_size(2));
+#else
+    return (vox(0) >= min_vec(0) && vox(0) <= max_vec(0)
+            && vox(1) >= min_vec(1) && vox(1) <= max_vec(1)
+            && vox(2) >= min_vec(2) && vox(2) <= max_vec(2));
+#endif
 #endif
 }
 
@@ -201,7 +210,9 @@ void ESDF_Map::insertIntoList(int link, int idx) {
     }
 }
 
-void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
+void ESDF_Map::updateESDF() {
+//    clock_t startTime,endTime;
+//    startTime = clock();
 //    updateOccupancy();
     cout << "Insert Delete\t" << insertQueue.size() << '\t' << deleteQueue.size() << endl;
     while (!insertQueue.empty()) {
@@ -218,9 +229,10 @@ void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
             updateQueue.push(xx);
         }
     }
-
+    cout << 123 << endl;
     while (!deleteQueue.empty()) {
         QueueElement xx = deleteQueue.front();
+
         deleteQueue.pop();
         int idx = vox2idx(xx.point);
         if (!exist(idx)) {
@@ -264,15 +276,17 @@ void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
             head[idx] = undefined;
         } // if
     } // deleteQueue
-
+    cout << 124 << endl;
     while (true) {
         int times = 0, changeNum = 0;
         while (!updateQueue.empty()) {
-            times++;
             QueueElement xx = updateQueue.front();
+//            QueueElement xx = updateQueue.top();
+
             updateQueue.pop();
             int idx = vox2idx(xx.point);
             if (xx.distance == distanceBuffer[idx]) {
+                times++;
                 bool change = false;
                 for (int i = 0; i < dirNum; i++) {
                     Eigen::Vector3i newPos = xx.point + dir[i];
@@ -292,12 +306,14 @@ void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
                         }
                     }
                 }
+
+
                 if (change) {
                     changeNum++;
                     updateQueue.push(QueueElement{xx.point, distanceBuffer[idx]});
                     continue;
                 }
-                double dist_tmp = dist(xx.point, observationPoint);
+//                double dist_tmp = dist(xx.point, observationPoint);
                 for (int i = 0; i < dirNum; i++) {
                     Eigen::Vector3i newPos = xx.point + dir[i];
                     if (voxInMap(newPos)) {
@@ -343,7 +359,9 @@ void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
             }
         }
         cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << endl;
-//        break;
+        totalTime += times;
+        cout << "Total: " << totalTime << endl;
+        break;
         if (head[special4undefined] == undefined) break;
         std::queue<int> q_tmp;
 
@@ -368,6 +386,8 @@ void ESDF_Map::updateESDF(Eigen::Vector3i observationPoint) {
             insertIntoList(special4undefined, x);
         }
     }
+//    endTime = clock();
+//    cout << "Totle Time : " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 }
 
 
@@ -378,7 +398,7 @@ int ESDF_Map::setOccupancy(Eigen::Vector3d pos, int occ) {
     }
 
     if (!posInMap(pos)) {
-        cout << "Not in map" << endl;
+//        cout << "Not in map" << endl;
         return undefined;
     }
 
@@ -393,7 +413,9 @@ std::mutex mtx;
 #endif
 
 int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
+    if (!voxInMap(vox)) return undefined;
     int idx = vox2idx(vox);
+#ifdef PROBABILISTIC
     tmp2[idx]++;
     tmp1[idx] += occ;
     if (tmp2[idx] == 1) {
@@ -401,7 +423,7 @@ int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
 #ifndef HASH_TABLE
         mtx.lock();
 #endif
-        updateQueue.push(QueueElement{vox, 0.0});
+        updateQueue2.push(QueueElement{vox, 0.0});
 #ifndef HASH_TABLE
         mtx.unlock();
 #endif
@@ -409,6 +431,18 @@ int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
     }
 
     return vox2idx(vox, 2);
+#else
+    if (occupancyBuffer[idx] != occ && occupancyBuffer[idx] != (occ | 2)) {
+//        cout << occupancyBuffer[idx] << "\t" << occ << endl;
+        if (occ == 1) insertQueue.push(QueueElement{vox, 0.0});
+        else deleteQueue.push(QueueElement{vox, inf});
+    }
+    occupancyBuffer[idx] = occ;
+    if (distanceBuffer[idx] < 0) {
+        distanceBuffer[idx] = inf;
+        insertIntoList(special4undefined, idx);
+    }
+#endif
 }
 
 //double zip(double d, int occ) {
@@ -435,19 +469,27 @@ int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
 //    else return 0.7 - (0.5 - d) / 0.2 * (0.7 - 0.3);
 //}
 
+bool ESDF_Map::checkUpdate() {
+#ifdef PROBABILISTIC
+    return updateQueue2.size() > 0;
+#else
+    return true;
+#endif
+}
 
 bool ESDF_Map::updateOccupancy() {
+#ifdef PROBABILISTIC
     double prob_hit_log_ = logit(0.65f);
     double prob_miss_log_ = logit(0.4f);
     double clamp_min_log_ = logit(0.12f);
     double clamp_max_log_ = logit(0.97f);
     double min_occupancy_log_ = logit(0.7f);
 
-    cout << updateQueue.size() << endl;
+    cout << updateQueue2.size() << endl;
     double influence = 0.2;
-    while (!updateQueue.empty()) {
-        QueueElement xx = updateQueue.front();
-        updateQueue.pop();
+    while (!updateQueue2.empty()) {
+        QueueElement xx = updateQueue2.front();
+        updateQueue2.pop();
         int idx = vox2idx(xx.point);
         int occupy = exist(idx);
 //        double tmp = unzip(occupancyBuffer[idx]) * (1 - influence) + (double) tmp1[idx] / tmp2[idx] * influence;
@@ -474,6 +516,7 @@ bool ESDF_Map::updateOccupancy() {
             deleteQueue.push(QueueElement{xx.point, inf});
         }
     }
+#endif
     return insertQueue.size() > 0 || deleteQueue.size() > 0;
 }
 
@@ -497,7 +540,11 @@ double ESDF_Map::getDistance(Eigen::Vector3d pos) {
     Eigen::Vector3i vox;
     pos2vox(pos, vox);
 
-    return distanceBuffer[vox2idx(vox)];
+    return getDistance(vox);
+}
+
+double ESDF_Map::getDistance(Eigen::Vector3i vox) {
+    return distanceBuffer[vox2idx(vox)] < 0 ? inf : distanceBuffer[vox2idx(vox)];
 }
 
 // region VISUALIZATION
@@ -515,6 +562,7 @@ void ESDF_Map::getPointCloud(sensor_msgs::PointCloud &m) {
         p.y = pos(1);
         p.z = pos(2);
         m.points.push_back(p);
+//        cnt++;
     }
 #else
     for (int x = 0; x < grid_size(0); ++x)
@@ -735,7 +783,7 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
         cout << i << ' ' << m[i].points.size() << ' '
              << (double) m[i].points.size() / count * 100 << "%" << endl;
     }
-    int i = 50;
+    int i = 20;
     cout << i << ' ' << m[i].points.size() << ' '
          << (double) m[i].points.size() / count * 100 << "%" << endl;
     count++;
@@ -794,14 +842,18 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
 }
 
 void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color) {
-    double max_dist = *std::max_element(distanceBuffer.begin(), distanceBuffer.end());
+    double max_dist = 0;
+    for (auto iter = distanceBuffer.begin(); iter != distanceBuffer.end(); iter++) {
+        if (*iter < inf && *iter > max_dist) max_dist = *iter;
+    }
+    cout << max_dist << endl;
     m.header.frame_id = "world";
     m.id = id;
     m.type = visualization_msgs::Marker::POINTS;
     m.action = visualization_msgs::Marker::MODIFY;
-    m.scale.x = resolution / 5;
-    m.scale.y = resolution / 5;
-    m.scale.z = resolution / 5;
+    m.scale.x = resolution;
+    m.scale.y = resolution;
+    m.scale.z = resolution;
     m.pose.orientation.w = 1;
     m.pose.orientation.x = 0;
     m.pose.orientation.y = 0;
@@ -811,13 +863,15 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
 //    m.color.g = color(1);
 //    m.color.b = color(2);
 //    m.color.a = 1;
-//    m.points.clear();
-
+    m.points.clear();
+    m.colors.clear();
     // iterate the map
     std_msgs::ColorRGBA c;
 #ifdef HASH_TABLE
     for (int i = 1; i < count; i++) {
-        if (voxBuffer[i].z() != slice || distanceBuffer[vox2idx(voxBuffer[i])] < 0) continue;
+        if (voxBuffer[i].z() != slice || distanceBuffer[vox2idx(voxBuffer[i])] < 0
+            || distanceBuffer[vox2idx(voxBuffer[i])] >= inf)
+            continue;
 
         Eigen::Vector3d pos;
         vox2pos(Eigen::Vector3i(voxBuffer[i]), pos);
@@ -834,9 +888,10 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
 #else
 
     cout << "max_dist " << max_dist << endl;
+    double limitDis = 1.5;
     for (int x = 0; x < grid_size(0); ++x)
         for (int y = 0; y < grid_size(1); ++y) {
-            int z = grid_size(2) / 2;
+            int z = slice;
             Eigen::Vector3i vox = Eigen::Vector3i(x, y, z);
             if (distanceBuffer[vox2idx(vox)] < 0) continue;
 
@@ -848,7 +903,7 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
             p.y = pos(1);
             p.z = pos(2);
 
-            c = rainbowColorMap(distanceBuffer[vox2idx(vox)] / max_dist);
+            c = rainbowColorMap(distanceBuffer[vox2idx(vox)]< limitDis?distanceBuffer[vox2idx(vox)]/limitDis:1);
             m.points.push_back(p);
             m.colors.push_back(c);
         }
