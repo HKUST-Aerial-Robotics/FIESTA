@@ -27,6 +27,8 @@ void visulization(ESDF_Map esdf_map) {
 }
 
 int main(int argc, char **argv) {
+
+    /*
     ros::init(argc, argv, "EDFS_Map_Test");
     ros::NodeHandle node;
 
@@ -41,7 +43,7 @@ int main(int argc, char **argv) {
     origin << -5.0, -5.0, 0.0;
     map_size << 10.0, 10.0, 5.0;
     double resolution = 0.2;
-    ESDF_Map esdf_map = ESDF_Map(origin, resolution, map_size);
+    ESDF_Map esdf_map = ESDF_Map(origin, resolution);
 
     // set occupancy for some positions
     Eigen::Vector3d pos;
@@ -66,10 +68,10 @@ int main(int argc, char **argv) {
         esdf_map.updateESDF();
         t2 = ros::Time::now();
         tt += (t2 - t1).toSec();
-//        if (!esdf_map.check()) {
-//            cout << "Fail!!!" << endl;
-//            exit(-1);
-//        }
+        if (!esdf_map.check()) {
+            cout << "Fail!!!" << endl;
+            exit(-1);
+        }
         if (std::distance(vp.begin(), iter) % 25 == 24)
             visulization(esdf_map);
     } //iter
@@ -92,10 +94,10 @@ int main(int argc, char **argv) {
         esdf_map.updateESDF();
         t2 = ros::Time::now();
         tt += (t2 - t1).toSec();
-//        if (!esdf_map.check()) {
-//            cout << "Fail!!!" << endl;
-//            exit(-1);
-//        }
+        if (!esdf_map.check()) {
+            cout << "Fail!!!" << endl;
+            exit(-1);
+        }
         if (std::distance(vp.begin(), iter) % 5 == 4)
             visulization(esdf_map);
     } //iter
@@ -103,4 +105,5 @@ int main(int argc, char **argv) {
 
 
     return 0;
+     */
 }

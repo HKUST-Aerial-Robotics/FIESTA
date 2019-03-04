@@ -81,8 +81,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/launch/demo.launch" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/ESDF_Map.cpp" afterPath="$PROJECT_DIR$/src/ESDF_Map.cpp" />
+      <change beforePath="$PROJECT_DIR$/test/test_ESDF_Map.cpp" afterPath="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
       <change beforePath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" afterPath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -97,41 +99,51 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Odometry.h" pinned="false" current-in-tab="false">
-        <entry file="file:///opt/ros/kinetic/include/nav_msgs/Odometry.h">
+      <file leaf-file-name="demo.launch" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/launch/demo.launch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="243">
+              <caret line="9" column="45" lean-forward="true" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1282">
-              <caret line="456" column="21" lean-forward="false" selection-start-line="447" selection-start-column="15" selection-end-line="456" selection-end-column="21" />
+            <state relative-caret-position="605">
+              <caret line="348" column="33" lean-forward="false" selection-start-line="348" selection-start-column="21" selection-end-line="348" selection-end-column="33" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#1058#1081#0" expanded="true" />
-                <element signature="e#1449#1486#0" expanded="true" />
-                <element signature="e#1544#1704#0" expanded="true" />
-                <element signature="e#2562#2592#0" expanded="true" />
-                <element signature="e#3523#3588#0" expanded="true" />
-                <element signature="e#3782#3873#0" expanded="true" />
-                <element signature="e#4406#4451#0" expanded="true" />
-                <element signature="e#4745#4926#0" expanded="true" />
-                <element signature="e#6640#6706#0" expanded="true" />
-                <element signature="e#7980#8429#0" expanded="true" />
-                <element signature="e#9823#10405#0" expanded="true" />
-                <element signature="e#10516#11024#0" expanded="true" />
-                <element signature="e#11389#11466#0" expanded="true" />
-                <element signature="e#12470#12546#0" expanded="true" />
-                <element signature="e#12564#12711#0" expanded="true" />
-                <element signature="e#12828#13005#0" expanded="true" />
-                <element signature="e#15973#15993#0" expanded="true" />
+                <element signature="e#1094#1117#0" expanded="true" />
+                <element signature="e#1442#1479#0" expanded="true" />
+                <element signature="e#1537#1697#0" expanded="true" />
+                <element signature="e#2583#2613#0" expanded="true" />
+                <element signature="e#3544#3609#0" expanded="true" />
+                <element signature="e#3803#3894#0" expanded="true" />
+                <element signature="e#4427#4472#0" expanded="true" />
+                <element signature="e#4766#4947#0" expanded="true" />
+                <element signature="e#6252#6318#0" expanded="true" />
+                <element signature="e#7563#8012#0" expanded="true" />
+                <element signature="e#8720#9302#0" expanded="true" />
+                <element signature="e#9413#9921#0" expanded="true" />
+                <element signature="e#10200#10268#0" expanded="true" />
+                <element signature="e#11288#11368#0" expanded="true" />
+                <element signature="e#11387#11914#0" expanded="true" />
+                <element signature="e#12056#12233#0" expanded="true" />
+                <element signature="e#15871#15891#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ESDF_Map.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="60" column="46" lean-forward="false" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -139,8 +151,8 @@
       <file leaf-file-name="ESDF_Map.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="421" column="21" lean-forward="false" selection-start-line="421" selection-start-column="21" selection-end-line="421" selection-end-column="21" />
+            <state relative-caret-position="-5829">
+              <caret line="217" column="51" lean-forward="false" selection-start-line="217" selection-start-column="51" selection-end-line="217" selection-end-column="51" />
               <folding>
                 <element signature="e#40#56#0" expanded="true" />
               </folding>
@@ -162,7 +174,7 @@
         <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="594">
-              <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
                 <element signature="e#101#123#0" expanded="true" />
                 <element signature="e#9214#9226#0" expanded="true" />
@@ -199,30 +211,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="timing.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/timing.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6291">
-              <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
-              <folding>
-                <element signature="e#813#833#0" expanded="false" />
-                <element signature="e#974#989#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getoccupancy</find>
-      <find>setoccupancy</find>
-      <find>pos2vox</find>
-      <find>radius</find>
-      <find>cube</find>
-      <find>s_pos</find>
-      <find>c_pos</find>
       <find>pointcloud</find>
       <find>resolution / 5</find>
       <find>slice_marker</find>
@@ -231,7 +223,6 @@
       <find>transformCallback</find>
       <find>if(</find>
       <find>30</find>
-      <find>visulization</find>
       <find>VISULIZATION</find>
       <find>updateESDFEvent</find>
       <find>1</find>
@@ -243,9 +234,17 @@
       <find>Count:</find>
       <find>pointcloud_</find>
       <find>imageQueue</find>
-      <find>cout &lt;&lt;</find>
       <find>origin</find>
+      <find>iter</find>
       <find>start</find>
+      <find>EDFS</find>
+      <find>cout &lt;&lt;</find>
+      <find>total</find>
+      <find>123</find>
+      <find>tdelete</find>
+      <find>visulization</find>
+      <find>visulize_every_n_updates</find>
+      <find>slice_vis</find>
     </findStrings>
     <replaceStrings>
       <replace>ESDF_Map</replace>
@@ -255,6 +254,7 @@
       <replace>grid_size_yz</replace>
       <replace>eigen::Vector3d</replace>
       <replace>&lt; dirNum</replace>
+      <replace>ESDF</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -270,12 +270,13 @@
         <option value="$USER_HOME$/catkin_ws_dev/src/voxblox/voxblox_ros/src/tsdf_server_node.cc" />
         <option value="$PROJECT_DIR$/include/timing.h" />
         <option value="$PROJECT_DIR$/src/timing.cc" />
-        <option value="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/test/test_lidar.cpp" />
         <option value="$PROJECT_DIR$/include/ESDF_Map.h" />
+        <option value="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/src/ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
+        <option value="$PROJECT_DIR$/launch/demo.launch" />
       </list>
     </option>
   </component>
@@ -294,7 +295,7 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -307,7 +308,36 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="esdf_tools" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
+            </path>
+            <path>
+              <item name="esdf_tools" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="esdf_tools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="esdf_tools" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="esdf_tools" type="462c0819:PsiDirectoryNode" />
+              <item name="launch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="esdf_tools" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="esdf_tools" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -334,61 +364,61 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.test_pointcloud_raycasting">
-    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting" EXPLICIT_BUILD_TARGET_NAME="all">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map" EXPLICIT_BUILD_TARGET_NAME="all">
       <envs />
     </configuration>
-    <configuration name="actionlib_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="actionlib_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="actionlib_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="actionlib_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="clean_test_results" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="clean_test_results" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="clean_test_results" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="clean_test_results" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="download_extra_data" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="download_extra_data" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="download_extra_data" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="download_extra_data" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="doxygen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="doxygen" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="doxygen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="doxygen" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="geometry_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="geometry_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="geometry_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="geometry_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="geometry_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="geometry_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="geometry_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="geometry_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="geometry_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="geometry_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="geometry_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
     <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="gmock" CONFIG_NAME="Debug">
@@ -403,85 +433,85 @@
     <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="gtest_main" CONFIG_NAME="Debug">
       <envs />
     </configuration>
-    <configuration name="nav_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="nav_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="nav_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="nav_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="nav_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="nav_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="nav_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="nav_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="nav_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="nav_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="nav_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="roscpp_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="roscpp_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="roscpp_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="roscpp_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="roscpp_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="roscpp_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="roscpp_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="roscpp_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="roscpp_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="roscpp_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="roscpp_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="rosgraph_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="rosgraph_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="rosgraph_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="rosgraph_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="rosgraph_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="rosgraph_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="rosgraph_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="rosgraph_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="rosgraph_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="rosgraph_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="rosgraph_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="run_tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="run_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="run_tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="run_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="sensor_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="sensor_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="sensor_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="sensor_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="sensor_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="sensor_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="sensor_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="sensor_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="sensor_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="sensor_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="sensor_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="std_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="std_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="std_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="std_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_eus" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="std_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="std_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_lisp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="std_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="std_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_nodejs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="std_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="std_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="std_msgs_generate_messages_py" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
-    <configuration name="test_esdf_map" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="test_esdf_map" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
+    <configuration name="test_esdf_map" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="test_esdf_map" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_esdf_map">
       <envs />
     </configuration>
     <configuration name="test_pointcloud_raycasting" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="esdf_tools" TARGET_NAME="test_pointcloud_raycasting" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="esdf_tools" RUN_TARGET_NAME="test_pointcloud_raycasting">
@@ -648,11 +678,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551672593584</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Debugging">
+      <created>1551698785125</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1551698785125</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="538799000" />
+    <option name="totallyTimeSpent" value="542909000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -708,7 +745,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Modify timestamp aligned" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modify timestamp aligned" />
+    <MESSAGE value="Debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -717,13 +755,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/raycast.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/raycast.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -744,23 +775,23 @@
           <caret line="50" column="39" lean-forward="true" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1058#1081#0" expanded="true" />
-            <element signature="e#1449#1486#0" expanded="true" />
-            <element signature="e#1544#1704#0" expanded="true" />
-            <element signature="e#2562#2592#0" expanded="true" />
-            <element signature="e#3523#3588#0" expanded="true" />
-            <element signature="e#3782#3873#0" expanded="true" />
-            <element signature="e#4406#4451#0" expanded="true" />
-            <element signature="e#4745#4926#0" expanded="true" />
-            <element signature="e#6640#6706#0" expanded="true" />
-            <element signature="e#7980#8429#0" expanded="true" />
-            <element signature="e#9823#10405#0" expanded="true" />
-            <element signature="e#10516#11024#0" expanded="true" />
-            <element signature="e#11389#11466#0" expanded="true" />
-            <element signature="e#12470#12546#0" expanded="true" />
-            <element signature="e#12564#12711#0" expanded="true" />
-            <element signature="e#12828#13005#0" expanded="true" />
-            <element signature="e#15973#15993#0" expanded="true" />
+            <element signature="e#1094#1117#0" expanded="true" />
+            <element signature="e#1442#1479#0" expanded="true" />
+            <element signature="e#1537#1697#0" expanded="true" />
+            <element signature="e#2583#2613#0" expanded="true" />
+            <element signature="e#3544#3609#0" expanded="true" />
+            <element signature="e#3803#3894#0" expanded="true" />
+            <element signature="e#4427#4472#0" expanded="true" />
+            <element signature="e#4766#4947#0" expanded="true" />
+            <element signature="e#6252#6318#0" expanded="true" />
+            <element signature="e#7563#8012#0" expanded="true" />
+            <element signature="e#8720#9302#0" expanded="true" />
+            <element signature="e#9413#9921#0" expanded="true" />
+            <element signature="e#10200#10268#0" expanded="true" />
+            <element signature="e#11288#11368#0" expanded="true" />
+            <element signature="e#11387#11914#0" expanded="true" />
+            <element signature="e#12056#12233#0" expanded="true" />
+            <element signature="e#15871#15891#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -771,13 +802,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="499">
           <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///opt/ros/kinetic/include/ros/node_handle.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="253" column="0" lean-forward="false" selection-start-line="253" selection-start-column="0" selection-end-line="253" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1016,34 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-324">
-          <caret line="52" column="0" lean-forward="true" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///opt/ros/kinetic/include/nav_msgs/Odometry.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_lidar.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1134">
-          <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/ros/kinetic/include/visualization_msgs/Marker.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -1063,7 +1059,7 @@
     <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="594">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="e#101#123#0" expanded="true" />
             <element signature="e#9214#9226#0" expanded="true" />
@@ -1095,10 +1091,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_lidar.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/ros/node_handle.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="1671" column="7" lean-forward="false" selection-start-line="1671" selection-start-column="7" selection-end-line="1671" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/nav_msgs/Odometry.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="60" column="46" lean-forward="false" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="421" column="21" lean-forward="false" selection-start-line="421" selection-start-column="21" selection-end-line="421" selection-end-column="21" />
+        <state relative-caret-position="-5829">
+          <caret line="217" column="51" lean-forward="false" selection-start-line="217" selection-start-column="51" selection-end-line="217" selection-end-column="51" />
           <folding>
             <element signature="e#40#56#0" expanded="true" />
           </folding>
@@ -1107,28 +1135,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1282">
-          <caret line="456" column="21" lean-forward="false" selection-start-line="447" selection-start-column="15" selection-end-line="456" selection-end-column="21" />
+        <state relative-caret-position="605">
+          <caret line="348" column="33" lean-forward="false" selection-start-line="348" selection-start-column="21" selection-end-line="348" selection-end-column="33" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1058#1081#0" expanded="true" />
-            <element signature="e#1449#1486#0" expanded="true" />
-            <element signature="e#1544#1704#0" expanded="true" />
-            <element signature="e#2562#2592#0" expanded="true" />
-            <element signature="e#3523#3588#0" expanded="true" />
-            <element signature="e#3782#3873#0" expanded="true" />
-            <element signature="e#4406#4451#0" expanded="true" />
-            <element signature="e#4745#4926#0" expanded="true" />
-            <element signature="e#6640#6706#0" expanded="true" />
-            <element signature="e#7980#8429#0" expanded="true" />
-            <element signature="e#9823#10405#0" expanded="true" />
-            <element signature="e#10516#11024#0" expanded="true" />
-            <element signature="e#11389#11466#0" expanded="true" />
-            <element signature="e#12470#12546#0" expanded="true" />
-            <element signature="e#12564#12711#0" expanded="true" />
-            <element signature="e#12828#13005#0" expanded="true" />
-            <element signature="e#15973#15993#0" expanded="true" />
+            <element signature="e#1094#1117#0" expanded="true" />
+            <element signature="e#1442#1479#0" expanded="true" />
+            <element signature="e#1537#1697#0" expanded="true" />
+            <element signature="e#2583#2613#0" expanded="true" />
+            <element signature="e#3544#3609#0" expanded="true" />
+            <element signature="e#3803#3894#0" expanded="true" />
+            <element signature="e#4427#4472#0" expanded="true" />
+            <element signature="e#4766#4947#0" expanded="true" />
+            <element signature="e#6252#6318#0" expanded="true" />
+            <element signature="e#7563#8012#0" expanded="true" />
+            <element signature="e#8720#9302#0" expanded="true" />
+            <element signature="e#9413#9921#0" expanded="true" />
+            <element signature="e#10200#10268#0" expanded="true" />
+            <element signature="e#11288#11368#0" expanded="true" />
+            <element signature="e#11387#11914#0" expanded="true" />
+            <element signature="e#12056#12233#0" expanded="true" />
+            <element signature="e#15871#15891#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/launch/demo.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="45" lean-forward="true" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>

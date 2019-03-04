@@ -38,12 +38,13 @@ ESDF_Map *esdf_map;
 Eigen::Matrix4d T_B_C, T_D_B, T;
 Eigen::Matrix3d R_B_C, R_D_B;
 Eigen::Vector3d t_B_C, t_D_B;
-double min_ray_length_m = 0.1;
-double max_ray_length_m = 8.0;
+double min_ray_length_m;
+double max_ray_length_m;
+int visulize_every_n_updates;
+double slice_vis;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
 #endif
-double xMin, yMin, zMin, xMax, yMax, zMax;
 std::queue<std::tuple<ros::Time, Eigen::Vector3d, Eigen::Quaterniond>> transformQueue;
 std::queue<sensor_msgs::PointCloud2::ConstPtr> imageQueue;
 
@@ -72,7 +73,7 @@ void visulization(ESDF_Map *esdf_map) {
     occ_pointcloud_pub.publish(pc);
 //    Eigen::Vector3i s_vox;
 //    esdf_map->pos2vox(c_pos, s_vox);
-    esdf_map->getSliceMarker(slice_marker, 0, 100, Eigen::Vector4d(0, 1.0, 0, 1));
+    esdf_map->getSliceMarker(slice_marker, (int)(slice_vis / resolution), 100, Eigen::Vector4d(0, 1.0, 0, 1));
     slice_pub.publish(slice_marker);
 
     // visualize distance field
@@ -164,20 +165,12 @@ void raycastProcess(int i, int part, int tt) {
 }
 
 #endif
-//void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map) {
-////    cout << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
-//    ros::Time t1, t2, t3;
-//
-//    int tt = ++tot;
-//    cout << "PC: " << tt << endl;
-//}
 
 void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map) {
 //    cout << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
-    ros::Time t1, t2, t3;
 
     int tt = ++tot;
-    cout << "PC: " << tt << endl;
+//    cout << "PC: " << tt << endl;
     imageQueue.push(pointcloud_map);
 
     //if (cnt == 1500) std::thread(save).join();
@@ -188,7 +181,6 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
     while (!imageQueue.empty()) {
         bool newPos = false;
         _imageTime = imageQueue.front()->header.stamp;
-//        std::cout << std::get<0>(transformQueue.front()) << endl;
         while (transformQueue.size() > 1 && std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
             _poseTime = std::get<0>(transformQueue.front());
             s_pos = std::get<1>(transformQueue.front());
@@ -196,7 +188,6 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
             transformQueue.pop();
             newPos = true;
         }
-//        std::cout << std::get<0>(transformQueue.front()) << endl;
         if (transformQueue.empty() || std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
             break;
         }
@@ -204,7 +195,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
             imageQueue.pop();
             continue;
         }
-        cout << _poseTime << '\t' << _imageTime << endl;
+//        cout << _poseTime << '\t' << _imageTime << endl;
 #ifndef PROBABILISTIC
         s_pc = imageQueue.front();
         newMsg = true;
@@ -228,7 +219,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
         uset.clear();
         uset_s.clear();
 #endif
-        cout << cloud.points.size() << endl;
+//        cout << cloud.points.size() << endl;
         timing::Timer raycastingTimer("raycasting");
 //#pragma omp parallel for
 //    for (int idx = 0; idx < (int) cloud.points.size(); idx++) {
@@ -239,7 +230,6 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //        Eigen::Vector3d point = R * Eigen::Vector3d(pt.x, pt.y, pt.z) + s_pos;
 //        Raycast(s_pos / resolution - half, point / resolution - half, lCornor, rCornor, &output);
 //    }
-        t1 = ros::Time::now();
 #ifdef HASH_TABLE
         int numThread = 1;
         int part = cloud.points.size() / numThread;
@@ -261,25 +251,6 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 #endif
 
         raycastingTimer.Stop();
-        t2 = ros::Time::now();
-//    if (tot%10 == 0) {
-
-//    }
-        cout << (t2 - t1).toSec() << "s" << endl;
-
-//    if (!esdf_map->check()) {
-//        cout << "Fatal Error !!" << endl;
-//        exit(-1);
-//    }
-
-        ++count;
-
-        if (count % 10 == 0) {
-            cout << "Count: " << count << endl;
-//        cout << xMin << ' ' << yMin << ' ' << zMin << endl;
-//        cout << xMax << ' ' << yMax << ' ' << zMax << endl;
-//        visulization(esdf_map);
-        }
         imageQueue.pop();
     }
 #endif
@@ -299,12 +270,6 @@ void transformCallback(const geometry_msgs::TransformStamped::ConstPtr &msg) {
     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
 
 
-//
-//    if (++count % 100 == 0) {
-//        cout << count << endl;
-//        cout << xMin << ' ' << yMin << ' ' << zMin << endl;
-//        cout << xMax << ' ' << yMax << ' ' << zMax << endl;
-//    }
 }
 
 #else
@@ -343,66 +308,72 @@ void updateESDFEvent(const ros::TimerEvent & /*event*/) {
     esdf_map->setBack();
     handlePCTimer.Stop();
 #endif
-    esdf_cnt++;
-    cout << "TOT = " << esdf_cnt << endl;
-//    if (esdf_map->checkUpdate()) {
+
     if (esdf_map->checkUpdate()) {
+        esdf_cnt++;
+//        cout << "Running " << esdf_cnt << " updates."<< endl;
         timing::Timer updateESDFTimer("updateESDF");
         esdf_map->updateOccupancy();
-//        Eigen::Vector3i s_vox;
-//        esdf_map->pos2vox(s_pos, s_vox);
         esdf_map->updateESDF();
 #ifdef SIGNED_NEEDED
-        inv_esdf_map->pos2vox(s_pos, s_vox);
-        inv_esdf_map->updateESDF(s_vox);
+        inv_esdf_map->updateOccupancy();
+        inv_esdf_map->updateESDF();
 #endif
         updateESDFTimer.Stop();
         timing::Timing::Print(std::cout);
 //        if (!esdf_map->checkWithGT()){
 //            exit(0);
 //        }
-        if (esdf_cnt % 10 == 0) {
+        if (visulize_every_n_updates != 0 && esdf_cnt % visulize_every_n_updates == 0) {
             visulization(esdf_map);
-        }
     }
-//    if (esdf_cnt == 300) {
-//        esdf_map->checkWithGT();
-////            exit(0);
-//    }
-//        visulization(esdf_map);
-//    }
+
+    }
 }
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "Pointcloud_Raycasting_Test");
-    ros::NodeHandle node;
-//    cout << std::thread::hardware_concurrency() << endl;
+    ros::init(argc, argv, "ESDF_fromPointcloud");
+    ros::NodeHandle node("~");
 
-    xMin = yMin = zMin = 1e100;
-    xMax = yMax = zMax = -1e100;
+    node.param<double>("resolution", resolution, 0.1f);
+    node.param<int>("visulize_every_n_updates", visulize_every_n_updates, 10);
+    node.param<double>("min_ray_length_m", min_ray_length_m, 0.1);
+    node.param<double>("max_ray_length_m", max_ray_length_m, 5.0);
+    node.param<double>("slice_vis", slice_vis, 0.0);
 
-    double map_size_ = 40.0;
-    lCornor << -map_size_ / 2, -map_size_ / 2, 0.0;
-    rCornor << map_size_ / 2, map_size_ / 2, 5.0;
 
-//    lCornor << -11.0, -11.0, -7.0;
-//    rCornor << 11.0, 11.0, 7.0;
-    map_size = rCornor - lCornor;
-    resolution = 0.05;
 #ifdef HASH_TABLE
-    esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, 100);
+    int reservedSize;
+    lCornor << -100.f, -100.f, -100.f;
+    rCornor << 100.f, 100.f, 100.f;
+    node.param<int>("reservedSize", reservedSize, 1000000);
+    esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, reservedSize);
 #ifdef SIGNED_NEEDED
-    inv_esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, 10000000);
+    inv_esdf_map = new ESDF_Map(Eigen::Vector3d(0, 0, 0), resolution, reservedSize);
 #endif
+
 #else
+    double lx, ly, lz;
+    double rx, ry, rz;
+    node.param<double>("lx", lx, -10.f);
+    node.param<double>("ly", ly, -10.f);
+    node.param<double>("lz", lz, -10.f);
+    node.param<double>("rx", rx, +10.f);
+    node.param<double>("ry", ry, +10.f);
+    node.param<double>("rz", rz, +10.f);
+    lCornor << lx, ly, lz;
+    rCornor << rx, ry, rz;
+    map_size = rCornor - lCornor;
     esdf_map = new ESDF_Map(lCornor, resolution, map_size);
 #ifdef SIGNED_NEEDED
     inv_esdf_map = new ESDF_Map(lCornor, resolution, map_size);
 #endif
 #endif
-    // to be used in raycasting
+
+    // These 2 lines are to be used in fast raycasting
     lCornor /= resolution;
     rCornor /= resolution;
+
 #ifndef HASH_TABLE
     uset.resize(esdf_map->grid_total_size);
     uset_s.resize(esdf_map->grid_total_size);
@@ -421,49 +392,63 @@ int main(int argc, char **argv) {
 //            -0.180038, 0.196415, 0.96385, 0.0430765,
 //            0.0, 0.0, 0.0, 1.0;
 //#else
-    //    ros::Subscriber subpoints = node.subscribe("/dense_stereo/pointcloud", 1000, pointcloudCallBack);
-    //    ros::Subscriber sub = node.subscribe("/vicon/firefly_sbx/firefly_sbx", 1000, transformCallback);
-    //    T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
-    //            0.999557249008, 0.0149672133247, 0.025715529948, -0.064676986768,
-    //            -0.0257744366974, 0.00375618835797, 0.999660727178, 0.00981073058949,
-    //            0.0, 0.0, 0.0, 1.0;
-    //    T_D_B << 0.33638, -0.01749, 0.94156, 0.06901,
-    //            -0.02078, -0.99972, -0.01114, -0.02781,
-    //            0.94150, -0.01582, -0.33665, -0.12395,
-    //            0.0, 0.0, 0.0, 1.0;
-    //    T_D_B = T_D_B.inverse();
-
-
-        ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
-        ros::Subscriber sub = node.subscribe("kinect/vrpn_client/estimated_transform", 1000, transformCallback);
-        T_B_C << 1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1;
-        T_D_B << 1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1;
-#endif
+//        ros::Subscriber subpoints = node.subscribe("/dense_stereo/pointcloud", 1000, pointcloudCallBack);
+//        ros::Subscriber sub = node.subscribe("/vicon/firefly_sbx/firefly_sbx", 1000, transformCallback);
+//        T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
+//                0.999557249008, 0.0149672133247, 0.025715529948, -0.064676986768,
+//                -0.0257744366974, 0.00375618835797, 0.999660727178, 0.00981073058949,
+//                0.0, 0.0, 0.0, 1.0;
+//        T_D_B << 0.33638, -0.01749, 0.94156, 0.06901,
+//                -0.02078, -0.99972, -0.01114, -0.02781,
+//                0.94150, -0.01582, -0.33665, -0.12395,
+//                0.0, 0.0, 0.0, 1.0;
+//        T_D_B = T_D_B.inverse();
+//#endif
+//    ros::Subscriber subpoints = node.subscribe("pointcloud", 1000, pointcloudCallBack);
+//    ros::Subscriber sub = node.subscribe("transform", 1000, transformCallback);
     ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
     ros::Subscriber sub = node.subscribe("/kinect/vrpn_client/estimated_transform", 1000, transformCallback);
+
+//    // For Jie Bao
+//    T_B_C << 1, 0, 0, 0,
+//            0, 1, 0, 0,
+//            0, 0, 1, 0,
+//            0, 0, 0, 1;
+//    T_D_B << 1, 0, 0, 0,
+//            0, 1, 0, 0,
+//            0, 0, 1, 0,
+//            0, 0, 0, 1;
+
+    // Cow_and_Lady
     T_B_C << 1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
             0, 0, 0, 1;
-    T_D_B << 1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
+    T_D_B << 0.971048, -0.120915, 0.206023, 0.00114049,
+            0.15701, 0.973037, -0.168959, 0.0450936,
+            -0.180038, 0.196415, 0.96385, 0.0430765,
+            0.0, 0.0, 0.0, 1.0;
+//
+//    //EuRoC
+//    T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
+//            0.999557249008, 0.0149672133247, 0.025715529948, -0.064676986768,
+//            -0.0257744366974, 0.00375618835797, 0.999660727178, 0.00981073058949,
+//            0.0, 0.0, 0.0, 1.0;
+//    T_D_B << 0.33638, -0.01749, 0.94156, 0.06901,
+//            -0.02078, -0.99972, -0.01114, -0.02781,
+//            0.94150, -0.01582, -0.33665, -0.12395,
+//            0.0, 0.0, 0.0, 1.0;
+//    T_D_B = T_D_B.inverse();
 
-    occ_pub = node.advertise<visualization_msgs::Marker>("EDFS_Map/occ", 1, true);
-    dist_pub = node.advertise<visualization_msgs::Marker>("EDFS_Map/dist", 1, true);
-    slice_pub = node.advertise<visualization_msgs::Marker>("EDFS_Map/slice", 1, true);
-    occ_pointcloud_pub = node.advertise<sensor_msgs::PointCloud>("EDFS_Map/occ_pc", 1, true);
-//    pose_pub = node.advertise<visualization_msgs::Marker>("EDFS_Map/pose", 1, true);
-    pose_pub = node.advertise<nav_msgs::Odometry>("EDFS_Map/pose", 10);
+    occ_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/occ", 1, true);
+    dist_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/dist", 1, true);
+    slice_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/slice", 1, true);
+    occ_pointcloud_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/occ_pc", 1, true);
+//    pose_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/pose", 1, true);
+    pose_pub = node.advertise<nav_msgs::Odometry>("ESDF_Map/pose", 10);
 
-    float update_mesh_every_n_sec = 0.5f;
+    double update_mesh_every_n_sec;
+    node.param<double>( "update_mesh_every_n_sec", update_mesh_every_n_sec, 0.5);
     ros::Timer update_mesh_timer_ =
             node.createTimer(ros::Duration(update_mesh_every_n_sec),
                              &updateESDFEvent);

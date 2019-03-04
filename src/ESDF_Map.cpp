@@ -215,7 +215,7 @@ void ESDF_Map::updateESDF() {
 //    clock_t startTime,endTime;
 //    startTime = clock();
 //    updateOccupancy();
-    cout << "Insert Delete\t" << insertQueue.size() << '\t' << deleteQueue.size() << endl;
+    cout << "Insert " << insertQueue.size() << "\tDelete " << deleteQueue.size() << endl;
     while (!insertQueue.empty()) {
         QueueElement xx = insertQueue.front();
         insertQueue.pop();
@@ -230,7 +230,6 @@ void ESDF_Map::updateESDF() {
             updateQueue.push(xx);
         }
     }
-    cout << 123 << endl;
     while (!deleteQueue.empty()) {
         QueueElement xx = deleteQueue.front();
 
@@ -277,7 +276,6 @@ void ESDF_Map::updateESDF() {
             head[idx] = undefined;
         } // if
     } // deleteQueue
-    cout << 124 << endl;
     while (true) {
         int times = 0, changeNum = 0;
         while (!updateQueue.empty()) {
@@ -359,9 +357,8 @@ void ESDF_Map::updateESDF() {
                 }
             }
         }
-        cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << endl;
         totalTime += times;
-        cout << "Total: " << totalTime << endl;
+        cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << ", accumulator = " <<totalTime <<  endl;
         break;
         if (head[special4undefined] == undefined) break;
         std::queue<int> q_tmp;
@@ -486,7 +483,7 @@ bool ESDF_Map::updateOccupancy() {
     double clamp_max_log_ = logit(0.97f);
     double min_occupancy_log_ = logit(0.7f);
 
-    cout << updateQueue2.size() << endl;
+    cout << "Occupancy Update" << ' ' << updateQueue2.size() << '\t';
     double influence = 0.2;
     while (!updateQueue2.empty()) {
         QueueElement xx = updateQueue2.front();
