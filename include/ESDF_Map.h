@@ -360,7 +360,7 @@ public:
 
     void getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color);
 
-    void getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color);
+    void getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color, double max_dist);
     bool checkUpdate();
     int pos2idx(Eigen::Vector3d pos) {
         Eigen::Vector3i vox;

@@ -358,7 +358,8 @@ void ESDF_Map::updateESDF() {
             }
         }
         totalTime += times;
-        cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << ", accumulator = " <<totalTime <<  endl;
+        cout << "Expanding " << times << " nodes, with changeNum = " << changeNum << ", accumulator = " << totalTime
+             << endl;
         break;
         if (head[special4undefined] == undefined) break;
         std::queue<int> q_tmp;
@@ -839,12 +840,8 @@ void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, i
         markers.push_back(m[i]);
 }
 
-void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color) {
-    double max_dist = 0;
-    for (auto iter = distanceBuffer.begin(); iter != distanceBuffer.end(); iter++) {
-        if (*iter < inf && *iter > max_dist) max_dist = *iter;
-    }
-    cout << max_dist << endl;
+void
+ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color, double max_dist) {
     m.header.frame_id = "world";
     m.id = id;
     m.type = visualization_msgs::Marker::POINTS;
@@ -867,8 +864,9 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
     std_msgs::ColorRGBA c;
 #ifdef HASH_TABLE
     for (int i = 1; i < count; i++) {
-        if (voxBuffer[i].z() != slice || distanceBuffer[vox2idx(voxBuffer[i])] < 0
-            || distanceBuffer[vox2idx(voxBuffer[i])] >= inf)
+        int idx = vox2idx(voxBuffer[i]);
+        if (voxBuffer[i].z() != slice || distanceBuffer[idx] < 0
+            || distanceBuffer[idx] >= inf)
             continue;
 
         Eigen::Vector3d pos;
@@ -878,20 +876,17 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
         p.x = pos(0);
         p.y = pos(1);
         p.z = pos(2);
-
-        c = rainbowColorMap(distanceBuffer[vox2idx(voxBuffer[i])] / max_dist);
+        c = rainbowColorMap(distanceBuffer[idx] <= max_dist ? distanceBuffer[idx] / max_dist : 1);
         m.points.push_back(p);
         m.colors.push_back(c);
     }
 #else
 
-    cout << "max_dist " << max_dist << endl;
-    double limitDis = 1.5;
     for (int x = 0; x < grid_size(0); ++x)
         for (int y = 0; y < grid_size(1); ++y) {
             int z = slice;
             Eigen::Vector3i vox = Eigen::Vector3i(x, y, z);
-            if (distanceBuffer[vox2idx(vox)] < 0) continue;
+            if (distanceBuffer[vox2idx(vox)] < 0 || distanceBuffer[vox2idx(voxBuffer[i])] >= inf) continue;
 
             Eigen::Vector3d pos;
             vox2pos(vox, pos);
@@ -901,7 +896,7 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id, 
             p.y = pos(1);
             p.z = pos(2);
 
-            c = rainbowColorMap(distanceBuffer[vox2idx(vox)]< limitDis?distanceBuffer[vox2idx(vox)]/limitDis:1);
+            c = rainbowColorMap(distanceBuffer[vox2idx(vox)]<= max_dist ?distanceBuffer[vox2idx(vox)]/ max_dist : 1);
             m.points.push_back(p);
             m.colors.push_back(c);
         }

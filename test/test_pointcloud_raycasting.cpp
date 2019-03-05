@@ -41,7 +41,7 @@ Eigen::Vector3d t_B_C, t_D_B;
 double min_ray_length_m;
 double max_ray_length_m;
 int visulize_every_n_updates;
-double slice_vis;
+double slice_vis, max_dist;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
 #endif
@@ -73,7 +73,8 @@ void visulization(ESDF_Map *esdf_map) {
     occ_pointcloud_pub.publish(pc);
 //    Eigen::Vector3i s_vox;
 //    esdf_map->pos2vox(c_pos, s_vox);
-    esdf_map->getSliceMarker(slice_marker, (int)(slice_vis / resolution), 100, Eigen::Vector4d(0, 1.0, 0, 1));
+    esdf_map->getSliceMarker(slice_marker, (int)(slice_vis / resolution), 100,
+                             Eigen::Vector4d(0, 1.0, 0, 1), max_dist);
     slice_pub.publish(slice_marker);
 
     // visualize distance field
@@ -339,7 +340,8 @@ int main(int argc, char **argv) {
     node.param<int>("visulize_every_n_updates", visulize_every_n_updates, 10);
     node.param<double>("min_ray_length_m", min_ray_length_m, 0.1);
     node.param<double>("max_ray_length_m", max_ray_length_m, 5.0);
-    node.param<double>("slice_vis", slice_vis, 0.0);
+    node.param<double>("slice_vis", slice_vis, 1.0);
+    node.param<double>("max_dist", max_dist, 5.0);
 
 
 #ifdef HASH_TABLE
