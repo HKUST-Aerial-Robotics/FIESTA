@@ -81,12 +81,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change beforePath="$PROJECT_DIR$/include/ESDF_Map.h" afterPath="$PROJECT_DIR$/include/ESDF_Map.h" />
-      <change beforePath="$PROJECT_DIR$/launch/demo.launch" afterPath="$PROJECT_DIR$/launch/demo.launch" />
-      <change beforePath="$PROJECT_DIR$/src/ESDF_Map.cpp" afterPath="$PROJECT_DIR$/src/ESDF_Map.cpp" />
-      <change beforePath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" afterPath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
@@ -144,8 +139,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="1674">
-                <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+              <first_editor relative-caret-position="1404">
+                <caret line="52" column="51" lean-forward="false" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -667,7 +662,7 @@
       <workItem from="1550675404792" duration="19125000" />
       <workItem from="1550907980497" duration="45000" />
       <workItem from="1550908056243" duration="27769000" />
-      <workItem from="1551796818341" duration="16064000" />
+      <workItem from="1551796818341" duration="18672000" />
     </task>
     <task id="LOCAL-00001" summary="Modify timestamp aligned">
       <created>1551672593584</created>
@@ -690,11 +685,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551750965525</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add local or global update and visualization options individually&#10;Make some methods deprecated&#10;Fix some bugs">
+      <created>1551889799268</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1551889799268</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="582880000" />
+    <option name="totallyTimeSpent" value="585488000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -741,7 +743,8 @@
     <MESSAGE value="Modify timestamp aligned" />
     <MESSAGE value="Debugging" />
     <MESSAGE value="readme updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme updated" />
+    <MESSAGE value="Add local or global update and visualization options individually&#10;Make some methods deprecated&#10;Fix some bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add local or global update and visualization options individually&#10;Make some methods deprecated&#10;Fix some bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1155,8 +1158,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1674">
-            <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+          <first_editor relative-caret-position="1404">
+            <caret line="52" column="51" lean-forward="false" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
             <folding />
           </first_editor>
           <second_editor />
