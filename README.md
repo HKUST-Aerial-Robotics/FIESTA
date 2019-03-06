@@ -20,7 +20,7 @@ Intelligent Robots and Systems (IROS 2019), under review.  The draft is shown on
 <p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pgRi8LOnT6Y
 " target="_blank"><img src="https://i9.ytimg.com/vi/pgRi8LOnT6Y/maxresdefault.jpg?sqp=CJD5_-MF&rs=AOn4CLBjiSiAZX9OoNn-iYOXa9KTqWq_fg&time=1551891870311" 
-alt="FIESTA short introduction video" width="1440" height="1080" /></a>
+alt="FIESTA short introduction video" width="720" height="540" /></a>
 </p>
 
 ## Installation
