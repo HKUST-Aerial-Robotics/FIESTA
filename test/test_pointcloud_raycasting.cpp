@@ -8,6 +8,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <nav_msgs/Odometry.h>
 #include <algorithm>
@@ -51,11 +52,11 @@ std::queue<sensor_msgs::PointCloud2::ConstPtr> imageQueue;
 visualization_msgs::Marker occ_marker, slice_marker;
 
 vector<visualization_msgs::Marker> dis_markers;
-#ifdef PROBABILISTIC
-pcl::PointCloud<pcl::PointXYZRGB> cloud;
-#else
+// #ifdef PROBABILISTIC
+// pcl::PointCloud<pcl::PointXYZRGB> cloud;
+// #else
 pcl::PointCloud<pcl::PointXYZ> cloud;
-#endif
+// #endif
 sensor_msgs::PointCloud pc;
 #ifndef PROBABILISTIC
 sensor_msgs::PointCloud2::ConstPtr s_pc;
@@ -70,6 +71,7 @@ void visulization(ESDF_Map *esdf_map) {
 //    occ_pub.publish(occ_marker);
     cout << "VISULIZATION" << endl;
     esdf_map->getPointCloud(pc);
+    cout << "Publish Points: " << pc.points.size() << endl;
     occ_pointcloud_pub.publish(pc);
 //    Eigen::Vector3i s_vox;
 //    esdf_map->pos2vox(c_pos, s_vox);
@@ -101,7 +103,8 @@ void raycastProcess(int i, int part, int tt) {
     for (int idx = part * i; idx < part * (i + 1); idx++) {
         std::vector<Eigen::Vector3d> output;
         if (idx > cloud.points.size()) break;
-        pcl::PointXYZRGB pt = cloud.points[idx];
+        // pcl::PointXYZRGB pt = cloud.points[idx];
+        pcl::PointXYZ pt = cloud.points[idx];
         int cnt = 0;
         if (std::isnan(pt.x) || std::isnan(pt.y) || std::isnan(pt.z))
             continue;
@@ -257,36 +260,48 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 #endif
 }
 
-#ifdef PROBABILISTIC
+// #ifdef PROBABILISTIC
 
-void transformCallback(const geometry_msgs::TransformStamped::ConstPtr &msg) {
-//    cout << "TRANSFORM: " << msg->header.stamp << endl;
-    pos = Eigen::Vector3d(msg->transform.translation.x,
-                          msg->transform.translation.y,
-                          msg->transform.translation.z);
-    q = Eigen::Quaterniond(msg->transform.rotation.w,
-                           msg->transform.rotation.x,
-                           msg->transform.rotation.y,
-                           msg->transform.rotation.z);
+// void transformCallback(const geometry_msgs::TransformStamped::ConstPtr &msg) {
+// //    cout << "TRANSFORM: " << msg->header.stamp << endl;
+//     pos = Eigen::Vector3d(msg->transform.translation.x,
+//                           msg->transform.translation.y,
+//                           msg->transform.translation.z);
+//     q = Eigen::Quaterniond(msg->transform.rotation.w,
+//                            msg->transform.rotation.x,
+//                            msg->transform.rotation.y,
+//                            msg->transform.rotation.z);
+//     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
+
+
+// }
+
+// #else
+// void transformCallback(const nav_msgs::Odometry::ConstPtr &msg) {
+//     cout << "TRANSFORM: " << msg->header.stamp << endl;
+//     pos = Eigen::Vector3d(msg->pose.pose.position.x,
+//                           msg->pose.pose.position.y,
+//                           msg->pose.pose.position.z);
+//     q = Eigen::Quaterniond(msg->pose.pose.orientation.w,
+//                            msg->pose.pose.orientation.x,
+//                            msg->pose.pose.orientation.y,
+//                            msg->pose.pose.orientation.z);
+//     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
+
+// }
+void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
+    // cout << "TRANSFORM: " << msg->header.stamp << endl;
+    pos = Eigen::Vector3d(msg->pose.position.x,
+                          msg->pose.position.y,
+                          msg->pose.position.z);
+    q = Eigen::Quaterniond(msg->pose.orientation.w,
+                           msg->pose.orientation.x,
+                           msg->pose.orientation.y,
+                           msg->pose.orientation.z);
     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
 
-
 }
-
-#else
-void transformCallback(const nav_msgs::Odometry::ConstPtr &msg) {
-    cout << "TRANSFORM: " << msg->header.stamp << endl;
-    pos = Eigen::Vector3d(msg->pose.pose.position.x,
-                          msg->pose.pose.position.y,
-                          msg->pose.pose.position.z);
-    q = Eigen::Quaterniond(msg->pose.pose.orientation.w,
-                           msg->pose.pose.orientation.x,
-                           msg->pose.pose.orientation.y,
-                           msg->pose.pose.orientation.z);
-    transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
-
-}
-#endif
+// #endif
 int esdf_cnt = 0;
 
 void updateESDFEvent(const ros::TimerEvent & /*event*/) {
@@ -406,30 +421,30 @@ int main(int argc, char **argv) {
 //                0.0, 0.0, 0.0, 1.0;
 //        T_D_B = T_D_B.inverse();
 //#endif
-//    ros::Subscriber subpoints = node.subscribe("pointcloud", 1000, pointcloudCallBack);
-//    ros::Subscriber sub = node.subscribe("transform", 1000, transformCallback);
-    ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
-    ros::Subscriber sub = node.subscribe("/kinect/vrpn_client/estimated_transform", 1000, transformCallback);
+   ros::Subscriber subpoints = node.subscribe("pointcloud", 1000, pointcloudCallBack);
+   ros::Subscriber sub = node.subscribe("transform", 1000, transformCallback);
+    // ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
+    // ros::Subscriber sub = node.subscribe("/kinect/vrpn_client/estimated_transform", 1000, transformCallback);
 
-//    // For Jie Bao
-//    T_B_C << 1, 0, 0, 0,
-//            0, 1, 0, 0,
-//            0, 0, 1, 0,
-//            0, 0, 0, 1;
-//    T_D_B << 1, 0, 0, 0,
-//            0, 1, 0, 0,
-//            0, 0, 1, 0,
-//            0, 0, 0, 1;
+   // For Jie Bao
+   T_B_C << 1, 0, 0, 0,
+           0, 1, 0, 0,
+           0, 0, 1, 0,
+           0, 0, 0, 1;
+   T_D_B << 1, 0, 0, 0,
+           0, 1, 0, 0,
+           0, 0, 1, 0,
+           0, 0, 0, 1;
 
     // Cow_and_Lady
-    T_B_C << 1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
-    T_D_B << 0.971048, -0.120915, 0.206023, 0.00114049,
-            0.15701, 0.973037, -0.168959, 0.0450936,
-            -0.180038, 0.196415, 0.96385, 0.0430765,
-            0.0, 0.0, 0.0, 1.0;
+    // T_B_C << 1, 0, 0, 0,
+    //         0, 1, 0, 0,
+    //         0, 0, 1, 0,
+    //         0, 0, 0, 1;
+    // T_D_B << 0.971048, -0.120915, 0.206023, 0.00114049,
+    //         0.15701, 0.973037, -0.168959, 0.0450936,
+    //         -0.180038, 0.196415, 0.96385, 0.0430765,
+    //         0.0, 0.0, 0.0, 1.0;
 //
 //    //EuRoC
 //    T_B_C << 0.0148655429818, -0.999880929698, 0.00414029679422, -0.0216401454975,
