@@ -17,10 +17,11 @@ The paper of this method is submitted to the 2019 IEEE/RSJ International Confere
 Intelligent Robots and Systems (IROS 2019), under review.  The draft is shown on arxiv
 [here](https://arxiv.org/submit/2599481/view).
 
-
+<p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pgRi8LOnT6Y
 " target="_blank"><img src="https://i9.ytimg.com/vi/pgRi8LOnT6Y/maxresdefault.jpg?sqp=CJD5_-MF&rs=AOn4CLBjiSiAZX9OoNn-iYOXa9KTqWq_fg&time=1551891870311" 
-alt="FIESTA short introduction video" width="240" height="180" border="10" /></a>
+alt="FIESTA short introduction video" width="1440" height="1080" border="10" /></a>
+</p>
 
 ## Installation
 
