@@ -33,23 +33,23 @@ link_directories(${PCL_LIBRARY_DIRS})
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wall -pthread") # -Wextra -Werror
 set(CMAKE_BUILD_TYPE "RELEASE")
-add_executable(test_esdf_map
-        include/ESDF_Map.h
-        src/ESDF_Map.cpp
-        include/timing.h
-        src/timing.cc
-        test/test_ESDF_Map.cpp
-        )
-target_link_libraries(test_esdf_map
-        ${catkin_LIBRARIES}
-        )
-FIND_PACKAGE( OpenMP REQUIRED)
-if(OPENMP_FOUND)
-message("OPENMP FOUND")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
+#add_executable(test_esdf_map
+#        include/ESDF_Map.h
+#        src/ESDF_Map.cpp
+#        include/timing.h
+#        src/timing.cc
+#        test/test_ESDF_Map.cpp
+#        )
+#target_link_libraries(test_esdf_map
+#        ${catkin_LIBRARIES}
+#        )
+#FIND_PACKAGE( OpenMP REQUIRED)
+#if(OPENMP_FOUND)
+#message("OPENMP FOUND")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+#endif()
 
 add_executable(test_pointcloud_raycasting
         include/ESDF_Map.h

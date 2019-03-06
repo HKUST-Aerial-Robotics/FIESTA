@@ -16,7 +16,7 @@
 #include <sensor_msgs/PointCloud.h>
 
 #define PROBABILISTIC
-#define HASH_TABLE
+//#define HASH_TABLE
 #define BLOCK
 #define BITWISE
 //#define DEBUG
@@ -173,7 +173,6 @@ private:
         tmp2.resize(newSize);
 
         std::fill(distanceBuffer.begin() + oldSize, distanceBuffer.end(), (double) undefined);
-//    std::fill(distanceBufferNegative.begin(), distanceBufferNegative.end(), (double) undefined);
         std::fill(occupancyBuffer.begin() + oldSize, occupancyBuffer.end(), 0);
         std::fill(closestObstacle.begin() + oldSize, closestObstacle.end(),
                   Eigen::Vector3i(undefined, undefined, undefined));
@@ -211,9 +210,7 @@ private:
         auto tmp = hashTable.find(blockId);
 
         if (tmp == hashTable.end()) {
-//            if (count < reserveSize)
             hashTable.insert(std::make_pair(blockId, count));
-//            voxBuffer[count] = blockId;
 #ifdef BITWISE
             blockId = blockId.unaryExpr([&](const int x) { return x << blockBit; });
 #else
@@ -238,7 +235,6 @@ private:
         auto tmp = hashTable.find(hashKey);
 
         if (tmp == hashTable.end()) {
-            //            if (count < reserveSize)
             hashTable.insert(std::make_pair(hashKey, count));
             voxBuffer[count] = hashKey;
             return count++;
@@ -257,6 +253,7 @@ private:
     std::vector<Eigen::Vector3i> voxBuffer;
 
 #endif
+
 // data are saved in vector
 #ifdef PROBABILISTIC
     std::vector<double> occupancyBuffer;  // 0 is free, 1 is occupied
@@ -264,7 +261,6 @@ private:
     std::vector<int> occupancyBuffer;  // 0 is free, 1 is occupied
 #endif
     std::vector<double> distanceBuffer;
-//    std::vector<double> distanceBufferNegative;
 
     std::vector<int> tmp1, tmp2;
     std::vector<Eigen::Vector3i> closestObstacle;
@@ -297,7 +293,7 @@ private:
 
     bool posInMap(Eigen::Vector3d pos);
 
-    bool voxInMap(Eigen::Vector3i vox);
+    bool voxInRange(Eigen::Vector3i vox);
 
 
     void vox2pos(Eigen::Vector3i vox, Eigen::Vector3d &pos);
@@ -317,11 +313,7 @@ private:
 public:
 #ifdef HASH_TABLE
 
-    ESDF_Map(Eigen::Vector3d
-             origin,
-             double resolution,
-             int reserveSize = 0
-    );
+    ESDF_Map(Eigen::Vector3d origin, double resolution, int reserveSize = 0);
 
 #else
     int grid_total_size;
@@ -353,12 +345,12 @@ public:
     double getDistance(Eigen::Vector3d pos);
 
 // visualization
-    void getPointCloud(sensor_msgs::PointCloud &m);
+    void getPointCloud(sensor_msgs::PointCloud &m, int vis_lower_bound, int vis_upper_bound);
 
-
+#ifdef DEPRECATED
     void getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color);
-
     void getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color);
+#endif
 
     void getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color, double max_dist);
     bool checkUpdate();
@@ -371,12 +363,8 @@ public:
     double getDistance(Eigen::Vector3i vox);
 
 
-
-#ifndef PROBABILISTIC
-    void setAway(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
-        setAway(min_vec, max_vec);
-    }
     void setUpdateRange(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
+#ifndef HASH_TABLE
         min_pos(0) = std::max(min_pos(0), min_range(0));
         min_pos(1) = std::max(min_pos(1), min_range(1));
         min_pos(2) = std::max(min_pos(2), min_range(2));
@@ -384,12 +372,27 @@ public:
         max_pos(0) = std::min(max_pos(0), max_range(0));
         max_pos(1) = std::min(max_pos(1), max_range(1));
         max_pos(2) = std::min(max_pos(2), max_range(2));
-
+#endif
         pos2vox(min_pos, min_vec);
         pos2vox(
                 max_pos - Eigen::Vector3d(resolution / 2, resolution / 2, resolution / 2),
                 max_vec);
     }
+
+    void setOriginalRange() {
+#ifdef HASH_TABLE
+        min_vec << -inf, -inf, -inf;
+        max_vec << +inf, +inf, +inf;
+#else
+        min_vec << 0, 0, 0;
+        max_vec << grid_size(0) - 1, grid_size(1) - 1, grid_size(2) - 1;
+#endif
+    }
+#ifndef PROBABILISTIC
+    void setAway(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
+        setAway(min_vec, max_vec);
+    }
+
 
     void setAway(){
         setAway(min_vec, max_vec);
