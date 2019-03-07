@@ -38,7 +38,7 @@ ESDF_Map *esdf_map;
 Eigen::Matrix4d T_B_C, T_D_B, T;
 double min_ray_length_m;
 double max_ray_length_m;
-int visulize_every_n_updates;
+int visulize_every_n_updates, param_num_thread;
 double slice_vis, max_dist, vis_lower_bound, vis_upper_bound;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
@@ -62,7 +62,7 @@ sensor_msgs::PointCloud2::ConstPtr s_pc;
 // *************** params ****************
 double range_sensor = 4.0;
 Eigen::Vector3d radius(range_sensor, range_sensor, range_sensor / 2.0);
-bool globalVis = false, globalUpdate = true;
+bool globalVis = true, globalUpdate = true;
 // *************** params ****************
 
 bool newMsg = false;
@@ -131,11 +131,12 @@ std::unordered_set<int> uset, uset_s;
 std::vector<int> uset, uset_s;
 #endif
 int tot = 0;
-
+//int tot1 = 0, tot2 = 0;
 #ifdef PROBABILISTIC
 
 void raycastProcess(int i, int part, int tt) {
-
+    int tot1 = 0, tot2 = 0;
+    ros::Time t1 = ros::Time::now();
     Eigen::Vector3d half = Eigen::Vector3d(0.5, 0.5, 0.5);
     for (int idx = part * i; idx < part * (i + 1); idx++) {
         std::vector<Eigen::Vector3d> output;
@@ -150,12 +151,19 @@ void raycastProcess(int i, int part, int tt) {
 //        Eigen::Vector3d point = Eigen::Vector3d(pt.x, pt.y, pt.z);
         int tmp_idx;
         double length = (point - origin).norm();
-        if (length >= min_ray_length_m && length <= max_ray_length_m)
+        if (length < min_ray_length_m)
+            continue;
+        else if (length > max_ray_length_m) {
+            point = (point - origin) / length * max_ray_length_m + origin;
+//        cout << point << endl;
+            tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 1);
+        } else
             tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 1);
 #ifdef SIGNED_NEEDED
         tmp_idx = inv_esdf_map->setOccupancy((Eigen::Vector3d) point, 0);
 #endif
         //TODO: -10000 ?
+
         if (tmp_idx != -10000) {
 #ifdef HASH_TABLE
             if (uset_s.find(tmp_idx) != uset_s.end())
@@ -167,10 +175,11 @@ void raycastProcess(int i, int part, int tt) {
             else uset_s[tmp_idx] = tt;
 #endif
         }
-
+        tot1++;
         Raycast(origin / resolution - half, point / resolution - half, lCornor, rCornor, &output);
 
         for (int i = output.size() - 2; i >= 0; i--) {
+            tot2++;
             Eigen::Vector3d tmp = (output[i] + half) * resolution;
 
             length = (tmp - origin).norm();
@@ -193,6 +202,9 @@ void raycastProcess(int i, int part, int tt) {
                     cnt = 0;
                 }
 #else
+//                if (!(tmp_idx >=0 && tmp_idx < esdf_map->grid_total_size)) {
+//                    cout<<"error!\t" <<tmp_idx<<endl;
+//                }
                 if (uset[tmp_idx] == tt) {
                     if (++cnt >= 1) break;
                 } else {
@@ -203,6 +215,8 @@ void raycastProcess(int i, int part, int tt) {
             }
         }
     }
+    ros::Time t2 = ros::Time::now();
+    cout << "raycasting \t" << tot1 << "\t" << tot2 << "\t" << (t2 - t1).toSec() << endl;
 
 }
 
@@ -272,25 +286,25 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //        Eigen::Vector3d point = R * Eigen::Vector3d(pt.x, pt.y, pt.z) + s_pos;
 //        Raycast(s_pos / resolution - half, point / resolution - half, lCornor, rCornor, &output);
 //    }
-#ifdef HASH_TABLE
-        int numThread = 1;
-        int part = cloud.points.size() / numThread;
-        raycastProcess(0, part, tt);
-#else
-        int numThread = std::thread::hardware_concurrency();
-        int part = cloud.points.size() / numThread;
-        //
-        std::list<std::thread> integration_threads;
+        if (param_num_thread == 0) {
+            int numThread = 1;
+            int part = cloud.points.size() / numThread;
+            raycastProcess(0, part, tt);
+        } else {
+            int numThread = param_num_thread;//std::thread::hardware_concurrency();
+            int part = cloud.points.size() / numThread;
+            //
+            std::list<std::thread> integration_threads;
 
-        for (size_t i = 0; i < numThread; ++i) {
-            integration_threads.emplace_back(&raycastProcess, i, part, tt);
-        }
+            for (size_t i = 0; i < numThread; ++i) {
+                integration_threads.emplace_back(&raycastProcess, i, part, tt);
+            }
 
-        //    cout << integration_threads.size() << endl;
-        for (std::thread &thread : integration_threads) {
-            thread.join();
+            //    cout << integration_threads.size() << endl;
+            for (std::thread &thread : integration_threads) {
+                thread.join();
+            }
         }
-#endif
 
         raycastingTimer.Stop();
         imageQueue.pop();
@@ -403,6 +417,7 @@ int main(int argc, char **argv) {
     node.param<double>("vis_upper_bound", vis_upper_bound, 2);
 
     node.param<double>("max_dist", max_dist, 2.0);
+    node.param<int>("num_thread", param_num_thread, 0);
 
     globalUpdate = false;
     globalVis = false;

@@ -406,8 +406,10 @@ std::mutex mtx;
 #endif
 
 int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
-    if (!voxInRange(vox)) return undefined;
-    int idx = vox2idx(vox);
+    int idx = vox2idx(vox);//, idx2 = vox2idx(vox, 2);
+
+    if (!voxInRange(vox)) return idx;
+
 #ifdef PROBABILISTIC
     tmp2[idx]++;
     tmp1[idx] += occ;
@@ -422,7 +424,7 @@ int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
 #endif
     }
 
-    return vox2idx(vox, 2);
+    return idx;
 #else
     if (occupancyBuffer[idx] != occ && occupancyBuffer[idx] != (occ | 2)) {
 //        cout << occupancyBuffer[idx] << "\t" << occ << endl;

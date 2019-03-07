@@ -1,24 +1,26 @@
 <launch>
     <node pkg="esdf_tools" type="test_pointcloud_raycasting" name="esdf" output="screen"
           required="true">
-        <param name="resolution" value="0.05"/>
+        <param name="resolution" value="0.1"/>
         <param name="min_ray_length_m" value="0.1"/>
         <param name="max_ray_length_m" value="8.0"/>
         <param name="update_mesh_every_n_sec" value="0.5"/>
+        <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
+        <param name="num_thread" value="0"/>
 
         <!--Hash Table only-->
         <param name="reservedSize" value="1000000"/>
 
         <!--Array only-->
-        <param name="lx" value="-1.0"/>
-        <param name="ly" value="-1.0"/>
-        <param name="lz" value="-1.0"/>
-        <param name="rx" value="+1.0"/>
-        <param name="ry" value="+1.0"/>
-        <param name="rz" value="+1.0"/>
+        <param name="lx" value="-20.0"/>
+        <param name="ly" value="-20.0"/>
+        <param name="lz" value="-7.0"/>
+        <param name="rx" value="+20.0"/>
+        <param name="ry" value="+20.0"/>
+        <param name="rz" value="+7.0"/>
 
         <!--0 for no visulize-->
-        <param name="visulize_every_n_updates" value="10"/>
+        <param name="visulize_every_n_updates" value="4"/>
 
         <param name="slice_vis" value="0.7"/>
         <param name="max_dist" value="2.0"/>

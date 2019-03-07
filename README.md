@@ -15,11 +15,11 @@ it by both simulation and onboard experiments. We release our method as open-sou
 
 The paper of this method is submitted to the 2019 IEEE/RSJ International Conference on
 Intelligent Robots and Systems (IROS 2019), under review.  The draft is shown on arxiv
-[here](https://arxiv.org/submit/2599481/view).
+[here](https://arxiv.org/abs/1903.02144).
 
 <p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pgRi8LOnT6Y
-" target="_blank"><img src="https://i9.ytimg.com/vi/pgRi8LOnT6Y/maxresdefault.jpg?sqp=CJD5_-MF&rs=AOn4CLBjiSiAZX9OoNn-iYOXa9KTqWq_fg&time=1551891870311" 
+" target="_blank"><img src="figure/shortIntroduction.png" 
 alt="FIESTA short introduction video" width="720" height="540" /></a>
 </p>
 
@@ -46,22 +46,25 @@ _For more examples and usage, please refer to the [Wiki][wiki]._
 
 
 ## Release History
+* 0.5.1
+    * CHANGE: Improve performance of raycasting a lot
 * 0.5.0
-    * ADD: Local / global update / visulization options
-    * ADD: Performance visulization directly on rviz
-    * DELETE: older visualization
+    * ADD: Give Local / global update / visualization options
+    * ADD: Show Performance visualization directly on rviz
+    * CHANGE: Deprecate older visualization, will be deleted in next release
 * 0.4.1
     * CHANGE: Give better visualization based on a slice of ESDF and pointcloud of obstacles
 * 0.4.0
     * ADD: Support LIDAR Input
     * ADD: Support Deterministic Occupancy Grid Map
 * 0.3.2
+    * ADD: Implement Multi-thread Raycasting for array implementation
 * 0.3.1
     * ADD: Implement Hash table with blocks
 * 0.3.0
     * ADD: Implement Hash table   
 * 0.2.0
-    * ADD: Support Raycasting for pointclouds
+    * ADD: Support Raycasting from point cloud
     * ADD: Support Probabilistic Occupancy Grid Map Fusion
     * CHANGE: Patch code for limited observations
 * 0.1.0
