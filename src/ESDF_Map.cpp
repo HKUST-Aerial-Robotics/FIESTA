@@ -13,7 +13,7 @@ using std::endl;
 
 bool ESDF_Map::exist(int idx) {
 #ifdef PROBABILISTIC
-    return occupancyBuffer[idx] > logit(0.7);
+    return occupancyBuffer[idx] > logit(0.70f);
 #else
     return occupancyBuffer[idx] == 1;
 #endif
@@ -450,8 +450,8 @@ bool ESDF_Map::checkUpdate() {
 
 bool ESDF_Map::updateOccupancy() {
 #ifdef PROBABILISTIC
-    double prob_hit_log_ = logit(0.65f);
-    double prob_miss_log_ = logit(0.4f);
+    double prob_hit_log_ = logit(0.75f);
+    double prob_miss_log_ = logit(0.40f);
     double clamp_min_log_ = logit(0.12f);
     double clamp_max_log_ = logit(0.97f);
     double min_occupancy_log_ = logit(0.7f);
@@ -463,7 +463,7 @@ bool ESDF_Map::updateOccupancy() {
         updateQueue2.pop();
         int idx = vox2idx(xx.point);
         int occupy = exist(idx);
-        int log_odds_update = tmp1[idx] * prob_hit_log_ + (tmp2[idx] - tmp1[idx]) * prob_miss_log_;
+        double log_odds_update = (tmp1[idx] > 0) * prob_hit_log_ + (tmp2[idx] - tmp1[idx] > 0) * prob_miss_log_;
 
         tmp1[idx] = tmp2[idx] = 0;
         if (distanceBuffer[idx] < 0) {

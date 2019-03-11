@@ -156,7 +156,7 @@ void raycastProcess(int i, int part, int tt) {
         else if (length > max_ray_length_m) {
             point = (point - origin) / length * max_ray_length_m + origin;
 //        cout << point << endl;
-            tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 1);
+            tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 0);
         } else
             tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 1);
 #ifdef SIGNED_NEEDED
@@ -418,9 +418,6 @@ int main(int argc, char **argv) {
 
     node.param<double>("max_dist", max_dist, 2.0);
     node.param<int>("num_thread", param_num_thread, 0);
-
-    globalUpdate = false;
-    globalVis = false;
 
 #ifdef HASH_TABLE
     int reservedSize;

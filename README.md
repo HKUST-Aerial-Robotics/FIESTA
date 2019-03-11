@@ -46,6 +46,9 @@ _For more examples and usage, please refer to the [Wiki][wiki]._
 
 
 ## Release History
+Prediction: 1.0.0 will be the first elegant version.
+
+
 * 0.5.1
     * CHANGE: Improve performance of raycasting a lot
 * 0.5.0
