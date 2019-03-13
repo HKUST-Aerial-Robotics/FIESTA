@@ -7,13 +7,13 @@
 #include <math.h>
 #include <time.h>
 
-#define logit(x) (log((x) / (1 - (x))))
+
 using std::cout;
 using std::endl;
 
 bool ESDF_Map::exist(int idx) {
 #ifdef PROBABILISTIC
-    return occupancyBuffer[idx] > logit(0.80f);
+    return occupancyBuffer[idx] > logit(min_occupancy_log_);
 #else
     return occupancyBuffer[idx] == 1;
 #endif
@@ -454,11 +454,7 @@ bool ESDF_Map::checkUpdate() {
 
 bool ESDF_Map::updateOccupancy(bool globalMap) {
 #ifdef PROBABILISTIC
-    double prob_hit_log_ = logit(0.70f);
-    double prob_miss_log_ = logit(0.35f);
-    double clamp_min_log_ = logit(0.12f);
-    double clamp_max_log_ = logit(0.97f);
-    double min_occupancy_log_ = logit(0.7f);
+
 
     cout << "Occupancy Update" << ' ' << updateQueue2.size() << '\t';
     double influence = 0.2;

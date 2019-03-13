@@ -46,9 +46,11 @@ _For more examples and usage, please refer to the [Wiki][wiki]._
 
 
 ## Release History
-Prediction: 1.0.0 will be the first elegant version.
+Prediction: 1.0.0 will be our first elegant version.
 
-
+* 0.5.2
+    * ADD: Support local map
+    * ADD: Support raw depth image as input
 * 0.5.1
     * CHANGE: Improve performance of raycasting a lot
 * 0.5.0

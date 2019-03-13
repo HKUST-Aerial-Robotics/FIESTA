@@ -14,6 +14,12 @@
         <param name="cy" value="236.743210"/>
         <param name="fx" value="385.754486"/>
         <param name="fy" value="385.754486"/>
+
+        <param name="pHit" value="0.70"/>
+        <param name="pMiss" value="0.35"/>
+        <param name="pMin" value="0.12"/>
+        <param name="pMax" value="0.97"/>
+        <param name="pOcc" value="0.80"/>
         <!--Hash Table only-->
         <param name="reservedSize" value="1000000"/>
 

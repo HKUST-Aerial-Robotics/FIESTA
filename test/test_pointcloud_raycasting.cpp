@@ -44,6 +44,7 @@ double min_ray_length_m;
 double max_ray_length_m;
 int visulize_every_n_updates, param_num_thread;
 double slice_vis, max_dist, vis_lower_bound, vis_upper_bound, center_x, center_y, focal_x, focal_y;
+double pHit, pMiss, pMin, pMax, pOcc;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
 #endif
@@ -213,7 +214,10 @@ void raycastProcess(int i, int part, int tt) {
 //                    cout<<"error!\t" <<tmp_idx<<endl;
 //                }
                 if (uset[tmp_idx] == tt) {
-                    if (++cnt >= 1) {cnt= 0;break;}
+                    if (++cnt >= 1) {
+                        cnt = 0;
+                        break;
+                    }
                 } else {
                     uset[tmp_idx] = tt;
                     cnt = 0;
@@ -230,8 +234,9 @@ void raycastProcess(int i, int part, int tt) {
 #endif
 
 int receivedCount = 0, dmCount = 0, pcCount = 0, posCount = 0;
+
 void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map) {
-   cout << ++pcCount<< '\t'<<"POINTCLOUD: " << pointcloud_map->header.stamp << endl;
+    cout << ++pcCount << '\t' << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
 /*
     T.block<3, 3>(0, 0) = q.normalized().toRotationMatrix();
     T.block<3, 1>(0, 3) = pos;
@@ -256,7 +261,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //    cout << "PC: " << tt << endl;
     cout << "size : " << sizeof(*pointcloud_map) << endl;
     imageQueue.push(pointcloud_map);
-    cout <<"Queue Size\t" << imageQueue.size() << ' '<< transformQueue.size() << endl;
+    cout << "Queue Size\t" << imageQueue.size() << ' ' << transformQueue.size() << endl;
     //if (cnt == 1500) std::thread(save).join();
     // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
 
@@ -281,7 +286,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
             continue;
         }
 
-       cout << ++receivedCount<<'\t'<< fabs((_poseTime-_imageTime).toSec()) << endl;
+        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
         newMsg = true;
 #ifndef PROBABILISTIC
         s_pc = imageQueue.front();
@@ -352,17 +357,17 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
         imageQueue.pop();
 #endif
     }
-    
+
 }
 
 
 void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
-   cout << ++dmCount<< '\t'<<"DEPTH_MAP: " << depth_map->header.stamp << endl;
+    cout << ++dmCount << '\t' << "DEPTH_MAP: " << depth_map->header.stamp << endl;
     int tt = ++tot;
 //    cout << "PC: " << tt << endl;
     cout << "size : " << sizeof(*depth_map) << endl;
     depthMapQueue.push(depth_map);
-    cout <<"Queue Size\t" << depthMapQueue.size() << ' '<< transformQueue.size() << endl;
+    cout << "Queue Size\t" << depthMapQueue.size() << ' ' << transformQueue.size() << endl;
     //if (cnt == 1500) std::thread(save).join();
     // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
 
@@ -387,7 +392,7 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
             continue;
         }
 
-       cout << ++receivedCount<<'\t'<< fabs((_poseTime-_imageTime).toSec()) << endl;
+        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
         newMsg = true;
 #ifndef PROBABILISTIC
         // TODO: Modify this, this will cause Compile Error
@@ -402,7 +407,7 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
         origin = Eigen::Vector3d(T(0, 3), T(1, 3), T(2, 3)) / T(3, 3);
 
         cv::Mat img;
-        cv_bridge::CvImagePtr cv_ptr; 
+        cv_bridge::CvImagePtr cv_ptr;
         cv_ptr = cv_bridge::toCvCopy(depthMapQueue.front(), depthMapQueue.front()->encoding);
         constexpr double kDepthScalingFactor = 1000.0;
         if (depthMapQueue.front()->encoding == sensor_msgs::image_encodings::TYPE_32FC1) {
@@ -413,7 +418,7 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
         double depth;
         cloud.clear();
         for (int v = 10; v < img.rows - 10; v++)
-            for (int u = 10; u < img.cols - 10; u++){
+            for (int u = 10; u < img.cols - 10; u++) {
                 depth = img.at<uint16_t>(v, u) / kDepthScalingFactor;
                 pcl::PointXYZ point;
                 point.x = (u - center_x) * depth / focal_x;
@@ -482,15 +487,14 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
         depthMapQueue.pop();
 #endif
     }
-    
+
 }
 
 ros::Publisher meshPub;
 visualization_msgs::Marker meshROS;
-static  std::string mesh_resource;
+static std::string mesh_resource;
 
-void publishPose(Eigen::Vector3d pos, Eigen::Quaterniond q)
-{
+void publishPose(Eigen::Vector3d pos, Eigen::Quaterniond q) {
     // Mesh model
     meshROS.header.frame_id = "world";
     meshROS.ns = "mesh";
@@ -543,7 +547,7 @@ void publishPose(Eigen::Vector3d pos, Eigen::Quaterniond q)
 
 // }
 void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
-    cout <<++posCount<< '\t'<< "TRANSFORM: " << msg->header.stamp << endl;
+    cout << ++posCount << '\t' << "TRANSFORM: " << msg->header.stamp << endl;
     pos = Eigen::Vector3d(msg->pose.position.x,
                           msg->pose.position.y,
                           msg->pose.position.z);
@@ -556,6 +560,7 @@ void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
     publishPose(pos, q);
 
 }
+
 // #endif
 int esdf_cnt = 0;
 
@@ -632,12 +637,12 @@ int main(int argc, char **argv) {
     node.param<double>("vis_upper_bound", vis_upper_bound, 2);
     node.param<double>("cx", center_x, 0);
     node.param<double>("cy", center_y, 0);
-    node.param<double>("fx", focal_x, 0);
-    node.param<double>("fy", focal_y, 0);
+    node.param<double>("fx", focal_x, 1);
+    node.param<double>("fy", focal_y, 1);
 
     node.param<double>("max_dist", max_dist, 2.0);
     node.param<int>("num_thread", param_num_thread, 0);
-     // TODO:  modify this
+    // TODO:  modify this
     node.param("mesh_resource", mesh_resource, std::string("meshes/hummingbird.mesh"));
 
 
@@ -674,6 +679,15 @@ int main(int argc, char **argv) {
 #endif
 #endif
 
+#ifdef PROBABILISTIC
+    node.param<double>("pHit", pHit, 0.70);
+    node.param<double>("pMiss", pMiss, 0.35);
+    node.param<double>("pMin", pMin, 0.12);
+    node.param<double>("pMax", pMax, 0.97);
+    node.param<double>("pOcc", pOcc, 0.80);
+    esdf_map->setParameter(pHit, pMiss, pMin, pMax, pOcc);
+#endif
+
     // These 2 lines are to be used in fast raycasting
     lCornor /= resolution;
     rCornor /= resolution;
@@ -686,20 +700,21 @@ int main(int argc, char **argv) {
 #endif
 
 
-   // For Jie Bao
-   ros::Subscriber subpoints = node.subscribe("pointcloud", 10, pointcloudCallBack,ros::TransportHints().tcpNoDelay());
-   ros::Subscriber sub = node.subscribe("transform", 10, transformCallback);
-   ros::Subscriber subdepth = node.subscribe("depth", 10, depthCallBack);
+    // For Jie Bao
+    ros::Subscriber subpoints = node.subscribe("pointcloud", 10, pointcloudCallBack,
+                                               ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub = node.subscribe("transform", 10, transformCallback);
+    ros::Subscriber subdepth = node.subscribe("depth", 10, depthCallBack);
 
-   T_B_C << 1, 0, 0, 0,
-           0, 1, 0, 0,
-           0, 0, 1, 0,
-           0, 0, 0, 1;
+    T_B_C << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1;
 
-   T_D_B << 1, 0, 0, 0,
-           0, 1, 0, 0,
-           0, 0, 1, 0,
-           0, 0, 0, 1;
+    T_D_B << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1;
 
     // Cow_and_Lady
     // ros::Subscriber subpoints = node.subscribe("/camera/depth_registered/points", 1000, pointcloudCallBack);
@@ -743,7 +758,7 @@ int main(int argc, char **argv) {
     slice_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/slice", 1, true);
     occ_pointcloud_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/occ_pc", 1, true);
     text_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/text", 1, true);
-    meshPub   = node.advertise<visualization_msgs::Marker>("ESDF_Map/robot", 100, true);
+    meshPub = node.advertise<visualization_msgs::Marker>("ESDF_Map/robot", 100, true);
     recpc_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/rectified_pointcloud", 1, true);
 
     double update_mesh_every_n_sec;
