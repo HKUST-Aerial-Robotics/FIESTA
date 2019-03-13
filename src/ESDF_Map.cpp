@@ -13,7 +13,7 @@ using std::endl;
 
 bool ESDF_Map::exist(int idx) {
 #ifdef PROBABILISTIC
-    return occupancyBuffer[idx] > logit(min_occupancy_log_);
+    return occupancyBuffer[idx] > min_occupancy_log_;
 #else
     return occupancyBuffer[idx] == 1;
 #endif
