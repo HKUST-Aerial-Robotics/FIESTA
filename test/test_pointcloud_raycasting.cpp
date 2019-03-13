@@ -640,9 +640,11 @@ int main(int argc, char **argv) {
      // TODO:  modify this
     node.param("mesh_resource", mesh_resource, std::string("meshes/hummingbird.mesh"));
 
+
     if (!globalMap) {
         globalVis = globalUpdate = false;
     }
+
 
 #ifdef HASH_TABLE
     int reservedSize;
