@@ -287,13 +287,13 @@ private:
     int totalTime = 0;
     int inf, undefined;
     double resolution;
-    Eigen::Vector3i max_vec, min_vec;
+    Eigen::Vector3i max_vec, min_vec, last_max_vec, last_min_vec;
 
     bool exist(int idx);
 
     bool posInMap(Eigen::Vector3d pos);
 
-    bool voxInRange(Eigen::Vector3i vox);
+    bool voxInRange(Eigen::Vector3i vox, bool currectVec = true);
 
 
     void vox2pos(Eigen::Vector3i vox, Eigen::Vector3d &pos);
@@ -328,7 +328,7 @@ public:
 
     void pos2vox(Eigen::Vector3d pos, Eigen::Vector3i &vox);
 
-    bool updateOccupancy();
+    bool updateOccupancy(bool globalMap = true);
 
     void updateESDF();
 
@@ -363,7 +363,7 @@ public:
     double getDistance(Eigen::Vector3i vox);
 
 
-    void setUpdateRange(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos) {
+    void setUpdateRange(Eigen::Vector3d min_pos, Eigen::Vector3d max_pos, bool newVec = true) {
 #ifndef HASH_TABLE
         min_pos(0) = std::max(min_pos(0), min_range(0));
         min_pos(1) = std::max(min_pos(1), min_range(1));
@@ -373,6 +373,10 @@ public:
         max_pos(1) = std::min(max_pos(1), max_range(1));
         max_pos(2) = std::min(max_pos(2), max_range(2));
 #endif
+        if (newVec) {
+            last_min_vec = min_vec;
+            last_max_vec = max_vec;
+        }
         pos2vox(min_pos, min_vec);
         pos2vox(
                 max_pos - Eigen::Vector3d(resolution / 2, resolution / 2, resolution / 2),
@@ -383,9 +387,13 @@ public:
 #ifdef HASH_TABLE
         min_vec << -inf, -inf, -inf;
         max_vec << +inf, +inf, +inf;
+        last_min_vec = min_vec;
+        last_max_vec = max_vec;
 #else
         min_vec << 0, 0, 0;
         max_vec << grid_size(0) - 1, grid_size(1) - 1, grid_size(2) - 1;
+        last_min_vec = min_vec;
+        last_max_vec = max_vec;
 #endif
     }
 #ifndef PROBABILISTIC

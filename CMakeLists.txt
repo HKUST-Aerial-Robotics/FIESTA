@@ -7,11 +7,12 @@ find_package(catkin REQUIRED COMPONENTS
         nav_msgs
         visualization_msgs
         tf
+        cv_bridge
         )
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
-
+find_package(OpenCV REQUIRED)
 set(Eigen3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 
 catkin_package(
@@ -27,6 +28,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS}
     ${PCL_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
@@ -63,4 +65,5 @@ add_executable(test_pointcloud_raycasting
 target_link_libraries(test_pointcloud_raycasting
         ${catkin_LIBRARIES}
         ${PCL_LIBRARIES}
+        ${OpenCV_LIBS}
         )

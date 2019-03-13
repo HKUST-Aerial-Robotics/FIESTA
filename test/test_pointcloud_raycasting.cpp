@@ -17,6 +17,9 @@
 #include <thread>
 #include <tuple>
 #include <queue>
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <cv_bridge/cv_bridge.h>
 
 #include "timing.h"
 
@@ -29,7 +32,7 @@ using std::thread;
 ros::Publisher occ_pub;
 ros::Publisher dist_pub;
 ros::Publisher slice_pub;
-ros::Publisher occ_pointcloud_pub, text_pub;
+ros::Publisher occ_pointcloud_pub, text_pub, recpc_pub;
 Eigen::Vector3d pos, s_pos, origin, c_pos;
 Eigen::Quaterniond q, s_q;
 int count = 0;
@@ -39,13 +42,14 @@ ESDF_Map *esdf_map;
 Eigen::Matrix4d T_B_C, T_D_B, T;
 double min_ray_length_m;
 double max_ray_length_m;
-int visulize_every_n_updates;
-double slice_vis, max_dist, vis_lower_bound, vis_upper_bound;
+int visulize_every_n_updates, param_num_thread;
+double slice_vis, max_dist, vis_lower_bound, vis_upper_bound, center_x, center_y, focal_x, focal_y;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
 #endif
 std::queue<std::tuple<ros::Time, Eigen::Vector3d, Eigen::Quaterniond>> transformQueue;
 std::queue<sensor_msgs::PointCloud2::ConstPtr> imageQueue;
+std::queue<sensor_msgs::Image::ConstPtr> depthMapQueue;
 
 visualization_msgs::Marker occ_marker, slice_marker;
 
@@ -61,9 +65,9 @@ sensor_msgs::PointCloud2::ConstPtr s_pc;
 #endif
 
 // *************** params ****************
-double range_sensor = 4.0;
-Eigen::Vector3d radius(range_sensor, range_sensor, range_sensor / 2.0);
-bool globalVis = false, globalUpdate = true;
+double range_sensor = 5.0;
+Eigen::Vector3d radius(range_sensor, range_sensor, range_sensor / 2);
+bool globalVis = true, globalUpdate = true, globalMap = false;
 // *************** params ****************
 
 bool newMsg = false;
@@ -133,11 +137,12 @@ std::unordered_set<int> uset, uset_s;
 std::vector<int> uset, uset_s;
 #endif
 int tot = 0;
-
+//int tot1 = 0, tot2 = 0;
 #ifdef PROBABILISTIC
 
 void raycastProcess(int i, int part, int tt) {
-
+    int tot1 = 0, tot2 = 0;
+    ros::Time t1 = ros::Time::now();
     Eigen::Vector3d half = Eigen::Vector3d(0.5, 0.5, 0.5);
     for (int idx = part * i; idx < part * (i + 1); idx++) {
         std::vector<Eigen::Vector3d> output;
@@ -153,12 +158,19 @@ void raycastProcess(int i, int part, int tt) {
 //        Eigen::Vector3d point = Eigen::Vector3d(pt.x, pt.y, pt.z);
         int tmp_idx;
         double length = (point - origin).norm();
-        if (length >= min_ray_length_m && length <= max_ray_length_m)
+        if (length < min_ray_length_m)
+            continue;
+        else if (length > max_ray_length_m) {
+            point = (point - origin) / length * max_ray_length_m + origin;
+//        cout << point << endl;
+            tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 0);
+        } else
             tmp_idx = esdf_map->setOccupancy((Eigen::Vector3d) point, 1);
 #ifdef SIGNED_NEEDED
         tmp_idx = inv_esdf_map->setOccupancy((Eigen::Vector3d) point, 0);
 #endif
-        //TODO: -10000 ?
+//         //TODO: -10000 ?
+
         if (tmp_idx != -10000) {
 #ifdef HASH_TABLE
             if (uset_s.find(tmp_idx) != uset_s.end())
@@ -170,10 +182,11 @@ void raycastProcess(int i, int part, int tt) {
             else uset_s[tmp_idx] = tt;
 #endif
         }
-
+        tot1++;
         Raycast(origin / resolution - half, point / resolution - half, lCornor, rCornor, &output);
 
         for (int i = output.size() - 2; i >= 0; i--) {
+            tot2++;
             Eigen::Vector3d tmp = (output[i] + half) * resolution;
 
             length = (tmp - origin).norm();
@@ -190,14 +203,17 @@ void raycastProcess(int i, int part, int tt) {
             if (tmp_idx != -10000) {
 #ifdef HASH_TABLE
                 if (uset.find(tmp_idx) != uset.end()) {
-                    if (++cnt >= 1) break;
+                    if (++cnt >= 1) {cnt= 0;break;}
                 } else {
                     uset.insert(tmp_idx);
                     cnt = 0;
                 }
 #else
+//                if (!(tmp_idx >=0 && tmp_idx < esdf_map->grid_total_size)) {
+//                    cout<<"error!\t" <<tmp_idx<<endl;
+//                }
                 if (uset[tmp_idx] == tt) {
-                    if (++cnt >= 1) break;
+                    if (++cnt >= 1) {cnt= 0;break;}
                 } else {
                     uset[tmp_idx] = tt;
                     cnt = 0;
@@ -206,14 +222,36 @@ void raycastProcess(int i, int part, int tt) {
             }
         }
     }
+    ros::Time t2 = ros::Time::now();
+    cout << "raycasting \t" << tot1 << "\t" << tot2 << "\t" << (t2 - t1).toSec() << endl;
 
 }
 
 #endif
 
+int receivedCount = 0, dmCount = 0, pcCount = 0, posCount = 0;
 void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map) {
-//    cout << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
-
+   cout << ++pcCount<< '\t'<<"POINTCLOUD: " << pointcloud_map->header.stamp << endl;
+/*
+    T.block<3, 3>(0, 0) = q.normalized().toRotationMatrix();
+    T.block<3, 1>(0, 3) = pos;
+    T(3, 0) = T(3, 1) = T(3, 2) = 0;
+    T(3, 3) = 1;
+    T = T * T_D_B * T_B_C;
+    pcl::fromROSMsg(*pointcloud_map, cloud);
+    sensor_msgs::PointCloud m;
+    m.header.frame_id = "world";
+    m.points.clear();
+    for (int i = 0; i < cloud.points.size(); i++) {
+        Eigen::Vector4d tmp = T * Eigen::Vector4d(cloud[i].x, cloud[i].y, cloud[i].z, 1);
+        geometry_msgs::Point32 p;
+        p.x = tmp(0) / tmp(3);
+        p.y = tmp(1) / tmp(3);
+        p.z = tmp(2) / tmp(3);
+        m.points.push_back(p);
+    }
+    recpc_pub.publish(m);
+        */
     int tt = ++tot;
 //    cout << "PC: " << tt << endl;
     cout << "size : " << sizeof(*pointcloud_map) << endl;
@@ -242,13 +280,14 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
             imageQueue.pop();
             continue;
         }
-//        cout << _poseTime << '\t' << _imageTime << endl;
+
+       cout << ++receivedCount<<'\t'<< fabs((_poseTime-_imageTime).toSec()) << endl;
         newMsg = true;
 #ifndef PROBABILISTIC
         s_pc = imageQueue.front();
         return;
 #else
-        T.block<3, 3>(0, 0) = s_q.normalized().toRotationMatrix();
+        T.block<3, 3>(0, 0) = s_q.toRotationMatrix();
         T.block<3, 1>(0, 3) = s_pos;
         T(3, 0) = T(3, 1) = T(3, 2) = 0;
         T(3, 3) = 1;
@@ -276,31 +315,204 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //        Eigen::Vector3d point = R * Eigen::Vector3d(pt.x, pt.y, pt.z) + s_pos;
 //        Raycast(s_pos / resolution - half, point / resolution - half, lCornor, rCornor, &output);
 //    }
-#ifndef HASH_TABLE
-        int numThread = 1;
-        int part = cloud.points.size() / numThread;
-        raycastProcess(0, part, tt);
-#else
-        //int numThread = std::thread::hardware_concurrency();
-	int numThread = 1;
-        int part = cloud.points.size() / numThread;
-        //
-        std::list<std::thread> integration_threads;
 
-        for (size_t i = 0; i < numThread; ++i) {
-            integration_threads.emplace_back(&raycastProcess, i, part, tt);
+        if (param_num_thread == 0) {
+            int numThread = 1;
+            int part = cloud.points.size() / numThread;
+            // cout << part << endl;
+            raycastProcess(0, part, tt);
+        } else {
+            int numThread = param_num_thread;//std::thread::hardware_concurrency();
+            int part = cloud.points.size() / numThread;
+            //
+            std::list<std::thread> integration_threads;
+
+            for (size_t i = 0; i < numThread; ++i) {
+                integration_threads.emplace_back(&raycastProcess, i, part, tt);
+            }
+
+            //    cout << integration_threads.size() << endl;
+            for (std::thread &thread : integration_threads) {
+                thread.join();
+            }
         }
-
-        //    cout << integration_threads.size() << endl;
-        for (std::thread &thread : integration_threads) {
-            thread.join();
-        }
-#endif
-
+        // sensor_msgs::PointCloud m;
+        // m.header.frame_id = "world";
+        // m.points.clear();
+        // for (int i = 0; i < cloud.points.size(); i++) {
+        //     Eigen::Vector4d tmp = T * Eigen::Vector4d(cloud[i].x, cloud[i].y, cloud[i].z, 1);
+        //     geometry_msgs::Point32 p;
+        //     p.x = tmp(0) / tmp(3);
+        //     p.y = tmp(1) / tmp(3);
+        //     p.z = tmp(2) / tmp(3);
+        //     m.points.push_back(p);
+        // }
+        // recpc_pub.publish(m);
         raycastingTimer.Stop();
         imageQueue.pop();
 #endif
     }
+    
+}
+
+
+void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
+   cout << ++dmCount<< '\t'<<"DEPTH_MAP: " << depth_map->header.stamp << endl;
+    int tt = ++tot;
+//    cout << "PC: " << tt << endl;
+    cout << "size : " << sizeof(*depth_map) << endl;
+    depthMapQueue.push(depth_map);
+    cout <<"Queue Size\t" << depthMapQueue.size() << ' '<< transformQueue.size() << endl;
+    //if (cnt == 1500) std::thread(save).join();
+    // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
+
+    ros::Time _poseTime, _imageTime;
+    double timeDelay = 3e-3;
+    while (!depthMapQueue.empty()) {
+        bool newPos = false;
+        _imageTime = depthMapQueue.front()->header.stamp;
+        while (transformQueue.size() > 1 &&
+               std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
+            _poseTime = std::get<0>(transformQueue.front());
+            s_pos = std::get<1>(transformQueue.front());
+            s_q = std::get<2>(transformQueue.front());
+            transformQueue.pop();
+            newPos = true;
+        }
+        if (transformQueue.empty() || std::get<0>(transformQueue.front()) <= _imageTime + ros::Duration(timeDelay)) {
+            break;
+        }
+        if (!newPos) {
+            depthMapQueue.pop();
+            continue;
+        }
+
+       cout << ++receivedCount<<'\t'<< fabs((_poseTime-_imageTime).toSec()) << endl;
+        newMsg = true;
+#ifndef PROBABILISTIC
+        // TODO: Modify this, this will cause Compile Error
+        s_pc = depthMapQueue.front();
+        return;
+#else
+        T.block<3, 3>(0, 0) = s_q.toRotationMatrix();
+        T.block<3, 1>(0, 3) = s_pos;
+        T(3, 0) = T(3, 1) = T(3, 2) = 0;
+        T(3, 3) = 1;
+        T = T * T_D_B * T_B_C;
+        origin = Eigen::Vector3d(T(0, 3), T(1, 3), T(2, 3)) / T(3, 3);
+
+        cv::Mat img;
+        cv_bridge::CvImagePtr cv_ptr; 
+        cv_ptr = cv_bridge::toCvCopy(depthMapQueue.front(), depthMapQueue.front()->encoding);
+        constexpr double kDepthScalingFactor = 1000.0;
+        if (depthMapQueue.front()->encoding == sensor_msgs::image_encodings::TYPE_32FC1) {
+            (cv_ptr->image).convertTo(cv_ptr->image, CV_16UC1, kDepthScalingFactor);
+        }
+        cv_ptr->image.copyTo(img);
+
+        double depth;
+        cloud.clear();
+        for (int v = 10; v < img.rows - 10; v++)
+            for (int u = 10; u < img.cols - 10; u++){
+                depth = img.at<uint16_t>(v, u) / kDepthScalingFactor;
+                pcl::PointXYZ point;
+                point.x = (u - center_x) * depth / focal_x;
+                point.y = (v - center_y) * depth / focal_y;
+                point.z = depth;
+
+                cloud.push_back(point);
+            }
+
+        cout << cloud.points.size() << endl;
+
+
+        if ((int) cloud.points.size() == 0)
+            return;
+
+        // TODO: when using vector, this is not needed
+#ifdef HASH_TABLE
+        uset.clear();
+        uset_s.clear();
+#endif
+//        cout << cloud.points.size() << endl;
+        timing::Timer raycastingTimer("raycasting");
+//#pragma omp parallel for
+//    for (int idx = 0; idx < (int) cloud.points.size(); idx++) {
+//        std::vector<Eigen::Vector3d> output;
+//        pcl::PointXYZRGB pt = cloud.points[idx];
+//        if (std::isnan(pt.x) || std::isnan(pt.y) || std::isnan(pt.z))
+//            continue;
+//        Eigen::Vector3d point = R * Eigen::Vector3d(pt.x, pt.y, pt.z) + s_pos;
+//        Raycast(s_pos / resolution - half, point / resolution - half, lCornor, rCornor, &output);
+//    }
+
+        if (param_num_thread == 0) {
+            int numThread = 1;
+            int part = cloud.points.size() / numThread;
+            // cout << part << endl;
+            raycastProcess(0, part, tt);
+        } else {
+            int numThread = param_num_thread;//std::thread::hardware_concurrency();
+            int part = cloud.points.size() / numThread;
+            //
+            std::list<std::thread> integration_threads;
+
+            for (size_t i = 0; i < numThread; ++i) {
+                integration_threads.emplace_back(&raycastProcess, i, part, tt);
+            }
+
+            //    cout << integration_threads.size() << endl;
+            for (std::thread &thread : integration_threads) {
+                thread.join();
+            }
+        }
+        // sensor_msgs::PointCloud m;
+        // m.header.frame_id = "world";
+        // m.points.clear();
+        // for (int i = 0; i < cloud.points.size(); i++) {
+        //     Eigen::Vector4d tmp = T * Eigen::Vector4d(cloud[i].x, cloud[i].y, cloud[i].z, 1);
+        //     geometry_msgs::Point32 p;
+        //     p.x = tmp(0) / tmp(3);
+        //     p.y = tmp(1) / tmp(3);
+        //     p.z = tmp(2) / tmp(3);
+        //     m.points.push_back(p);
+        // }
+        // recpc_pub.publish(m);
+        raycastingTimer.Stop();
+        depthMapQueue.pop();
+#endif
+    }
+    
+}
+
+ros::Publisher meshPub;
+visualization_msgs::Marker meshROS;
+static  std::string mesh_resource;
+
+void publishPose(Eigen::Vector3d pos, Eigen::Quaterniond q)
+{
+    // Mesh model
+    meshROS.header.frame_id = "world";
+    meshROS.ns = "mesh";
+    meshROS.id = 0;
+    meshROS.type = visualization_msgs::Marker::ARROW;
+    meshROS.action = visualization_msgs::Marker::ADD;
+    meshROS.pose.position.x = pos.x();
+    meshROS.pose.position.y = pos.y();
+    meshROS.pose.position.z = pos.z();
+    meshROS.pose.orientation.w = q.w();
+    meshROS.pose.orientation.x = q.x();
+    meshROS.pose.orientation.y = q.y();
+    meshROS.pose.orientation.z = q.z();
+    meshROS.scale.x = 0.4;
+    meshROS.scale.y = 0.1;
+    meshROS.scale.z = 0.1;
+    meshROS.color.a = 1;
+    meshROS.color.r = 1;
+    meshROS.color.g = 1;
+    meshROS.color.b = 1;
+    // meshROS.mesh_resource = mesh_resource;
+    meshPub.publish(meshROS);
 }
 
 // #ifdef PROBABILISTIC
@@ -315,8 +527,6 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 //                            msg->transform.rotation.y,
 //                            msg->transform.rotation.z);
 //     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
-
-
 // }
 
 // #else
@@ -333,7 +543,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 
 // }
 void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
-    // cout << "TRANSFORM: " << msg->header.stamp << endl;
+    cout <<++posCount<< '\t'<< "TRANSFORM: " << msg->header.stamp << endl;
     pos = Eigen::Vector3d(msg->pose.position.x,
                           msg->pose.position.y,
                           msg->pose.position.z);
@@ -343,6 +553,7 @@ void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
                            msg->pose.orientation.z);
 
     transformQueue.push(std::make_tuple(msg->header.stamp, pos, q));
+    publishPose(pos, q);
 
 }
 // #endif
@@ -378,7 +589,7 @@ void updateESDFEvent(const ros::TimerEvent & /*event*/) {
         if (globalUpdate)
             esdf_map->setOriginalRange();
         else
-            esdf_map->setUpdateRange(c_pos - radius, c_pos + radius);
+            esdf_map->setUpdateRange(c_pos - radius, c_pos + radius, true);
         esdf_map->updateOccupancy();
         esdf_map->updateESDF();
 #ifdef SIGNED_NEEDED
@@ -419,11 +630,19 @@ int main(int argc, char **argv) {
     node.param<double>("slice_vis", slice_vis, 0);
     node.param<double>("vis_lower_bound", vis_lower_bound, 0);
     node.param<double>("vis_upper_bound", vis_upper_bound, 2);
+    node.param<double>("cx", center_x, 0);
+    node.param<double>("cy", center_y, 0);
+    node.param<double>("fx", focal_x, 0);
+    node.param<double>("fy", focal_y, 0);
 
     node.param<double>("max_dist", max_dist, 2.0);
+    node.param<int>("num_thread", param_num_thread, 0);
+     // TODO:  modify this
+    node.param("mesh_resource", mesh_resource, std::string("meshes/hummingbird.mesh"));
 
-    globalUpdate = false;
-    globalVis = false;
+    if (!globalMap) {
+        globalVis = globalUpdate = false;
+    }
 
 #ifdef HASH_TABLE
     int reservedSize;
@@ -466,8 +685,9 @@ int main(int argc, char **argv) {
 
 
    // For Jie Bao
-   ros::Subscriber subpoints = node.subscribe("pointcloud", 1000, pointcloudCallBack);
-   ros::Subscriber sub = node.subscribe("transform", 1000, transformCallback);
+   ros::Subscriber subpoints = node.subscribe("pointcloud", 10, pointcloudCallBack,ros::TransportHints().tcpNoDelay());
+   ros::Subscriber sub = node.subscribe("transform", 10, transformCallback);
+   ros::Subscriber subdepth = node.subscribe("depth", 10, depthCallBack);
 
    T_B_C << 1, 0, 0, 0,
            0, 1, 0, 0,
@@ -521,6 +741,8 @@ int main(int argc, char **argv) {
     slice_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/slice", 1, true);
     occ_pointcloud_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/occ_pc", 1, true);
     text_pub = node.advertise<visualization_msgs::Marker>("ESDF_Map/text", 1, true);
+    meshPub   = node.advertise<visualization_msgs::Marker>("ESDF_Map/robot", 100, true);
+    recpc_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/rectified_pointcloud", 1, true);
 
     double update_mesh_every_n_sec;
     node.param<double>("update_mesh_every_n_sec", update_mesh_every_n_sec, 0.1);

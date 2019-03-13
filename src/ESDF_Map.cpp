@@ -13,7 +13,7 @@ using std::endl;
 
 bool ESDF_Map::exist(int idx) {
 #ifdef PROBABILISTIC
-    return occupancyBuffer[idx] > logit(0.7);
+    return occupancyBuffer[idx] > logit(0.80f);
 #else
     return occupancyBuffer[idx] == 1;
 #endif
@@ -39,10 +39,14 @@ bool ESDF_Map::posInMap(Eigen::Vector3d pos) {
 #endif
 }
 
-bool ESDF_Map::voxInRange(Eigen::Vector3i vox) {
-    return (vox(0) >= min_vec(0) && vox(0) <= max_vec(0)
-            && vox(1) >= min_vec(1) && vox(1) <= max_vec(1)
-            && vox(2) >= min_vec(2) && vox(2) <= max_vec(2));
+bool ESDF_Map::voxInRange(Eigen::Vector3i vox, bool currectVec) {
+    if (currectVec)
+        return (vox(0) >= min_vec(0) && vox(0) <= max_vec(0)
+             && vox(1) >= min_vec(1) && vox(1) <= max_vec(1)
+             && vox(2) >= min_vec(2) && vox(2) <= max_vec(2));
+    else return (vox(0) >= last_min_vec(0) && vox(0) <= last_max_vec(0)
+              && vox(1) >= last_min_vec(1) && vox(1) <= last_max_vec(1)
+              && vox(2) >= last_min_vec(2) && vox(2) <= last_max_vec(2));
 }
 
 void ESDF_Map::pos2vox(Eigen::Vector3d pos, Eigen::Vector3i &vox) {
@@ -406,8 +410,10 @@ std::mutex mtx;
 #endif
 
 int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
-    if (!voxInRange(vox)) return undefined;
-    int idx = vox2idx(vox);
+    int idx = vox2idx(vox);//, idx2 = vox2idx(vox, 2);
+
+    if (!voxInRange(vox)) return idx;
+
 #ifdef PROBABILISTIC
     tmp2[idx]++;
     tmp1[idx] += occ;
@@ -416,13 +422,13 @@ int ESDF_Map::setOccupancy(Eigen::Vector3i vox, int occ) {
         updateQueue2.push(QueueElement{vox, 0.0});
 #else
         // multi-thread
-        mtx.lock();
+        // mtx.lock();
         updateQueue2.push(QueueElement{vox, 0.0});
-        mtx.unlock();
+        // mtx.unlock();
 #endif
     }
 
-    return vox2idx(vox, 2);
+    return idx;
 #else
     if (occupancyBuffer[idx] != occ && occupancyBuffer[idx] != (occ | 2)) {
 //        cout << occupancyBuffer[idx] << "\t" << occ << endl;
@@ -446,10 +452,10 @@ bool ESDF_Map::checkUpdate() {
 #endif
 }
 
-bool ESDF_Map::updateOccupancy() {
+bool ESDF_Map::updateOccupancy(bool globalMap) {
 #ifdef PROBABILISTIC
-    double prob_hit_log_ = logit(0.65f);
-    double prob_miss_log_ = logit(0.4f);
+    double prob_hit_log_ = logit(0.70f);
+    double prob_miss_log_ = logit(0.35f);
     double clamp_min_log_ = logit(0.12f);
     double clamp_max_log_ = logit(0.97f);
     double min_occupancy_log_ = logit(0.7f);
@@ -461,7 +467,7 @@ bool ESDF_Map::updateOccupancy() {
         updateQueue2.pop();
         int idx = vox2idx(xx.point);
         int occupy = exist(idx);
-        int log_odds_update = tmp1[idx] * prob_hit_log_ + (tmp2[idx] - tmp1[idx]) * prob_miss_log_;
+        double log_odds_update = (tmp1[idx] >= tmp2[idx] - tmp1[idx] ? prob_hit_log_ : prob_miss_log_);
 
         tmp1[idx] = tmp2[idx] = 0;
         if (distanceBuffer[idx] < 0) {
@@ -473,6 +479,9 @@ bool ESDF_Map::updateOccupancy() {
             (log_odds_update <= 0 &&
              occupancyBuffer[idx] <= clamp_min_log_)) {
             continue;
+        }
+        if (!globalMap && !voxInRange(xx.point, false)){
+            occupancyBuffer[idx] = 0;
         }
         occupancyBuffer[idx] = std::min(
                 std::max(occupancyBuffer[idx] + log_odds_update, clamp_min_log_),

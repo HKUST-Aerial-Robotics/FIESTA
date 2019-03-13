@@ -79,11 +79,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="">
+    <list default="true" id="2714c77f-937d-4cb3-aefb-50d231e0a613" name="Default" comment="Modify README">
+      <change beforePath="" afterPath="$PROJECT_DIR$/figure/shortIntroduction.png" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change beforePath="$PROJECT_DIR$/include/ESDF_Map.h" afterPath="$PROJECT_DIR$/include/ESDF_Map.h" />
       <change beforePath="$PROJECT_DIR$/launch/demo.launch" afterPath="$PROJECT_DIR$/launch/demo.launch" />
       <change beforePath="$PROJECT_DIR$/src/ESDF_Map.cpp" afterPath="$PROJECT_DIR$/src/ESDF_Map.cpp" />
       <change beforePath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" afterPath="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
@@ -100,42 +99,41 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
+      <file leaf-file-name="demo.launch" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/launch/demo.launch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="39" column="24" lean-forward="true" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#1078#1101#0" expanded="true" />
-                <element signature="e#1426#1463#0" expanded="true" />
-                <element signature="e#1521#1561#0" expanded="true" />
-                <element signature="e#3790#3827#0" expanded="true" />
-                <element signature="e#4795#4860#0" expanded="true" />
-                <element signature="e#4956#5064#0" expanded="true" />
-                <element signature="e#5707#5752#0" expanded="true" />
-                <element signature="e#5860#6056#0" expanded="true" />
-                <element signature="e#7603#7645#0" expanded="true" />
-                <element signature="e#8121#8158#0" expanded="true" />
-                <element signature="e#8768#8875#0" expanded="true" />
-                <element signature="e#10055#10639#0" expanded="true" />
-                <element signature="e#10815#11259#0" expanded="true" />
-                <element signature="e#11722#11790#0" expanded="true" />
-                <element signature="e#13356#13702#0" expanded="true" />
-                <element signature="e#14169#14228#0" expanded="true" />
-                <element signature="e#17726#17746#0" expanded="true" />
-                <marker date="1551889351605" expanded="true" signature="15037:15500" ph="..." />
-              </folding>
+            <state relative-caret-position="513">
+              <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="publisher.h" pinned="false" current-in-tab="false">
-        <entry file="file:///opt/ros/kinetic/include/ros/publisher.h">
+      <file leaf-file-name="test_pointcloud_raycasting.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2430">
-              <caret line="94" column="11" lean-forward="false" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
-              <folding />
+            <state relative-caret-position="372">
+              <caret line="153" column="20" lean-forward="false" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#1096#1119#0" expanded="true" />
+                <element signature="e#1444#1481#0" expanded="true" />
+                <element signature="e#1539#1579#0" expanded="true" />
+                <element signature="e#3807#3844#0" expanded="true" />
+                <element signature="e#5135#5200#0" expanded="true" />
+                <element signature="e#5297#5405#0" expanded="true" />
+                <element signature="e#6083#6128#0" expanded="true" />
+                <element signature="e#6236#6432#0" expanded="true" />
+                <element signature="e#8261#8303#0" expanded="true" />
+                <element signature="e#8779#8816#0" expanded="true" />
+                <element signature="e#10821#11405#0" expanded="true" />
+                <element signature="e#11581#12025#0" expanded="true" />
+                <element signature="e#12488#12556#0" expanded="true" />
+                <element signature="e#14178#14524#0" expanded="true" />
+                <element signature="e#14991#15050#0" expanded="true" />
+                <element signature="e#18548#18568#0" expanded="true" />
+                <marker date="1551959567259" expanded="true" signature="15859:16322" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -144,8 +142,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="1674">
-                <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+              <first_editor relative-caret-position="216">
+                <caret line="47" column="18" lean-forward="true" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -166,19 +164,26 @@
       <file leaf-file-name="ESDF_Map.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="818">
-              <caret line="629" column="29" lean-forward="true" selection-start-line="629" selection-start-column="29" selection-end-line="629" selection-end-column="29" />
+            <state relative-caret-position="5048">
+              <caret line="454" column="25" lean-forward="false" selection-start-line="454" selection-start-column="25" selection-end-line="454" selection-end-column="25" />
               <folding>
                 <element signature="e#40#56#0" expanded="true" />
                 <element signature="e#2851#4386#0" expanded="true" />
-                <element signature="e#17925#18478#0" expanded="true" />
-                <element signature="e#19101#20312#0" expanded="false" />
-                <element signature="e#20936#21688#0" expanded="true" />
-                <marker date="1551885689984" expanded="false" signature="248:289" ph="..." />
-                <marker date="1551885689984" expanded="false" signature="14780:15074" ph="..." />
-                <marker date="1551885689984" expanded="false" signature="15568:15599" ph="..." />
-                <marker date="1551885689984" expanded="false" signature="15693:17045" ph="..." />
+                <element signature="e#17936#18489#0" expanded="true" />
+                <element signature="e#19112#20323#0" expanded="false" />
+                <element signature="e#20326#22390#0" expanded="false" />
+                <element signature="e#20947#21699#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_pointcloud_raycasting (disassembly)" pinned="false" current-in-tab="false">
+        <entry file="mock:///test_pointcloud_raycasting (disassembly)">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -196,8 +201,8 @@
       <file leaf-file-name="ESDF_Map.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="18" column="17" lean-forward="false" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+            <state relative-caret-position="124">
+              <caret line="266" column="21" lean-forward="false" selection-start-line="266" selection-start-column="21" selection-end-line="266" selection-end-column="21" />
               <folding>
                 <element signature="e#101#123#0" expanded="true" />
                 <element signature="e#655#674#0" expanded="false" />
@@ -213,31 +218,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="995">
-              <caret line="56" column="24" lean-forward="false" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>vis_lower_bound</find>
-      <find>timer</find>
-      <find>updateESDFEvent</find>
-      <find>123</find>
-      <find>text_pub</find>
-      <find>ros::Time</find>
-      <find>&gt; 12</find>
-      <find>newMsg</find>
-      <find>visulie</find>
-      <find>max_dist</find>
-      <find>radius</find>
       <find>map_size</find>
       <find>findAndInsert</find>
       <find>posInMap</find>
@@ -247,16 +231,27 @@
       <find>setOccupancy</find>
       <find>voxInMap</find>
       <find>undefined =</find>
-      <find>uset_s</find>
       <find>c_pos</find>
       <find>s_pos</find>
       <find>globalUpdate</find>
       <find>setOriginalRange</find>
       <find>cout &lt;&lt;</find>
-      <find>globalVis</find>
       <find>min_range</find>
       <find>&lt;= min</find>
       <find>updateESDF</find>
+      <find>1;</find>
+      <find>1;</find>
+      <find>32</find>
+      <find>undefined =</find>
+      <find>undefined</find>
+      <find>param_num_thread</find>
+      <find>uset_s</find>
+      <find>tt</find>
+      <find>return undefined</find>
+      <find>setoccupancy</find>
+      <find>uset</find>
+      <find>max_ray_length_m</find>
+      <find>globalVis</find>
     </findStrings>
     <replaceStrings>
       <replace>ESDF_Map</replace>
@@ -284,11 +279,11 @@
         <option value="$PROJECT_DIR$/src/timing.cc" />
         <option value="$PROJECT_DIR$/test/test_lidar.cpp" />
         <option value="$PROJECT_DIR$/test/test_ESDF_Map.cpp" />
-        <option value="$PROJECT_DIR$/launch/demo.launch" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/src/ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/include/ESDF_Map.h" />
+        <option value="$PROJECT_DIR$/src/ESDF_Map.cpp" />
         <option value="$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp" />
+        <option value="$PROJECT_DIR$/launch/demo.launch" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -301,10 +296,9 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1919" />
-    <option name="y" value="-11" />
-    <option name="width" value="1082" />
-    <option name="height" value="1932" />
+    <option name="y" value="-4" />
+    <option name="width" value="1920" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -334,6 +328,12 @@
               <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
               <item name="esdf_tools" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="esdf_tools" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="sdf_tools" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="esdf_tools" type="462c0819:PsiDirectoryNode" />
+              <item name="figure" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -346,6 +346,9 @@
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/figure" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/test" />
       <recent name="$PROJECT_DIR$/include" />
@@ -667,7 +670,7 @@
       <workItem from="1550675404792" duration="19125000" />
       <workItem from="1550907980497" duration="45000" />
       <workItem from="1550908056243" duration="27769000" />
-      <workItem from="1551796818341" duration="16064000" />
+      <workItem from="1551796818341" duration="33299000" />
     </task>
     <task id="LOCAL-00001" summary="Modify timestamp aligned">
       <created>1551672593584</created>
@@ -690,11 +693,46 @@
       <option name="project" value="LOCAL" />
       <updated>1551750965525</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add local or global update and visualization options individually&#10;Make some methods deprecated&#10;Fix some bugs">
+      <created>1551889799268</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1551889799268</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Modify README">
+      <created>1551893169808</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1551893169808</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Modify README">
+      <created>1551893356068</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1551893356068</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Modify README">
+      <created>1551893380944</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1551893380944</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Modify README">
+      <created>1551893424837</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1551893424837</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="582880000" />
+    <option name="totallyTimeSpent" value="600115000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -706,20 +744,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1919" y="-11" width="1082" height="1932" extended-state="6" />
+    <frame x="0" y="-4" width="1920" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24976349" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24952741" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3247336" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13468014" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978126" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17554682" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978126" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27520892" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27481773" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -741,7 +779,9 @@
     <MESSAGE value="Modify timestamp aligned" />
     <MESSAGE value="Debugging" />
     <MESSAGE value="readme updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme updated" />
+    <MESSAGE value="Add local or global update and visualization options individually&#10;Make some methods deprecated&#10;Fix some bugs" />
+    <MESSAGE value="Modify README" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modify README" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -750,41 +790,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1458">
-          <caret line="54" column="43" lean-forward="false" selection-start-line="54" selection-start-column="43" selection-end-line="54" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="50" column="39" lean-forward="true" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1078#1101#0" expanded="true" />
-            <element signature="e#1426#1463#0" expanded="true" />
-            <element signature="e#1521#1561#0" expanded="true" />
-            <element signature="e#3790#3827#0" expanded="true" />
-            <element signature="e#4795#4860#0" expanded="true" />
-            <element signature="e#4956#5064#0" expanded="true" />
-            <element signature="e#5707#5752#0" expanded="true" />
-            <element signature="e#5860#6056#0" expanded="true" />
-            <element signature="e#7603#7645#0" expanded="true" />
-            <element signature="e#8121#8158#0" expanded="true" />
-            <element signature="e#8768#8875#0" expanded="true" />
-            <element signature="e#10055#10639#0" expanded="true" />
-            <element signature="e#10815#11259#0" expanded="true" />
-            <element signature="e#11722#11790#0" expanded="true" />
-            <element signature="e#13356#13702#0" expanded="true" />
-            <element signature="e#14169#14228#0" expanded="true" />
-            <element signature="e#17726#17746#0" expanded="true" />
-            <marker date="1551889351605" expanded="true" signature="15037:15500" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ESDF_Tools.cpp" />
     <entry file="file://$PROJECT_DIR$/ESDF_Tools.h" />
     <entry file="file:///opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake">
@@ -961,6 +966,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="246">
           <caret line="546" column="7" lean-forward="false" selection-start-line="546" selection-start-column="7" selection-end-line="546" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1040,22 +1046,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/launch/demo.launch">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="20" column="56" lean-forward="false" selection-start-line="20" selection-start-column="56" selection-end-line="20" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="995">
-          <caret line="56" column="24" lean-forward="false" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_ESDF_Map.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1064,10 +1054,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/include/eigen3/Eigen/src/Core/Matrix.h">
+    <entry file="file://$PROJECT_DIR$/include/timing.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="1373">
+          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1080,36 +1070,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
+    <entry file="file:///opt/ros/kinetic/include/geometry_msgs/Pose.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="818">
-          <caret line="629" column="29" lean-forward="true" selection-start-line="629" selection-start-column="29" selection-end-line="629" selection-end-column="29" />
-          <folding>
-            <element signature="e#40#56#0" expanded="true" />
-            <element signature="e#2851#4386#0" expanded="true" />
-            <element signature="e#17925#18478#0" expanded="true" />
-            <element signature="e#19101#20312#0" expanded="false" />
-            <element signature="e#20936#21688#0" expanded="true" />
-            <marker date="1551885689984" expanded="false" signature="248:289" ph="..." />
-            <marker date="1551885689984" expanded="false" signature="14780:15074" ph="..." />
-            <marker date="1551885689984" expanded="false" signature="15568:15599" ph="..." />
-            <marker date="1551885689984" expanded="false" signature="15693:17045" ph="..." />
-          </folding>
+        <state relative-caret-position="384">
+          <caret line="43" column="20" lean-forward="false" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/timing.h">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1373">
-          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+        <state relative-caret-position="1308">
+          <caret line="56" column="24" lean-forward="false" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/ESDF_Map.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="18" column="17" lean-forward="false" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+        <state relative-caret-position="124">
+          <caret line="266" column="21" lean-forward="false" selection-start-line="266" selection-start-column="21" selection-end-line="266" selection-end-column="21" />
           <folding>
             <element signature="e#101#123#0" expanded="true" />
             <element signature="e#655#674#0" expanded="false" />
@@ -1124,39 +1104,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
+    <entry file="file:///usr/include/eigen3/Eigen/src/Core/Matrix.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="39" column="24" lean-forward="true" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+        <state relative-caret-position="351">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ESDF_Map.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5048">
+          <caret line="454" column="25" lean-forward="false" selection-start-line="454" selection-start-column="25" selection-end-line="454" selection-end-column="25" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1078#1101#0" expanded="true" />
-            <element signature="e#1426#1463#0" expanded="true" />
-            <element signature="e#1521#1561#0" expanded="true" />
-            <element signature="e#3790#3827#0" expanded="true" />
-            <element signature="e#4795#4860#0" expanded="true" />
-            <element signature="e#4956#5064#0" expanded="true" />
-            <element signature="e#5707#5752#0" expanded="true" />
-            <element signature="e#5860#6056#0" expanded="true" />
-            <element signature="e#7603#7645#0" expanded="true" />
-            <element signature="e#8121#8158#0" expanded="true" />
-            <element signature="e#8768#8875#0" expanded="true" />
-            <element signature="e#10055#10639#0" expanded="true" />
-            <element signature="e#10815#11259#0" expanded="true" />
-            <element signature="e#11722#11790#0" expanded="true" />
-            <element signature="e#13356#13702#0" expanded="true" />
-            <element signature="e#14169#14228#0" expanded="true" />
-            <element signature="e#17726#17746#0" expanded="true" />
-            <marker date="1551889351605" expanded="true" signature="15037:15500" ph="..." />
+            <element signature="e#40#56#0" expanded="true" />
+            <element signature="e#2851#4386#0" expanded="true" />
+            <element signature="e#17936#18489#0" expanded="true" />
+            <element signature="e#19112#20323#0" expanded="false" />
+            <element signature="e#20326#22390#0" expanded="false" />
+            <element signature="e#20947#21699#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/launch/demo.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_pointcloud_raycasting.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="153" column="20" lean-forward="false" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#1096#1119#0" expanded="true" />
+            <element signature="e#1444#1481#0" expanded="true" />
+            <element signature="e#1539#1579#0" expanded="true" />
+            <element signature="e#3807#3844#0" expanded="true" />
+            <element signature="e#5135#5200#0" expanded="true" />
+            <element signature="e#5297#5405#0" expanded="true" />
+            <element signature="e#6083#6128#0" expanded="true" />
+            <element signature="e#6236#6432#0" expanded="true" />
+            <element signature="e#8261#8303#0" expanded="true" />
+            <element signature="e#8779#8816#0" expanded="true" />
+            <element signature="e#10821#11405#0" expanded="true" />
+            <element signature="e#11581#12025#0" expanded="true" />
+            <element signature="e#12488#12556#0" expanded="true" />
+            <element signature="e#14178#14524#0" expanded="true" />
+            <element signature="e#14991#15050#0" expanded="true" />
+            <element signature="e#18548#18568#0" expanded="true" />
+            <marker date="1551959567259" expanded="true" signature="15859:16322" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/figure/shortIntroduction.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1674">
-            <caret line="62" column="39" lean-forward="true" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+          <first_editor relative-caret-position="216">
+            <caret line="47" column="18" lean-forward="true" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
             <folding />
           </first_editor>
           <second_editor />
