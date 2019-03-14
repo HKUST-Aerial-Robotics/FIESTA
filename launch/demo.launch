@@ -3,23 +3,8 @@
           required="true">
 
         <param name="resolution" value="0.1"/>
-        <param name="min_ray_length_m" value="0.5"/>
-        <param name="max_ray_length_m" value="5.0"/>
-        <param name="update_mesh_every_n_sec" value="0.1"/>
-        <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
-        <param name="num_thread" value="0"/>
+        <param name="update_esdf_every_n_sec" value="0.1"/>
 
-
-        <param name="cx" value="323.120483"/>
-        <param name="cy" value="236.743210"/>
-        <param name="fx" value="385.754486"/>
-        <param name="fy" value="385.754486"/>
-
-        <param name="pHit" value="0.70"/>
-        <param name="pMiss" value="0.35"/>
-        <param name="pMin" value="0.12"/>
-        <param name="pMax" value="0.97"/>
-        <param name="pOcc" value="0.80"/>
         <!--Hash Table only-->
         <param name="reservedSize" value="1000000"/>
 
@@ -31,14 +16,53 @@
         <param name="ry" value="+20.0"/>
         <param name="rz" value="+2"/>
 
+        <!-- raycasting parameters -->
+        <param name="min_ray_length_m" value="0.5"/>
+        <param name="max_ray_length_m" value="5.0"/>
+        <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
+        <param name="num_thread" value="0"/>
+
+
+
+        <!-- needed when using depth image-->
+        <param name="cx" value="323.120483"/>
+        <param name="cy" value="236.743210"/>
+        <param name="fx" value="385.754486"/>
+        <param name="fy" value="385.754486"/>
+
+        <!-- probabilistic grid map -->
+        <param name="pHit" value="0.70"/>
+        <param name="pMiss" value="0.35"/>
+        <param name="pMin" value="0.12"/>
+        <param name="pMax" value="0.97"/>
+        <param name="pOcc" value="0.80"/>
+
+        <!-- global / local -->
+        <param name="globalMap" value="false"/>
+        <param name="globalUpdate" value="false"/>
+        <param name="globalVis" value="false"/>
+        <param name="radius_x" value="3.0"/>
+        <param name="radius_y" value="3.0"/>
+        <param name="radius_z" value="1.5"/>
+
+        <!--depth_filter -->
+        <param name="use_depth_filter" value="true"/>
+        <param name="depth_filter_tolerance" value="0.1"/>
+        <param name="depth_filter_maxdist" value="10.0"/>
+        <param name="depth_filter_mindist" value="0.1"/>
+        <!--unit: pixel-->
+        <param name="depth_filter_margin" value="0"/>
+
+        <!-- visulization -->
         <!--0 for no visulize-->
         <param name="visulize_every_n_updates" value="10"/>
         <param name="slice_vis" value="0.7"/>
         <param name="max_dist" value="2.0"/>
-
-        <param name="vis_lower_bound" value="-10"/>
+        <!-- relative to the lz if array is used, relative to the origin if hash table is used -->
+        <param name="vis_lower_bound" value="0"/>
         <param name="vis_upper_bound" value="+10"/>
 
+        <!-- subsribe source -->
         <!--<remap from="~pointcloud" to="/camera/depth/color/points"/>-->
         <remap from="~depth" to="/camera/depth/image_rect_raw"/>
         <remap from="~transform" to="/vins_estimator/camera_pose"/>

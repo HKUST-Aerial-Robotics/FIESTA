@@ -45,6 +45,9 @@ double max_ray_length_m;
 int visulize_every_n_updates, param_num_thread;
 double slice_vis, max_dist, vis_lower_bound, vis_upper_bound, center_x, center_y, focal_x, focal_y;
 double pHit, pMiss, pMin, pMax, pOcc;
+double depth_filter_maxdist, depth_filter_mindist, depth_filter_tolerance;
+int depth_filter_margin;
+bool use_depth_filter;
 #ifdef SIGNED_NEEDED
 ESDF_Map *inv_esdf_map;
 #endif
@@ -66,9 +69,9 @@ sensor_msgs::PointCloud2::ConstPtr s_pc;
 #endif
 
 // *************** params ****************
-double range_sensor = 5.0;
-Eigen::Vector3d radius(range_sensor, range_sensor, range_sensor / 2);
-bool globalVis = true, globalUpdate = true, globalMap = false;
+double radius_x, radius_y, radius_z;
+Eigen::Vector3d radius;
+bool globalVis, globalUpdate, globalMap;
 // *************** params ****************
 
 bool newMsg = false;
@@ -227,7 +230,7 @@ void raycastProcess(int i, int part, int tt) {
         }
     }
     ros::Time t2 = ros::Time::now();
-    cout << "raycasting \t" << tot1 << "\t" << tot2 << "\t" << (t2 - t1).toSec() << endl;
+//    cout << "raycasting \t" << tot1 << "\t" << tot2 << "\t" << (t2 - t1).toSec() << endl;
 
 }
 
@@ -236,7 +239,7 @@ void raycastProcess(int i, int part, int tt) {
 int receivedCount = 0, dmCount = 0, pcCount = 0, posCount = 0;
 
 void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map) {
-    cout << ++pcCount << '\t' << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
+//    cout << ++pcCount << '\t' << "POINTCLOUD: " << pointcloud_map->header.stamp << endl;
 /*
     T.block<3, 3>(0, 0) = q.normalized().toRotationMatrix();
     T.block<3, 1>(0, 3) = pos;
@@ -259,9 +262,9 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
         */
     int tt = ++tot;
 //    cout << "PC: " << tt << endl;
-    cout << "size : " << sizeof(*pointcloud_map) << endl;
+//    cout << "size : " << sizeof(*pointcloud_map) << endl;
     imageQueue.push(pointcloud_map);
-    cout << "Queue Size\t" << imageQueue.size() << ' ' << transformQueue.size() << endl;
+//    cout << "Queue Size\t" << imageQueue.size() << ' ' << transformQueue.size() << endl;
     //if (cnt == 1500) std::thread(save).join();
     // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
 
@@ -286,7 +289,7 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
             continue;
         }
 
-        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
+//        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
         newMsg = true;
 #ifndef PROBABILISTIC
         s_pc = imageQueue.front();
@@ -360,14 +363,32 @@ void pointcloudCallBack(const sensor_msgs::PointCloud2::ConstPtr &pointcloud_map
 
 }
 
+cv::Mat img, lastImg;
+Eigen::Matrix4d lastT;
+bool firstImg = true;
+
+double getInterpolation(const cv::Mat &img, double u, double v) {
+
+    int vu = img.at<uint16_t>(v, u);
+    int v1u = img.at<uint16_t>(v + 1, u);
+    int vu1 = img.at<uint16_t>(v, u + 1);
+    int v1u1 = img.at<uint16_t>(v + 1, u + 1);
+
+    float a = u - (float) u;
+    float c = v - (float) v;
+
+    return (vu * (1.f - a) + vu1 * a) * (1.f - c) + (v1u * (1.f - a) + v1u1 * a) * c;
+}
+
+int sum_kkp = 0, cnt_kkp = 0, t1 = 0, t2 = 0;
 
 void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
-    cout << ++dmCount << '\t' << "DEPTH_MAP: " << depth_map->header.stamp << endl;
+//    cout << ++dmCount << '\t' << "DEPTH_MAP: " << depth_map->header.stamp << endl;
     int tt = ++tot;
 //    cout << "PC: " << tt << endl;
-    cout << "size : " << sizeof(*depth_map) << endl;
+//    cout << "size : " << sizeof(*depth_map) << endl;
     depthMapQueue.push(depth_map);
-    cout << "Queue Size\t" << depthMapQueue.size() << ' ' << transformQueue.size() << endl;
+//    cout << "Queue Size\t" << depthMapQueue.size() << ' ' << transformQueue.size() << endl;
     //if (cnt == 1500) std::thread(save).join();
     // std::cout << "Image timestamp\t" << msg->header.stamp << "\t" << std::endl;
 
@@ -392,13 +413,17 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
             continue;
         }
 
-        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
+//        cout << ++receivedCount << '\t' << fabs((_poseTime - _imageTime).toSec()) << endl;
         newMsg = true;
 #ifndef PROBABILISTIC
         // TODO: Modify this, this will cause Compile Error
         s_pc = depthMapQueue.front();
         return;
 #else
+        if (use_depth_filter) {
+            lastT = T;
+            lastImg = img.clone();
+        }
         T.block<3, 3>(0, 0) = s_q.toRotationMatrix();
         T.block<3, 1>(0, 3) = s_pos;
         T(3, 0) = T(3, 1) = T(3, 2) = 0;
@@ -406,7 +431,7 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
         T = T * T_D_B * T_B_C;
         origin = Eigen::Vector3d(T(0, 3), T(1, 3), T(2, 3)) / T(3, 3);
 
-        cv::Mat img;
+
         cv_bridge::CvImagePtr cv_ptr;
         cv_ptr = cv_bridge::toCvCopy(depthMapQueue.front(), depthMapQueue.front()->encoding);
         constexpr double kDepthScalingFactor = 1000.0;
@@ -417,23 +442,66 @@ void depthCallBack(const sensor_msgs::Image::ConstPtr &depth_map) {
 
         double depth;
         cloud.clear();
-        for (int v = 10; v < img.rows - 10; v++)
-            for (int u = 10; u < img.cols - 10; u++) {
-                depth = img.at<uint16_t>(v, u) / kDepthScalingFactor;
-                pcl::PointXYZ point;
-                point.x = (u - center_x) * depth / focal_x;
-                point.y = (v - center_y) * depth / focal_y;
-                point.z = depth;
+        double uu, vv;
 
-                cloud.push_back(point);
-            }
+        t1 = t2 = 0;
+        if (!use_depth_filter) {
+            for (int v = 0; v < img.rows; v++)
+                for (int u = 0; u < img.cols; u++) {
+                    depth = img.at<uint16_t>(v, u) / kDepthScalingFactor;
+                    pcl::PointXYZ point;
+                    point.x = (u - center_x) * depth / focal_x;
+                    point.y = (v - center_y) * depth / focal_y;
+                    point.z = depth;
+                    cloud.push_back(point);
+                }
+        } else {
+            Eigen::Vector4d tmpp;
+            Eigen::Vector3d tmp;
+            for (int v = depth_filter_margin; v < img.rows - depth_filter_margin; v++)
+                for (int u = depth_filter_margin; u < img.cols - depth_filter_margin; u++) {
+                    depth = img.at<uint16_t>(v, u) / kDepthScalingFactor;
+                    pcl::PointXYZ point;
+                    point.x = (u - center_x) * depth / focal_x;
+                    point.y = (v - center_y) * depth / focal_y;
+                    point.z = depth;
+                    if (!firstImg) {
+//                        if (depth > depth_filter_maxdist || depth < depth_filter_mindist) continue;
+                        tmpp = lastT.inverse() * T * Eigen::Vector4d(point.x, point.y, point.z, 1);
+                        tmp = Eigen::Vector3d(tmpp(0), tmpp(1), tmpp(2)) / tmpp(3);
+                        uu = tmp.x() * focal_x / tmp.z() + center_x;
+                        vv = tmp.y() * focal_y / tmp.z() + center_y;
+                        if (uu >= 0 && uu < img.cols - 1 && vv >= 0 && vv < img.rows - 1) {
+                            if (fabs(getInterpolation(lastImg, uu, vv) / kDepthScalingFactor - tmp.z())
+                                < depth_filter_tolerance) {
+                                cloud.push_back(point);
+//                                ++t1;
+                            }
+//                            ++t2;
+                        } //else cloud.push_back(point);
+                    } //else cloud.push_back(point);
+                }
+            firstImg = false;
+        }
+//        cout << t1 << "\t" << t2 << "\t" << (double) t1 / t2 << '\t' << (double) t2 / (img.rows * img.cols) << endl;
+//        cout << "pointcloud_size:\t" << cloud.points.size() << "\t"
+//             << (sum_kkp += cloud.points.size()) / (double) (++cnt_kkp) << endl;
 
-        cout << cloud.points.size() << endl;
-
-
+        cout << "pointcloud_size:\t" << cloud.points.size() << endl;
         if ((int) cloud.points.size() == 0)
             return;
-
+//        sensor_msgs::PointCloud m;
+//        m.header.frame_id = "world";
+//        m.points.clear();
+//        for (int i = 0; i < cloud.points.size(); i++) {
+//            Eigen::Vector4d tmp = T * Eigen::Vector4d(cloud[i].x, cloud[i].y, cloud[i].z, 1);
+//            geometry_msgs::Point32 p;
+//            p.x = tmp(0) / tmp(3);
+//            p.y = tmp(1) / tmp(3);
+//            p.z = tmp(2) / tmp(3);
+//            m.points.push_back(p);
+//        }
+//        recpc_pub.publish(m);
         // TODO: when using vector, this is not needed
 #ifdef HASH_TABLE
         uset.clear();
@@ -547,7 +615,7 @@ void publishPose(Eigen::Vector3d pos, Eigen::Quaterniond q) {
 
 // }
 void transformCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
-    cout << ++posCount << '\t' << "TRANSFORM: " << msg->header.stamp << endl;
+//    cout << ++posCount << '\t' << "TRANSFORM: " << msg->header.stamp << endl;
     pos = Eigen::Vector3d(msg->pose.position.x,
                           msg->pose.position.y,
                           msg->pose.position.z);
@@ -586,7 +654,7 @@ void updateESDFEvent(const ros::TimerEvent & /*event*/) {
     handlePCTimer.Stop();
 #endif
     esdf_cnt++;
-//        cout << "Running " << esdf_cnt << " updates."<< endl;
+    cout << "Running " << esdf_cnt << " updates." << endl;
     ros::Time t1 = ros::Time::now();
     if (esdf_map->checkUpdate()) {
 
@@ -670,6 +738,21 @@ int main(int argc, char **argv) {
     node.param<double>("rx", rx, 20.f);
     node.param<double>("ry", ry, 20.f);
     node.param<double>("rz", rz, 5.f);
+    node.param<double>("radius_x", radius_x, 3.f);
+    node.param<double>("radius_y", radius_y, 3.f);
+    node.param<double>("radius_z", radius_z, 1.5f);
+    radius = Eigen::Vector3d(radius_x, radius_y, radius_z);
+
+    node.param<bool>("globalMap", globalMap, false);
+    node.param<bool>("globalUpdate", globalUpdate, false);
+    node.param<bool>("globalVis", globalVis, false);
+
+    node.param<bool>("use_depth_filter", use_depth_filter, true);
+    node.param<double>("depth_filter_tolerance", depth_filter_tolerance, 0.1f);
+    node.param<double>("depth_filter_maxdist", depth_filter_maxdist, 10.f);
+    node.param<double>("depth_filter_mindist", depth_filter_mindist, 0.1f);
+    node.param<int>("depth_filter_margin", depth_filter_margin, 0);
+
     lCornor << lx, ly, lz;
     rCornor << rx, ry, rz;
     map_size = rCornor - lCornor;
@@ -761,10 +844,10 @@ int main(int argc, char **argv) {
     meshPub = node.advertise<visualization_msgs::Marker>("ESDF_Map/robot", 100, true);
     recpc_pub = node.advertise<sensor_msgs::PointCloud>("ESDF_Map/rectified_pointcloud", 1, true);
 
-    double update_mesh_every_n_sec;
-    node.param<double>("update_mesh_every_n_sec", update_mesh_every_n_sec, 0.1);
+    double update_esdf_every_n_sec;
+    node.param<double>("update_esdf_every_n_sec", update_esdf_every_n_sec, 0.1);
     ros::Timer update_mesh_timer_ =
-            node.createTimer(ros::Duration(update_mesh_every_n_sec),
+            node.createTimer(ros::Duration(update_esdf_every_n_sec),
                              &updateESDFEvent);
 //    double update_mesh_every_n_sec;
 //    node.param<double>( "update_mesh_every_n_sec", update_mesh_every_n_sec, 0.5);
