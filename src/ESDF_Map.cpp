@@ -104,6 +104,7 @@ double ESDF_Map::dist(Eigen::Vector3i a, Eigen::Vector3i b) {
 
 ESDF_Map::ESDF_Map(Eigen::Vector3d origin, double resolution, int reserveSize_)
         : origin(origin), resolution(resolution) {
+    resolution_inv = 1 / resolution;
     inf = 10000;
     undefined = -10000;
     special4undefined = 0;
@@ -146,7 +147,7 @@ ESDF_Map::ESDF_Map(Eigen::Vector3d origin, double resolution, int reserveSize_)
 
 ESDF_Map::ESDF_Map(Eigen::Vector3d origin, double resolution, Eigen::Vector3d map_size)
         : origin(origin), resolution(resolution), map_size(map_size) {
-
+    resolution_inv = 1 / resolution;
 
     for (int i = 0; i < 3; ++i) grid_size(i) = ceil(map_size(i) / resolution);
 
@@ -519,6 +520,66 @@ double ESDF_Map::getDistance(Eigen::Vector3i vox) {
     return distanceBuffer[vox2idx(vox)] < 0 ? inf : distanceBuffer[vox2idx(vox)];
 }
 
+double ESDF_Map::getDistWithGradTrilinear(Eigen::Vector3d pos,
+                                        Eigen::Vector3d &grad) {
+    if (!posInMap(pos)) return -1;
+
+    /* this is too young too simple */
+    // gradient(0) = (getDistance(id(0) + 1, id(1), id(2)) -
+    //                getDistance(id(0) - 1, id(1), id(2))) *
+    //               0.5 * resolution_inv;
+    // gradient(1) = (getDistance(id(0), id(1) + 1, id(2)) -
+    //                getDistance(id(0), id(1) - 1, id(2))) *
+    //               0.5 * resolution_inv;
+    // gradient(2) = (getDistance(id(0), id(1), id(2) + 1) -
+    //                getDistance(id(0), id(1), id(2) - 1)) *
+    //               0.5 * resolution_inv;
+
+    /* use trilinear interpolation */
+    Eigen::Vector3d pos_m = pos - 0.5 * resolution * Eigen::Vector3d::Ones();
+
+    Eigen::Vector3i idx;
+    pos2vox(pos_m, idx);
+//    cout << voxInMap(idx) << endl;
+
+    Eigen::Vector3d idx_pos, diff;
+    vox2pos(idx, idx_pos);
+
+    diff = (pos - idx_pos) * resolution_inv;
+
+    double values[2][2][2];
+    for (int x = 0; x < 2; x++) {
+        for (int y = 0; y < 2; y++) {
+            for (int z = 0; z < 2; z++) {
+                Eigen::Vector3i current_idx = idx + Eigen::Vector3i(x, y, z);
+                values[x][y][z] = getDistance(current_idx);
+            }
+        }
+    }
+
+    double v00 = (1 - diff[0]) * values[0][0][0] + diff[0] * values[1][0][0];
+    double v01 = (1 - diff[0]) * values[0][0][1] + diff[0] * values[1][0][1];
+    double v10 = (1 - diff[0]) * values[0][1][0] + diff[0] * values[1][1][0];
+    double v11 = (1 - diff[0]) * values[0][1][1] + diff[0] * values[1][1][1];
+
+    double v0 = (1 - diff[1]) * v00 + diff[1] * v10;
+    double v1 = (1 - diff[1]) * v01 + diff[1] * v11;
+
+    double dist = (1 - diff[2]) * v0 + diff[2] * v1;
+
+    grad[2] = (v1 - v0) * resolution_inv;
+    grad[1] =
+            ((1 - diff[2]) * (v10 - v00) + diff[2] * (v11 - v01)) * resolution_inv;
+    grad[0] = (1 - diff[2]) * (1 - diff[1]) * (values[1][0][0] - values[0][0][0]);
+    grad[0] += (1 - diff[2]) * diff[1] * (values[1][1][0] - values[0][1][0]);
+    grad[0] += diff[2] * (1 - diff[1]) * (values[1][0][1] - values[0][0][1]);
+    grad[0] += diff[2] * diff[1] * (values[1][1][1] - values[0][1][1]);
+
+    grad[0] *= resolution_inv;
+
+    return dist;
+}
+
 // region VISUALIZATION
 void ESDF_Map::getPointCloud(sensor_msgs::PointCloud &m, int vis_lower_bound, int vis_upper_bound) {
     m.header.frame_id = "world";
@@ -682,197 +743,4 @@ void ESDF_Map::getSliceMarker(visualization_msgs::Marker &m, int slice, int id,
 #endif
 }
 
-#ifdef DEPRECATED
-void ESDF_Map::getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color) {
-    m.header.frame_id = "world";
-    m.id = id;
-    m.type = visualization_msgs::Marker::CUBE_LIST;
-    m.action = visualization_msgs::Marker::MODIFY;
-    m.scale.x = resolution * 0.9;
-    m.scale.y = resolution * 0.9;
-    m.scale.z = resolution * 0.9;
-    m.pose.orientation.w = 1;
-    m.pose.orientation.x = 0;
-    m.pose.orientation.y = 0;
-    m.pose.orientation.z = 0;
-
-    m.color.a = color(3);
-    m.color.r = color(0);
-    m.color.g = color(1);
-    m.color.b = color(2);
-//    m.points.clear();
-
-    // iterate the map
-
-#ifdef HASH_TABLE
-    for (int i = 1; i < count; i++) {
-        if (!exist(vox2idx(voxBuffer[i]))) continue;
-
-        Eigen::Vector3d pos;
-        vox2pos(Eigen::Vector3i(voxBuffer[i]), pos);
-
-        geometry_msgs::Point p;
-        p.x = pos(0);
-        p.y = pos(1);
-        p.z = pos(2);
-        m.points.push_back(p);
-    }
-#else
-    for (int x = 0; x < grid_size(0); ++x)
-        for (int y = 0; y < grid_size(1); ++y)
-            for (int z = 0; z < grid_size(2); ++z) {
-                if (!exist(vox2idx(Eigen::Vector3i(x, y, z)))) continue;
-
-                Eigen::Vector3d pos;
-                vox2pos(Eigen::Vector3i(x, y, z), pos);
-
-                geometry_msgs::Point p;
-                p.x = pos(0);
-                p.y = pos(1);
-                p.z = pos(2);
-                m.points.push_back(p);
-            }
-#endif
-}
-
-visualization_msgs::Marker m[51];
-void ESDF_Map::getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color) {
-//    cout << 10000 << endl;
-    double max_dist = *std::max_element(distanceBuffer.begin(), distanceBuffer.end());
-//    cout << std::distance(distanceBuffer.begin(), distanceBuffer.end());
-//    for (auto x = distanceBuffer.begin(); x != distanceBuffer.end(); x++) {
-//        cout << *x << endl;
-//        exit(-1);
-//    }
-//    cout << "max_dist:\t" << max_dist << endl;
-    max_dist = 5;
-    // get marker in several distance level
-//    int totalLevel = max_dist / resolution;
-//    cout << totalLevel << endl;
-//    if (totalLevel > 50) totalLevel = 50;
-    int totalLevel = 50;
-
-    double min_a = 0.00, max_a = 0.50;
-    double da = (max_a - min_a) / (totalLevel - 1);
-    double delta_d = max_dist / totalLevel;
-    cout << delta_d << endl;
-    for (int i = 0; i < 51; ++i) {
-        m[i].header.frame_id = "world";
-        m[i].id = i + totalLevel * id;
-        m[i].type = visualization_msgs::Marker::CUBE_LIST;
-        m[i].action = visualization_msgs::Marker::ADD;
-        m[i].scale.x = resolution * 0.9;
-        m[i].scale.y = resolution * 0.9;
-        m[i].scale.z = resolution * 0.9;
-        m[i].color.r = color(0);
-        m[i].color.g = color(1);
-        m[i].color.b = color(2);
-        m[i].color.a = min_a + da * i;
-        m[i].points.clear();
-    }
-    m[50].color.r = 0;
-    m[50].color.g = 0;
-    m[50].color.b = 1;
-
-#ifdef HASH_TABLE
-    // iterate the map
-    int tot0 = 0, tot1 = 0;
-    for (int ii = 1; ii < count; ii++) {
-        int level = int(distanceBuffer[vox2idx(voxBuffer[ii])] / delta_d);
-        if (level >= totalLevel || level < 0) {
-            tot0 += level < 0;
-            tot1 += level >= totalLevel;
-            if (level < 0) {
-                continue;
-                int check = 5;
-                for (int i = 0; i < dirNum; i++) {
-                    Eigen::Vector3i newPos = voxBuffer[ii] + dir[i];
-                    if (voxInRange(newPos)) {
-                        int newPosId = vox2idx(newPos);
-                        if (distanceBuffer[newPosId] < 0) {
-                            check--;
-                            if (check == 0) break;
-                        }
-                    }
-                }
-                if (check) level = totalLevel;
-                else continue;
-            } else level = totalLevel;
-        }
-        Eigen::Vector3d pos;
-        vox2pos(voxBuffer[ii], pos);
-
-        geometry_msgs::Point p;
-        p.x = pos(0);
-        p.y = pos(1);
-        p.z = pos(2);
-        m[level].points.push_back(p);
-    }
-    count--;
-    cout << "count: " << count << endl;
-    cout << ">=0 " << tot0 << ' ' << (double) (count - tot0) / count * 100 << "%" << endl;
-    cout << "inf " << tot1 << ' ' << (double) tot1 / count * 100 << "%" << endl;
-    cout << (double) tot1 / (count - tot0) * 100 << "%" << endl;
-    for (int i = 0; i < 5; ++i) {
-        cout << i << ' ' << m[i].points.size() << ' '
-             << (double) m[i].points.size() / count * 100 << "%" << endl;
-    }
-    int i = 20;
-    cout << i << ' ' << m[i].points.size() << ' '
-         << (double) m[i].points.size() / count * 100 << "%" << endl;
-    count++;
-#else
-    // iterate the map
-    int tot0 = 0, tot1 = 0;
-    for (int x = 0; x < grid_size(0); ++x)
-        for (int y = 0; y < grid_size(1); ++y)
-            for (int z = 0; z < grid_size(2); ++z) {
-                int level = int(distanceBuffer[vox2idx(Eigen::Vector3i(x, y, z))] / delta_d);
-                if (level >= totalLevel || level < 0) {
-                    tot0 += level < 0;
-                    tot1 += level >= totalLevel;
-                    if (level < 0) {
-//                        continue;
-                        int check = 5;
-                        for (int i = 0; i < dirNum; i++) {
-                            Eigen::Vector3i newPos = Eigen::Vector3i(x, y, z) + dir[i];
-                            if (voxInRange(newPos)) {
-                                int newPosId = vox2idx(newPos);
-                                if (distanceBuffer[newPosId] < 0) {
-                                    check--;
-                                    if (check == 0) break;
-                                }
-                            }
-                        }
-                        if (check) level = totalLevel;
-                        else continue;
-                    } else level = totalLevel;
-                }
-                Eigen::Vector3d pos;
-                vox2pos(Eigen::Vector3i(x, y, z), pos);
-
-                geometry_msgs::Point p;
-                p.x = pos(0);
-                p.y = pos(1);
-                p.z = pos(2);
-                m[level].points.push_back(p);
-            }
-    cout << ">=0 " << grid_total_size - tot0 << ' ' << (double) (grid_total_size - tot0) / grid_total_size * 100 << "%"
-         << endl;
-    cout << "25 " << tot1 << ' ' << (double) tot1 / grid_total_size * 100 << "%" << endl;
-    cout << (double) tot1 / (grid_total_size - tot0) * 100 << "%" << endl;
-    for (int i = 0; i < 5; ++i) {
-        cout << i << ' ' << m[i].points.size() << ' '
-             << (double) m[i].points.size() / grid_total_size * 100 << "%" << endl;
-    }
-    int i = 50;
-    cout << i << ' ' << m[i].points.size() << ' '
-         << (double) m[i].points.size() / grid_total_size * 100 << "%" << endl;
-#endif
-    markers.clear();
-
-    for (int i = 0; i < 51; ++i)
-        markers.push_back(m[i]);
-}
-#endif
 // endregion

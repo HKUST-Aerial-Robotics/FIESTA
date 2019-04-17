@@ -47,6 +47,8 @@ _For more examples and usage, please refer to the [Wiki][wiki]._
 
 ## Release History
 Prediction: 1.0.0 will be our first elegant version.
+* 0.5.3
+    * CHANGE: Improve the performance of the depth conversion process
 * 0.5.2
     * ADD: Support local map
     * ADD: Support raw depth image as input, and depth filter of consistency

@@ -56,9 +56,9 @@
         <!-- visulization -->
         <!--0 for no visulize-->
         <param name="visulize_every_n_updates" value="10"/>
-        <param name="slice_vis" value="0.7"/>
         <param name="max_dist" value="2.0"/>
         <!-- relative to the lz if array is used, relative to the origin if hash table is used -->
+        <param name="slice_vis" value="1.6"/>
         <param name="vis_lower_bound" value="0"/>
         <param name="vis_upper_bound" value="+10"/>
 

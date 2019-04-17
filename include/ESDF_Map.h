@@ -289,7 +289,7 @@ private:
 #endif
     int totalTime = 0;
     int inf, undefined;
-    double resolution;
+    double resolution, resolution_inv;
     Eigen::Vector3i max_vec, min_vec, last_max_vec, last_min_vec;
 
     bool exist(int idx);
@@ -359,14 +359,9 @@ public:
 
 // distance field management
     double getDistance(Eigen::Vector3d pos);
-
+    double getDistWithGradTrilinear(Eigen::Vector3d pos, Eigen::Vector3d &grad);
 // visualization
     void getPointCloud(sensor_msgs::PointCloud &m, int vis_lower_bound, int vis_upper_bound);
-
-#ifdef DEPRECATED
-    void getOccupancyMarker(visualization_msgs::Marker &m, int id, Eigen::Vector4d color);
-    void getESDFMarker(std::vector<visualization_msgs::Marker> &markers, int id, Eigen::Vector3d color);
-#endif
 
     void getSliceMarker(visualization_msgs::Marker &m, int slice, int id, Eigen::Vector4d color, double max_dist);
 
