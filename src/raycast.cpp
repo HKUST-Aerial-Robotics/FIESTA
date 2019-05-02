@@ -27,7 +27,7 @@ bool RayIntersectsAABB(const Eigen::Vector3d &start, const Eigen::Vector3d &end,
     Eigen::Vector3d dir = (end - start).normalized();
     Eigen::Vector3d dirfrac(1.0f / dir.x(), 1.0f / dir.y(), 1.0f / dir.z());
 
-    // r.dir is unit direction vector of ray
+    // r.dirs_ is unit dirs_ vector of ray
     // lb is the corner of AABB with minimal coordinates - left bottom, rt is maximal corner
     // start is origin of ray
     double t1 = (lb.x() - start.x()) * dirfrac.x();
@@ -62,20 +62,20 @@ void Raycast(const Eigen::Vector3d &start, const Eigen::Vector3d &end,
     // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
     // <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.3443>
     // Extensions to the described algorithm:
-    //   • Imposed a distance limit.
+    //   • Imposed a distance_ limit.
     //   • The face passed through to reach the current cube is provided to
     //     the callback.
 
     // The foundation of this algorithm is a parameterized representation of
     // the provided ray,
-    //                    origin + t * direction,
-    // except that t is not actually stored; rather, at any given point in the
+    //                    origin + t * dirs_,
+    // except that t is not actually stored; rather, at any given point_ in the
     // traversal, we keep track of the *greater* t values which we would have
     // if we took a step sufficient to cross a cube boundary along that axis
     // (i.e. change the integer part of the coordinate) in the variables
     // tMaxX, tMaxY, and tMaxZ.
 
-    // Cube containing origin point.
+    // Cube containing origin point_.
     int x = (int) std::floor(start.x());
     int y = (int) std::floor(start.y());
     int z = (int) std::floor(start.z());
@@ -85,7 +85,7 @@ void Raycast(const Eigen::Vector3d &start, const Eigen::Vector3d &end,
     Eigen::Vector3d direction = (end - start);
     double maxDist = direction.squaredNorm();
 
-    // Break out direction vector.
+    // Break out dirs_ vector.
     double dx = endX - x;
     double dy = endY - y;
     double dz = endZ - z;
@@ -126,7 +126,7 @@ void Raycast(const Eigen::Vector3d &start, const Eigen::Vector3d &end,
 
             if (output->size() > 1500) {
                 std::cerr << "Error, too many racyast voxels." << std::endl;
-                throw std::out_of_range("Too many raycast voxels");
+                throw std::out_of_range("Too many RaycasMultithread voxels");
             }
         }
 

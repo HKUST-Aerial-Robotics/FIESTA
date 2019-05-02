@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
         // a cuboid
         for (double z = 0.0; z < 5.0; z += 0.1) {
             pos << iter->first, iter->second, z;
-            esdf_map.setOccupancy(pos);
+            esdf_map.setOccupancy(pos, 1);
         } // z
 
 

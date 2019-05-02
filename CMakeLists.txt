@@ -33,11 +33,11 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wall -pthread") # -Wextra -Werror
+set(CMAKE_CXX_FLAGS "-std=c++17 ${CMAKE_CXX_FLAGS} -O3 -Wall -pthread") # -Wextra -Werror
 set(CMAKE_BUILD_TYPE "RELEASE")
 #add_executable(test_esdf_map
-#        include/ESDF_Map.h
-#        src/ESDF_Map.cpp
+#        include/ESDFMap.h
+#        src/ESDFMap.cpp
 #        include/timing.h
 #        src/timing.cc
 #        test/test_ESDF_Map.cpp
@@ -53,17 +53,21 @@ set(CMAKE_BUILD_TYPE "RELEASE")
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 #endif()
 
-add_executable(test_pointcloud_raycasting
-        include/ESDF_Map.h
-        src/ESDF_Map.cpp
+add_executable(test_fiesta
+        include/parameters.h
+        src/parameters.cpp
         include/timing.h
         src/timing.cc
-        test/raycast.h
-        test/raycast.cpp
-        test/test_pointcloud_raycasting.cpp
+        include/raycast.h
+        src/raycast.cpp
+        include/ESDFMap.h
+        src/ESDFMap.cpp
+        include/Fiesta.h
+        test/test_fiesta.cpp
         )
-target_link_libraries(test_pointcloud_raycasting
+target_link_libraries(test_fiesta
         ${catkin_LIBRARIES}
         ${PCL_LIBRARIES}
         ${OpenCV_LIBS}
         )
+
