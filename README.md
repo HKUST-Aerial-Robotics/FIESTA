@@ -14,16 +14,19 @@ by both theory and experiments. We integrate Fiesta into a completed quadrotor s
 it by both simulation and onboard experiments. We release our method as open-source software for the community. 
 
 The paper of this method is submitted to the 2019 IEEE/RSJ International Conference on
-Intelligent Robots and Systems (IROS 2019), under review.  The draft is shown on arxiv
+Intelligent Robots and Systems (IROS 2019).  The draft is shown on arxiv
 [here](https://arxiv.org/abs/1903.02144).
 
 <p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pgRi8LOnT6Y
-" target="_blank"><img_ src="figure/shortIntroduction.png"
+" target="_blank"><img src="figure/shortIntroduction.png"
 alt="Fiesta short introduction video" width="720" height="540" /></a>
 </p>
 
 ## Installation
+
+Note: C++ 17 is required to run FIESTA. Please install and configure C++ 17 by yourself.
+
 
 ```sh
 cd ~/catkin_ws/src
@@ -33,15 +36,20 @@ catkin_make
 source ~/catkin_ws/devel/setup.bash
 ```
 
+
+
 ## Usage example
 
 ```sh
-roslaunch Fiesta demo.launch
+roslaunch Fiesta cow_and_lady.launch
+rosbag play data.bag
 ```
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
+Cow and lady data set can be downloaded [here](http://robotics.ethz.ch/~asl-datasets/iros_2017_voxblox/data.bag)
 
-_For more examples and usage, please refer to the [Wiki][wiki]._
+And then open `rviz` and choose `demo.rviz` configuration to see the visualization.
+
+_For more examples and usage, please refer to the [Wiki][wiki] (no content yet).
 
 
 

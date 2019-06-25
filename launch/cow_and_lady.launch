@@ -1,0 +1,69 @@
+<launch>
+    <node pkg="fiesta" type="test_fiesta" name="fiesta" output="screen"
+          required="true">
+
+        <param name="resolution" value="0.05"/>
+        <param name="update_esdf_every_n_sec" value="0.1"/>
+
+        <!--Hash Table only-->
+        <param name="reserved_size" value="1000000"/>
+
+        <!--Array only-->
+        <param name="lx" value="-10.0"/>
+        <param name="ly" value="-10.0"/>
+        <param name="lz" value="-1"/>
+        <param name="rx" value="+10.0"/>
+        <param name="ry" value="+10.0"/>
+        <param name="rz" value="+3"/>
+
+        <!-- raycasting parameters -->
+        <param name="min_ray_length" value="0.5"/>
+        <param name="max_ray_length" value="5.0"/>
+        <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
+        <param name="ray_cast_num_thread" value="0"/>
+
+
+
+        <!-- needed when using depth image-->
+        <!--        <param name="center_x" value="323.120483"/>-->
+        <!--        <param name="center_y" value="236.743210"/>-->
+        <!--        <param name="focal_x" value="385.754486"/>-->
+        <!--        <param name="focal_y" value="385.754486"/>-->
+
+        <!-- probabilistic grid map -->
+        <param name="p_hit" value="0.70"/>
+        <param name="p_miss" value="0.35"/>
+        <param name="p_min" value="0.12"/>
+        <param name="p_max" value="0.97"/>
+        <param name="p_occ" value="0.80"/>
+
+        <!-- global / local -->
+        <param name="global_map" value="true"/>
+        <param name="global_update" value="true"/>
+        <param name="global_vis" value="true"/>
+        <param name="radius_x" value="3.0"/>
+        <param name="radius_y" value="3.0"/>
+        <param name="radius_z" value="1.5"/>
+
+        <!--depth_filter -->
+        <param name="use_depth_filter" value="true"/>
+        <param name="depth_filter_tolerance" value="0.1"/>
+        <param name="depth_filter_max_dist" value="10.0"/>
+        <param name="depth_filter_min_dist" value="0.1"/>
+        <!--unit: pixel-->
+        <param name="depth_filter_margin" value="0"/>
+
+        <!-- visulization -->
+        <!--0 for no visulize-->
+        <param name="visualize_every_n_updates" value="10"/>
+        <param name="slice_vis_max_dist" value="2.0"/>
+        <!-- relative to the lz if array is used, relative to the origin if hash table is used -->
+        <param name="slice_vis_level" value="1.6"/>
+        <param name="vis_lower_bound" value="0"/>
+        <param name="vis_upper_bound" value="+10"/>
+
+        <!-- subsribe source -->
+        <remap from="~depth" to="/camera/depth_registered/points"/>
+        <remap from="~transform" to="/kinect/vrpn_client/estimated_transform"/>
+    </node>
+</launch>

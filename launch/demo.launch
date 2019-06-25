@@ -1,5 +1,5 @@
 <launch>
-    <node pkg="esdf_tools" type="test_pointcloud_raycasting" name="esdf" output="screen"
+    <node pkg="fiesta" type="test_fiesta" name="fiesta" output="screen"
           required="true">
 
         <param name="resolution" value="0.1"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>esdf_tools</name>
+  <name>fiesta</name>
   <version>0.0.1</version>
   <description> ESDF Tools </description>
   <maintainer email="hlx1996@gmail.com">hlx1996</maintainer>
