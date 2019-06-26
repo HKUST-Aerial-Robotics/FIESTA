@@ -24,10 +24,21 @@ alt="Fiesta short introduction video" width="720" height="540" /></a>
 </p>
 
 ## Installation
+### Required Library
+- Eigen3
+- PCL 1.7
+- OpenCV
+- ROS
 
-Note: C++ 17 is required to run FIESTA. Please install and configure C++ 17 by yourself.
+Note: C++ 17 is required to run FIESTA. Please install and configure C++ 17.
+```bash
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install gcc-7 g++-7
+``` 
+see more [here](https://github.com/hlx1996/FIESTA/wiki/Cplusplus-17-Installation)
 
-
+### Download & Compile
 ```sh
 cd ~/catkin_ws/src
 git clone https://github.com/hlx1996/Fiesta.git

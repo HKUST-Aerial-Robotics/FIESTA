@@ -66,4 +66,6 @@
         <remap from="~depth" to="/camera/depth_registered/points"/>
         <remap from="~transform" to="/kinect/vrpn_client/estimated_transform"/>
     </node>
+
+    <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find fiesta)/demo.rviz" />
 </launch>
