@@ -36,7 +36,43 @@ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
 sudo apt-get install gcc-7 g++-7
 ``` 
-see more [here](https://github.com/hlx1996/FIESTA/wiki/Cplusplus-17-Installation)
+
+use the following command to check your gcc compilers
+
+```
+$ ls -lh /usr/bin/g++*
+```
+
+for **ubuntu 14.04**:
+
+```
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+```
+
+for **ubuntu 16.04**:
+```
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+```
+
+then
+
+```
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+```
+
+use the folling command to change the default compiler (choose 0 as default)
+
+```
+$ sudo update-alternatives --config gcc
+```
+
+check your current gcc compiler
+
+```
+$ gcc --version
+```
+
+
 
 ### Download & Compile
 ```sh
@@ -57,8 +93,7 @@ rosbag play data.bag
 ```
 
 Cow and lady data set can be downloaded [here](http://robotics.ethz.ch/~asl-datasets/iros_2017_voxblox/data.bag)
-
-And then open `rviz` and choose `demo.rviz` configuration to see the visualization.
+A `rviz` will be opened with the visualization of occupancy grid map and a slice of esdf map.
 
 _For more examples and usage, please refer to the [Wiki][wiki] (no content yet).
 
