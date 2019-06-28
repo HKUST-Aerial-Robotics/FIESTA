@@ -92,7 +92,7 @@ roslaunch Fiesta cow_and_lady.launch
 rosbag play data.bag
 ```
 
-Cow and lady data set can be downloaded [here](http://robotics.ethz.ch/~asl-datasets/iros_2017_voxblox/data.bag)
+Cow and lady data set can be downloaded [here](http://robotics.ethz.ch/~asl-datasets/iros_2017_voxblox/data.bag).
 A `rviz` will be opened with the visualization of occupancy grid map and a slice of esdf map.
 
 _For more examples and usage, please refer to the [Wiki][wiki] (no content yet).
