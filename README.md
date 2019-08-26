@@ -73,10 +73,11 @@ $ gcc --version
 ```
 
 
-
 ### Download & Compile
 ```sh
+sudo apt-get install libarmadillo-dev
 cd ~/catkin_ws/src
+git clone https://github.com/HKUST-Aerial-Robotics/plan_utils.git
 git clone https://github.com/hlx1996/Fiesta.git
 cd ../
 catkin_make
