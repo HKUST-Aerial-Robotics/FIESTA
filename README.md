@@ -88,7 +88,7 @@ source ~/catkin_ws/devel/setup.bash
 ## Usage example
 
 ```sh
-roslaunch Fiesta cow_and_lady.launch
+roslaunch fiesta cow_and_lady.launch
 rosbag play data.bag
 ```
 
